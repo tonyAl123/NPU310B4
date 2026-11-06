@@ -380,7 +380,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=['plan', 'check', 'verify', 'publish-github', 'publish-hf'])
     parser.add_argument('--kit-root', type=Path, default=Path(__file__).resolve().parents[1])
-    parser.add_argument('--family', choices=['qwen3', 'gemma3', 'tinyllama', 'qwen35'])
+    parser.add_argument('--family', choices=['gemma3', 'tinyllama', 'qwen35'])
     parser.add_argument('--format', dest='artifact_format', choices=['om','onnx'], help='Required for publish-hf; optional filter for verify/check')
     parser.add_argument('--upload', action='store_true', help='Explicit network write; accepted only for publish-*')
     args = parser.parse_args()

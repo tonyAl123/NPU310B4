@@ -48,17 +48,5 @@
   ],
   "model_export_tested": true,
   "board_runtime_verified": false,
-  "setup_log": "${WORKSPACE}/logs/verify-20261020-010933-100066.log",
-  "last_model_build": {
-    "status": "compiled",
-    "model": "Qwen3-0.6B",
-    "target_soc": "Ascend310B4",
-    "context": 728,
-    "export_directory": "${WORKSPACE}\\exports\\Qwen3-0.6B-Ascend310B4-ctx728",
-    "om_file": "${WORKSPACE}\\exports\\Qwen3-0.6B-Ascend310B4-ctx728\\qwen3_06b_ctx728.om",
-    "om_sha256": "fdeaeb72673cfdd11e0cdeac3ae4861c960849d0c545d2c3d71c394fb44623a8",
-    "validation": "passed_fp32_scale_aware_728_v1",
-    "source": "${WORKSPACE}\\builds\\qwen3-06b-ctx728-fd8ab7f5\\attempts\\20261020T103554Z-8b5193",
-    "board_runtime_verified": false
-  }
+  "setup_log": "${WORKSPACE}/logs/verify-20261020-010933-100066.log"
 }

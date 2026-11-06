@@ -255,8 +255,8 @@
     },
     {
       "name": "environment.json",
-      "bytes": 2301,
-      "sha256": "826dbe9858cd1791a1b1311916a7581b583637d086e9883e7b77ecacc3dd9943"
+      "bytes": 1721,
+      "sha256": "e69192e085efe8c3f21630918ccb9a47f3561246bc3840cd2b40d7870211eb01"
     },
     {
       "name": "external_weights.py",

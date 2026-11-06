@@ -2,7 +2,7 @@
 
 Chinese beginner guide, source-specific conversion adapters and numerical validation for Ascend310B4.
 
-本项目将本地 Qwen3、Gemma3、TinyLlama 与 Qwen3.5 检查点导出为 ONNX，并编译为 Ascend310B4 OM。代码和教程在本仓库，模型产物按家族和格式分别上传到 Hugging Face。
+本项目将本地 Gemma3、TinyLlama 与 Qwen3.5 检查点导出为 ONNX，并编译为 Ascend310B4 OM。代码和教程在本仓库，模型产物按家族和格式分别上传到 Hugging Face。
 
 ## 从哪里开始
 
@@ -23,9 +23,7 @@ Chinese beginner guide, source-specific conversion adapters and numerical valida
 | TinyLlama 1.1B | [OM](https://huggingface.co/TonyAlexie/Local-TinyLlama-1.1B-Ascend310B4-OM) | [ONNX](https://huggingface.co/TonyAlexie/Local-TinyLlama-1.1B-ONNX) | ctx1280 |
 | Qwen3.5 2B（AkaumiKaede 派生版） | [OM](https://huggingface.co/TonyAlexie/Local-Qwen3.5-2B-Ascend310B4-OM) | [ONNX](https://huggingface.co/TonyAlexie/Local-Qwen3.5-2B-ONNX) | ctx1024-img640, ctx2048-img768 |
 
-Qwen3 0.6B 的五个规格（ctx256、ctx728、ctx1024、ctx2048、ctx8192）保留在本地，OM 与 ONNX 上传待确认派生权重的再分发许可。[源检查点](https://huggingface.co/DavidAU/Qwen3-0.6B-heretic-abliterated-uncensored)
-
-历史构建覆盖 4 个模型家族和 10 个规格。Qwen3.5 的每个规格都包含视觉和 decoder 两套图，OM 的目标芯片均为 Ascend310B4。
+当前版本覆盖 3 个模型家族和 5 个规格。Qwen3.5 的每个规格都包含视觉和 decoder 两套图，OM 的目标芯片均为 Ascend310B4。
 
 用户报告在 Orange Pi AIpro 8T 上测试时，大部分受测模型使用单 NPU，生成速度约 3 token/s，部分模型的预填充（prefill）耗时约 10–30 秒。测试汇总尚未对应到具体规格或运行格式。详见[板端观察](VALIDATION.md#orange-pi-aipro-8t-板端观察)。
 
@@ -34,7 +32,7 @@ Qwen3 0.6B 的五个规格（ctx256、ctx728、ctx1024、ctx2048、ctx8192）保
 ```text
 docs/                    单文件长文、证据摘要与公开数值报告
 workspace/conversion-tools/ 导出器、原生参考、数值门槛和任务编排
-workspace/profiles.json  10 个来源特定的转换配置
+workspace/profiles.json  5 个来源特定的转换配置
 workspace/convert-*.sh   对应的 Linux 启动器
 tools/configure_request.py  为自己的模型重新生成哈希与请求
 upstream-reference/      固定提交的少量源代码/锁文件参考，不含 Git 历史

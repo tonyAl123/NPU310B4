@@ -10,24 +10,6 @@
     "namespace": ""
   },
   "models": {
-    "qwen3": {
-      "checkpoint_source": "",
-      "upstream_revision": null,
-      "base_model": "",
-      "license_id": "",
-      "source_and_rights_reviewed": false,
-      "license_reviewed": false,
-      "repositories": {
-        "om": {
-          "repo_name": "Local-Qwen3-0.6B-Ascend310B4-OM",
-          "private": true
-        },
-        "onnx": {
-          "repo_name": "Local-Qwen3-0.6B-ONNX",
-          "private": true
-        }
-      }
-    },
     "gemma3": {
       "checkpoint_source": "",
       "upstream_revision": null,

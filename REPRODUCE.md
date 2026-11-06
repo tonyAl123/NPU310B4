@@ -51,13 +51,12 @@ bash workspace/convert-qwen35-ctx1024-img640.sh
 ```
 
 其他名字见 `workspace/profiles.json`；启动器要求先运行配置器。
-Qwen3/Gemma/Qwen3.5 的共享构建记录进入 workspace/builds；TinyLlama 编排把结果写入 Linux 构建根下的 results。
+Gemma3 和 Qwen3.5 的共享构建记录进入 `workspace/builds`。TinyLlama 把结果写入 Linux 构建根下的 `results`。
 所有结果以实际日志和新报告为准，完整构建需要相应 RAM、磁盘和工具链支持。
 
 ## 已知复现范围
 
 - 本次仅对发布副本做语法、路径与发布计划检查，未运行模型导出/ATC/NPU。
-- Qwen3 context256 的历史成功还使用了 `qwen3_numeric_audit.py` / `qwen3_resume.py` 的独立审计；原始严格 gate 失败时应检查报告并使用对应审计方法，不能直接关闭 gate。
 - 其他新输入/依赖/工具链必须重做数值门槛；不能引用已有历史报告充当自己的新测试。
 - Qwen3.5 为固定单图规格；原检查点缺少原图像 processor 配置，配套预处理有明确适配范围。
 - 两份 OM 的配套 tokenizer、接口、dtype、三轴位置与 S/C/KV 状态都必须保持一致。

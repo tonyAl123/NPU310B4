@@ -1,34 +1,4 @@
 {
-  "qwen3-ctx256": {
-    "kind": "classic",
-    "request": "conversion-tools/prepared-requests/qwen3-06b-ctx256-1955ed4f.json",
-    "driver": "conversion-tools/qwen3_job.py",
-    "exporter": null
-  },
-  "qwen3-ctx728": {
-    "kind": "classic",
-    "request": "conversion-tools/prepared-requests/qwen3-06b-ctx728-fd8ab7f5.json",
-    "driver": "conversion-tools/qwen3_728_job.py",
-    "exporter": null
-  },
-  "qwen3-ctx1024": {
-    "kind": "classic",
-    "request": "conversion-tools/prepared-requests/qwen3-06b-ctx1024-b75ea12b.json",
-    "driver": "conversion-tools/qwen3_1024_job.py",
-    "exporter": null
-  },
-  "qwen3-ctx2048": {
-    "kind": "classic",
-    "request": "conversion-tools/prepared-requests/qwen3-06b-ctx2048-4ab1b48f.json",
-    "driver": "conversion-tools/qwen3_2048_job.py",
-    "exporter": null
-  },
-  "qwen3-ctx8192": {
-    "kind": "classic",
-    "request": "conversion-tools/prepared-requests/qwen3-06b-ctx8192-a2bdfa25.json",
-    "driver": "conversion-tools/qwen3_8192_job.py",
-    "exporter": null
-  },
   "gemma3-ctx512": {
     "kind": "classic",
     "request": "conversion-tools/prepared-requests/gemma3-1b-ctx512-befa3c1d.json",

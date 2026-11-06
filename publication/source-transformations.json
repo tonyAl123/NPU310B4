@@ -33,31 +33,6 @@
       "published_sha256": "60415f00365aaa3b5cb9841de9d1ceb87a8934a2e5ab5b2d0c3acf291fa1afad"
     },
     {
-      "path": "workspace/conversion-tools/prepared-requests/qwen3-06b-ctx1024-b75ea12b.json",
-      "original_sha256": "d0e8033f64eec585c72832ca30ebecb65d84a59cec026324926de60e7b12a65e",
-      "published_sha256": "19527332b9943b45a7f4120ac076cabff98e7e84c3e0008ebbd02cccdd54c842"
-    },
-    {
-      "path": "workspace/conversion-tools/prepared-requests/qwen3-06b-ctx2048-4ab1b48f.json",
-      "original_sha256": "7d43fa6b02ffecbb8ef602622907a76e021e43a1238d0b8287f7e64587fb9bb5",
-      "published_sha256": "37065778961afa2b69ddc92a1e3b8eeaddb819a0fa0c4d012470a914c93d6c5d"
-    },
-    {
-      "path": "workspace/conversion-tools/prepared-requests/qwen3-06b-ctx256-1955ed4f.json",
-      "original_sha256": "b410d28120931834e18dc8b19d70dc7c50c50e4eeb769e27df6322e886c120bd",
-      "published_sha256": "b410d28120931834e18dc8b19d70dc7c50c50e4eeb769e27df6322e886c120bd"
-    },
-    {
-      "path": "workspace/conversion-tools/prepared-requests/qwen3-06b-ctx728-fd8ab7f5.json",
-      "original_sha256": "ca7f547b6c957f03ab31fccecabb0874e22d8f62c2889f3d16f710b1d2a7f5d8",
-      "published_sha256": "b0b45f4eec652f9a1fd6490800a0f9f6119cfe5deb80cb68c6fee6998f81f5d4"
-    },
-    {
-      "path": "workspace/conversion-tools/prepared-requests/qwen3-06b-ctx8192-a2bdfa25.json",
-      "original_sha256": "678d5b2dbc7ad61b66c8545a4631e5d08956d548592650ff61d60c81219f42e4",
-      "published_sha256": "c6e518650707a37d3f9ee8da86237c15fb169fdf3bbc219cda7847289b738461"
-    },
-    {
       "path": "workspace/conversion-tools/qwen35a-mm1024-img640/adapter.py",
       "original_sha256": "5095899c6ca497d56b2df7da4bf92263bea45ccf8dc27dc644e6eb5ad7c20338",
       "published_sha256": "5095899c6ca497d56b2df7da4bf92263bea45ccf8dc27dc644e6eb5ad7c20338"
@@ -90,7 +65,7 @@
     {
       "path": "workspace/conversion-tools/qwen35a-mm1024-img640/environment.json",
       "original_sha256": "fc080d0a38155c627b9993be8dcb5b5a08213cafb3e2e8e06a8607c50d71bdfe",
-      "published_sha256": "826dbe9858cd1791a1b1311916a7581b583637d086e9883e7b77ecacc3dd9943"
+      "published_sha256": "e69192e085efe8c3f21630918ccb9a47f3561246bc3840cd2b40d7870211eb01"
     },
     {
       "path": "workspace/conversion-tools/qwen35a-mm1024-img640/external_weights.py",
@@ -130,7 +105,7 @@
     {
       "path": "workspace/conversion-tools/qwen35a-mm1024-img640/request.json",
       "original_sha256": "0354722aafb6409e304c5de9fa1574cfa00fa581f9ab08f29abeb937c074726f",
-      "published_sha256": "5e8d79528cc7cb0ff3f9f3f2ac319bec96725ae4fc37ed476ec6d02f7d257bdf"
+      "published_sha256": "010eb20f5ff7f729074c7f995da1dc059c5c1a8229845bc41ac530d82e29c66c"
     },
     {
       "path": "workspace/conversion-tools/qwen35a-mm1024-img640/selftest.py",
@@ -175,7 +150,7 @@
     {
       "path": "workspace/conversion-tools/qwen35a-mm2048/environment.json",
       "original_sha256": "fc080d0a38155c627b9993be8dcb5b5a08213cafb3e2e8e06a8607c50d71bdfe",
-      "published_sha256": "826dbe9858cd1791a1b1311916a7581b583637d086e9883e7b77ecacc3dd9943"
+      "published_sha256": "e69192e085efe8c3f21630918ccb9a47f3561246bc3840cd2b40d7870211eb01"
     },
     {
       "path": "workspace/conversion-tools/qwen35a-mm2048/external_weights.py",
@@ -210,7 +185,7 @@
     {
       "path": "workspace/conversion-tools/qwen35a-mm2048/request.json",
       "original_sha256": "10275f17a6eb531e267d2c3894b0aa1321c5312c2000dd915d9b946f33ebc8d3",
-      "published_sha256": "29781f60b6e7a0d778aeac4f0fb5a5c3a2fea66473dd3801cde382ffdbb6e899"
+      "published_sha256": "06261c8840b4ac9156d5b0bf8b40a662891619a613ef94bc37fcb15db384157e"
     },
     {
       "path": "workspace/conversion-tools/qwen35a-mm2048/reuse.py",
@@ -226,41 +201,6 @@
       "path": "workspace/conversion-tools/qwen35a-mm2048/validate.py",
       "original_sha256": "baeee20543e6598208bf7ad229f2b9ecd25f41fc8d43db16057d437b6a55c4e7",
       "published_sha256": "baeee20543e6598208bf7ad229f2b9ecd25f41fc8d43db16057d437b6a55c4e7"
-    },
-    {
-      "path": "workspace/conversion-tools/qwen3_1024_job.py",
-      "original_sha256": "c6f59748083d38c8f59b277dfadfe550791d9cc159f8d40155b1d435fb34fc6e",
-      "published_sha256": "c6f59748083d38c8f59b277dfadfe550791d9cc159f8d40155b1d435fb34fc6e"
-    },
-    {
-      "path": "workspace/conversion-tools/qwen3_2048_job.py",
-      "original_sha256": "5373bae25bab1cbbc9b5307bcef4aa80638566c5531ef7617f1c452f24b21e9f",
-      "published_sha256": "5373bae25bab1cbbc9b5307bcef4aa80638566c5531ef7617f1c452f24b21e9f"
-    },
-    {
-      "path": "workspace/conversion-tools/qwen3_728_job.py",
-      "original_sha256": "fae7f76ead3ee334f9cdecc32b5704ae326b707e99a8d6b4d79606c1a555fe96",
-      "published_sha256": "fae7f76ead3ee334f9cdecc32b5704ae326b707e99a8d6b4d79606c1a555fe96"
-    },
-    {
-      "path": "workspace/conversion-tools/qwen3_8192_job.py",
-      "original_sha256": "f0d5db972a65a9338f972ca589c9fc110cf27b9394c0bca5854022a4391a1ee2",
-      "published_sha256": "f0d5db972a65a9338f972ca589c9fc110cf27b9394c0bca5854022a4391a1ee2"
-    },
-    {
-      "path": "workspace/conversion-tools/qwen3_job.py",
-      "original_sha256": "1a13a7aec06190f75e680ef5346301f90d05c06f836b16dc616f5ffd10b5b241",
-      "published_sha256": "1a13a7aec06190f75e680ef5346301f90d05c06f836b16dc616f5ffd10b5b241"
-    },
-    {
-      "path": "workspace/conversion-tools/qwen3_numeric_audit.py",
-      "original_sha256": "022925e7c86c4597f798e03570f5c9a6ba62fffaabdf501ea37696838ee260b5",
-      "published_sha256": "022925e7c86c4597f798e03570f5c9a6ba62fffaabdf501ea37696838ee260b5"
-    },
-    {
-      "path": "workspace/conversion-tools/qwen3_resume.py",
-      "original_sha256": "611ea152d83ab871644e36310da1c3038686f28318fa579347b65bc6b80630f5",
-      "published_sha256": "611ea152d83ab871644e36310da1c3038686f28318fa579347b65bc6b80630f5"
     },
     {
       "path": "workspace/conversion-tools/tinyllama-ctx1280/export_tinyllama_fixed.py",

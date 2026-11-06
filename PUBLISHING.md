@@ -3,7 +3,7 @@
 ## 两个平台分别放什么
 
 - GitHub：转换工具、固定版本/输入协议、教程文章、模型目录、数值报告、许可通知。不要把整个原工作区 git add。
-- Hugging Face：每个模型家族分成两个独立仓库，分别发布 OM 和 ONNX；4 个家族共 8 个仓库。每个仓库按 context/图片规格分目录，并附自己的 tokenizer、接口、预处理和数值记录。
+- Hugging Face 按模型家族和格式分仓，共 3 个 OM 仓库和 3 个 ONNX 仓库。每个仓库按 context 和图片规格分目录，并附 tokenizer、接口、预处理和数值记录。
 - 本地 OM 准备目录为 `huggingface/om/家族/`，ONNX 为 `huggingface/onnx/家族/`。每个目录对应一个独立的远程仓库。
 - OM 仓库的 OM 位于规格目录根层；ONNX 仓库的图位于 `规格/onnx/`，Qwen3.5 再分 `vision/` 与 `decoder/`，保持外部权重的原相对目录和文件名。使用 ONNX 不必下载 OM 仓库。
 - 不上传：原始 safetensors、unbound/自测/失败中间图及临时权重、CANN 安装器、容器存储、系统磁盘、账号凭证。最终 ONNX 引用的 `.weights.data` 属于必须发布的模型载荷。
@@ -87,7 +87,7 @@ git -C github/ascend-om-conversion-lab config user.email "你选择公开的提�
 .venv-publish\Scripts\python.exe tools/release.py publish-hf --family qwen35 --format om --upload
 ```
 
-带 --upload 才会写入 HF。--format onnx 只发布 ONNX 仓库，--format om 只发布 OM 仓库；缺少 --format 会报错。其他 family 为 qwen3、gemma3、tinyllama。可以只发布其中一种格式。
+带 `--upload` 才会写入 Hugging Face。`--format onnx` 选择 ONNX 仓库，`--format om` 选择 OM 仓库。其他可用家族为 `gemma3` 和 `tinyllama`。
 实际上传只读取选定格式的元数据和文件允许清单，核对来源/许可、载荷 SHA256（ONNX 另核对引用完整性），再通过 HfApi 创建该格式仓库。工具拒绝把 OM 二进制上传到 ONNX 仓库，或把 ONNX 图/权重上传到 OM 仓库。无需复制大文件或预先配置 Git LFS 才能使用此 HTTP 上传方式。
 仓库若已存在会拒绝覆盖；网络失败可能留下空仓库或部分上传缓存，先检查远端状态，再选择恢复方案，不要反复创建新公开仓库。
 
