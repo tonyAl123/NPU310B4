@@ -1,0 +1,200 @@
+{
+  "model_relative_path": "models/1b Gemma3",
+  "model_source": "user-provided local Gemma3 text fine-tune; upstream revision unknown",
+  "upstream_revision": null,
+  "target_soc": "Ascend310B4",
+  "context": 512,
+  "dtype": "float16",
+  "opset": 15,
+  "project_commit": "15209f299fa372cccbd2226114f61a2f69f39a5f",
+  "container_image": "localhost/cann-atc-rocky:v7",
+  "container_image_id": "0c2be9f5d908d04a5da455c1b2d5a53af38d5f373b752ceaaf2790eb95e40e8c",
+  "files": [
+    {
+      "name": "added_tokens.json",
+      "bytes": 38,
+      "sha256": "f8730690481ac3d7ef2249793e7c876ca8d32c14821fe52cfdba1f8521b61c5c"
+    },
+    {
+      "name": "chat_template.jinja",
+      "bytes": 1532,
+      "sha256": "7de1c58e208eda46e9c7f86397df37ec49883aeece39fb961e0a6b24088dd3c4"
+    },
+    {
+      "name": "chat_template_thinking.jinja",
+      "bytes": 2409,
+      "sha256": "0efd758fbb470d08c18e8dbcdad0cec3bb8e0d893765edff1116d01a715048a6"
+    },
+    {
+      "name": "config.json",
+      "bytes": 1904,
+      "sha256": "b2ab3a7b55e85af50d355a66d22e4a8236ea5a920bb75020c358cd2b8a929848"
+    },
+    {
+      "name": "generation_config.json",
+      "bytes": 223,
+      "sha256": "7b85143f559db2e5774d3369a0d1454a49fae5767fb25c3b96ef4b2e3d181d3a"
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 1999811208,
+      "sha256": "4f853991d8c4bcb10fc7b302afb09c8368f56dcf2cbded188099ba41bff89cdb"
+    },
+    {
+      "name": "README.md",
+      "bytes": 6665,
+      "sha256": "6d4ebb934e6dd695ce4442cf7f5106eb4d8428d76c861b9b389b5a14253109b1"
+    },
+    {
+      "name": "special_tokens_map.json",
+      "bytes": 695,
+      "sha256": "88d16a8f41b25d29d30b7865c65404fa9527bbc9c5a652f68a1c25c4b0ae0fd1"
+    },
+    {
+      "name": "tokenizer.json",
+      "bytes": 33384722,
+      "sha256": "d786405177734910d7a3db625c2826640964a0b4e5cdbbd70620ae3313a01bef"
+    },
+    {
+      "name": "tokenizer.model",
+      "bytes": 4689074,
+      "sha256": "1299c11d7cf632ef3b4e11937501358ada021bbdf7c47638d13c0ee982f2e79c"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "bytes": 1206840,
+      "sha256": "46adcdeeb727a5f2041c36240fe75ebc7f0b34b809b32c72c690a37ada5c21c6"
+    }
+  ],
+  "config": {
+    "_sliding_window_pattern": 6,
+    "architectures": [
+      "Gemma3ForCausalLM"
+    ],
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "attn_logit_softcapping": null,
+    "bos_token_id": 2,
+    "cache_implementation": "hybrid",
+    "dtype": "bfloat16",
+    "eos_token_id": [
+      1,
+      106
+    ],
+    "final_logit_softcapping": null,
+    "head_dim": 256,
+    "hidden_activation": "gelu_pytorch_tanh",
+    "hidden_size": 1152,
+    "initializer_range": 0.02,
+    "intermediate_size": 6912,
+    "layer_types": [
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "full_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "full_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "full_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "sliding_attention",
+      "full_attention",
+      "sliding_attention",
+      "sliding_attention"
+    ],
+    "max_position_embeddings": 32768,
+    "model_type": "gemma3_text",
+    "num_attention_heads": 4,
+    "num_hidden_layers": 26,
+    "num_key_value_heads": 1,
+    "pad_token_id": 0,
+    "query_pre_attn_scalar": 256,
+    "rms_norm_eps": 1e-06,
+    "rope_local_base_freq": 10000,
+    "rope_parameters": {
+      "full_attention": {
+        "rope_theta": 1000000,
+        "rope_type": "default"
+      },
+      "sliding_attention": {
+        "rope_theta": 10000,
+        "rope_type": "default"
+      }
+    },
+    "rope_scaling": null,
+    "rope_theta": 1000000,
+    "sliding_window": 512,
+    "sliding_window_pattern": 6,
+    "transformers_version": "4.57.6",
+    "use_bidirectional_attention": false,
+    "use_cache": true,
+    "vocab_size": 262144
+  },
+  "adapter_sha256": "2830610ddae4a6d3ace6fc363d06893e5fd74d813fa8c032316c0631af1d9917",
+  "safetensors_header": {
+    "tensor_count": 340,
+    "parameter_count": 999885952,
+    "dtype": "BF16",
+    "offsets_and_sizes_valid": true
+  },
+  "validation": {
+    "policy_version": "gemma3-fp32-scale-aware-512-v1",
+    "reference": "unpatched native Gemma FP32, full cache checked against native default hybrid",
+    "new_tokens": 8,
+    "logits_max_abs": 0.25,
+    "logits_rmse": 0.03,
+    "logits_cosine_min": 0.999,
+    "cache_atol": 0.15,
+    "cache_rtol": 0.001953125,
+    "cache_global_rmse": 0.03,
+    "cache_layer_rmse": 0.03,
+    "require_generated_greedy_tokens_match": true,
+    "prompts": [
+      "你好，请用一句话介绍你自己。",
+      "Write a short greeting."
+    ],
+    "prefix_chunk_tokens": 64,
+    "real_prefix_length": 510,
+    "high_positions": [
+      255,
+      510,
+      511
+    ],
+    "native_full_hybrid_max_abs": 0.01,
+    "native_full_hybrid_rmse": 0.002,
+    "long_probe_seed": "causal native FP32 full prefix cast to FP16, identical seed across backends",
+    "long_probe_limit": "seeded decode at positions 255,510,511; not full 512-step ONNX generation. Actual context does not extend past the 512-token sliding window."
+  },
+  "memory_estimate": {
+    "model_parameters": 999885952,
+    "fp16_weight_bytes": 1999771904,
+    "fp16_single_kv_cache_bytes": 13631488,
+    "fp16_input_plus_output_kv_bytes": 27262976,
+    "host_available_ram_gate_bytes": 17179869184,
+    "caveat": "Full-storage cache for all 26 layers; native sliding window remains 512. Weights, packing, workspace, copies and OS memory are additional; board memory unverified."
+  },
+  "source_verification": {
+    "date": "2026-10-20",
+    "gemma_native": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/models/gemma3/modeling_gemma3.py",
+    "native_masks": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/masking_utils.py",
+    "native_cache": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/cache_utils.py",
+    "torch_export": "https://raw.githubusercontent.com/pytorch/pytorch/v2.11.0/torch/onnx/_internal/torchscript_exporter/utils.py",
+    "onnx_external_data": "https://onnx.ai/onnx/repo-docs/ExternalData.html",
+    "status": "Derived from locally successful Gemma 1024 build. Adapter math, native 512-token window, numerical gates, compiler and dependencies unchanged. Actual 512 build pending."
+  },
+  "job_id": "gemma3-1b-ctx512-befa3c1d",
+  "proven_parent_build": "builds/gemma3-1b-ctx1024-7dc4575d/attempts/20261020T094602Z-8979f7"
+}

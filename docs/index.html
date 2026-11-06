@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="以实际 Qwen3、Gemma3、TinyLlama 和 Qwen3.5 构建为例，从零解释 safetensors、ONNX、Ascend OM、KV Cache、图像 patch、MRoPE 与数值验证。"><title>从模型权重到昇腾 OM｜写给初学者的转换原理详解</title><style>
+:root{--bg:#f2f3ef;--paper:#fffef9;--ink:#202d31;--muted:#56686d;--line:#d8dfda;--green:#145d53;--green-soft:#e5f0e9;--blue:#275d8d;--blue-soft:#e8f0f8;--gold:#855518;--gold-soft:#fff2d6;--red:#a83d39;--red-soft:#fff0ed;--body-size:18px;--shadow:0 18px 60px #20382b0a}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:88px}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;line-height:1.95}a{color:var(--blue);text-underline-offset:4px;overflow-wrap:anywhere}a:hover{color:var(--green)}button,input,select{font:inherit}button,select{cursor:pointer}button{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:9px;padding:7px 13px;line-height:1.5}button:hover{border-color:var(--green);background:var(--green-soft)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #e0a840;outline-offset:4px}button.primary{background:var(--green);color:#fff;border-color:var(--green)}button:disabled{opacity:.5;cursor:default}.skip{position:fixed;top:-90px;left:20px;z-index:30;background:var(--paper);padding:10px}.skip:focus{top:10px}.topbar{height:64px;position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 32px;gap:12px}.brand{font-size:14px;font-weight:700;letter-spacing:.08em;color:var(--green)}.tools{display:flex;gap:7px;align-items:center}.tools button{font-size:13px}.progress{height:3px;background:var(--green);position:fixed;top:63px;left:0;width:0;z-index:21}.layout{max-width:1370px;margin:0 auto;display:grid;grid-template-columns:235px minmax(0,960px);gap:42px;padding:38px 32px 100px}.sidebar{position:sticky;top:92px;max-height:calc(100vh - 115px);overflow:auto;align-self:start;font-size:13px;padding-bottom:20px}.nav-label{color:var(--muted);font-size:11px;letter-spacing:.16em;margin:18px 0 10px}.sidebar ol{list-style:none;margin:0;padding:0}.sidebar li{margin:2px 0}.sidebar a{display:block;text-decoration:none;border-left:2px solid transparent;padding:5px 10px;color:var(--muted);line-height:1.6}.sidebar a.active{color:var(--green);border-color:var(--green);background:var(--green-soft);font-weight:700}.sidebar .read-note{padding:14px 12px;margin-top:22px;border:1px solid var(--line);border-radius:10px;font-size:12px;line-height:1.8}.mobile-menu{display:none}.paper{background:var(--paper);box-shadow:var(--shadow);border:1px solid var(--line);min-width:0}.hero{padding:62px 64px 38px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,var(--paper),var(--green-soft))}.eyebrow{font-size:12px;letter-spacing:.16em;color:var(--green);font-weight:700}.hero h1{font-size:42px;line-height:1.35;letter-spacing:-.03em;margin:20px 0 24px;font-weight:750}.hero .subtitle{font-size:20px;line-height:1.8;color:var(--muted);max-width:690px}.meta{display:flex;flex-wrap:wrap;gap:7px 20px;color:var(--muted);font-size:12px;margin-top:26px}.hero-map{display:flex;gap:8px;align-items:stretch;margin-top:32px;flex-wrap:wrap}.hero-map span{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:8px 12px;font-size:13px;line-height:1.6}.hero-map b{display:block;color:var(--green)}.hero-map i{align-self:center;color:var(--muted);font-style:normal}.article{padding:0 64px 48px;font-size:var(--body-size)}section{padding-top:56px;margin-top:12px;border-top:1px solid var(--line)}section:first-child{border:0;margin-top:0}.section-no{font-size:12px;letter-spacing:.15em;color:var(--green);font-weight:700;margin-bottom:8px}h2{font-size:29px;line-height:1.5;letter-spacing:-.02em;margin:0 0 24px}h3{font-size:21px;line-height:1.6;margin:34px 0 12px}h4{font-size:18px;margin:24px 0 8px}p{margin:14px 0 18px}strong{font-weight:720}ul,ol{padding-left:1.45em}li{padding-left:.15em;margin:8px 0}li::marker{color:var(--green)}.lead{font-size:21px;line-height:1.95;color:var(--green)}.note,.analogy,.checkpoint{border:1px solid var(--line);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:17px 21px;margin:24px 0;background:var(--green-soft);font-size:.94em}.note.amber{border-left-color:var(--gold);background:var(--gold-soft)}.note.blue{border-left-color:var(--blue);background:var(--blue-soft)}.note p:last-child,.analogy p:last-child{margin-bottom:0}.note p:first-child,.analogy p:first-child{margin-top:0}.note-title{font-size:12px;font-weight:750;letter-spacing:.08em;color:var(--green);margin-bottom:8px}.analogy{background:var(--paper);border-left-color:var(--blue)}.small{font-size:13px;color:var(--muted);line-height:1.85}.caption{font-size:13px;color:var(--muted);line-height:1.85;margin:12px 0 6px}.tag{font-size:11px;border:1px solid var(--line);border-radius:50px;padding:2px 8px;white-space:nowrap;display:inline-block;color:var(--green);line-height:1.8}.table-wrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.8;min-width:560px}th{background:var(--green-soft);text-align:left;color:var(--green);font-weight:700}th,td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}td:first-child{font-weight:650}code{font-family:Consolas,"SFMono-Regular",monospace;font-size:.86em;background:var(--green-soft);padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{background:#203338;color:#f5f6ed;border-radius:10px;padding:20px 22px;overflow-x:auto;font-size:13px;line-height:1.9;tab-size:4;margin:20px 0}pre code{padding:0;background:none;color:inherit;font-size:inherit;white-space:pre}.formula{font-family:Consolas,"Microsoft YaHei",monospace;background:var(--blue-soft);border:1px solid var(--line);padding:19px 20px;border-radius:10px;text-align:center;margin:22px 0;line-height:1.9;font-size:15px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:24px 0}.card{border:1px solid var(--line);border-radius:11px;padding:20px;background:var(--paper)}.card h3{margin:0 0 12px;font-size:19px}.card p{font-size:15px;line-height:1.9;margin:8px 0}.card .kicker{font-size:11px;letter-spacing:.1em;color:var(--green)}details{border:1px solid var(--line);border-radius:9px;padding:12px 18px;margin:16px 0;font-size:.94em}summary{cursor:pointer;font-weight:650;color:var(--green);line-height:1.8}details[open] summary{padding-bottom:9px;border-bottom:1px solid var(--line);margin-bottom:10px}.ref{font-size:12px;vertical-align:super;text-decoration:none;white-space:nowrap;margin-left:3px}.figure{border:1px solid var(--line);border-radius:12px;padding:22px;background:var(--paper);margin:28px 0}.figure svg{display:block;width:100%;height:auto;max-height:none}.figure svg text{font-family:"Segoe UI","Microsoft YaHei",sans-serif}.svg-box{fill:var(--green-soft);stroke:var(--line)}.svg-blue{fill:var(--blue-soft);stroke:var(--line)}.svg-gold{fill:var(--gold-soft);stroke:var(--line)}.svg-text{fill:var(--ink)}.svg-muted{fill:var(--muted)}.svg-line{stroke:var(--green);fill:none;stroke-width:2}.lab{border:1px solid var(--green);border-radius:12px;padding:26px;margin:30px 0;background:var(--paper)}.lab h3{margin:0 0 8px;font-size:21px}.lab-title{font-size:11px;color:var(--green);font-weight:750;letter-spacing:.12em;margin-bottom:7px}.controls{display:grid;grid-template-columns:1fr 1fr;gap:18px 22px;margin:20px 0}.field{display:flex;flex-direction:column;gap:7px;min-width:0}.field label{font-size:13px;font-weight:650}.field input[type=number],.field select{border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);padding:8px 10px;width:100%;font-size:14px}.field input[type=range]{width:100%;accent-color:var(--green);height:24px}.field-inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;margin:14px 0}.field-inline input{accent-color:var(--green);width:17px;height:17px}.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}.stat{background:var(--green-soft);padding:14px;border-radius:8px;min-width:0}.stat b{font-family:Consolas,monospace;font-size:25px;font-weight:700;color:var(--green);display:block;line-height:1.4}.stat span{font-size:11px;line-height:1.6;display:block;color:var(--muted);margin-top:4px}.budget-bar{display:flex;background:var(--bg);height:32px;border-radius:7px;overflow:hidden;margin:16px 0 10px;outline:1px solid var(--line)}.budget-bar>span{min-width:0}.seg-image{background:#326b68}.seg-template{background:#92794d}.seg-text{background:#588abd}.seg-answer{background:#a774a9}.seg-free{background:#dfe7dc}.legend{display:flex;gap:9px 16px;flex-wrap:wrap;font-size:12px;color:var(--muted);line-height:1.8}.legend span:before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--swatch);margin-right:6px}.status-box{padding:12px 15px;border-radius:8px;font-size:14px;line-height:1.9;margin-top:16px;background:var(--green-soft);color:var(--green)}.status-box.over{background:var(--red-soft);color:var(--red)}.cache-row{display:grid;grid-template-columns:115px 1fr 100px;gap:12px;align-items:center;margin:14px 0;font-size:12px}.cache-track{height:20px;background:var(--bg);border-radius:4px;overflow:hidden;display:flex}.cache-value{text-align:right;font-family:Consolas,monospace}.cache-kv{background:#4077a4}.cache-fixed{background:#bf9148}.token-strip{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}.token{border:1px solid var(--line);border-radius:7px;min-width:48px;padding:9px 7px;text-align:center;font-size:13px;line-height:1.6;background:var(--bg)}.token.filled{background:var(--blue-soft);border-color:#759ab4}.token.current{background:var(--gold-soft);border-color:#b88629}.token small{display:block;font-size:10px;color:var(--muted)}.token-message{min-height:66px;font-size:14px;line-height:1.9}.lab-actions{display:flex;gap:9px;flex-wrap:wrap}.reading-path{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:25px 0}.reading-path a{display:block;text-decoration:none;border:1px solid var(--line);padding:17px;border-radius:9px;background:var(--paper);font-size:14px;line-height:1.9}.reading-path a strong{display:block;font-size:16px;color:var(--green)}.timeline{border-left:2px solid var(--line);padding-left:24px;margin:24px 0}.timeline>div{position:relative;margin:23px 0;font-size:15px}.timeline>div:before{content:"";width:10px;height:10px;background:var(--green);border:3px solid var(--paper);outline:1px solid var(--green);border-radius:50%;position:absolute;left:-30px;top:10px}.timeline b{display:block}.glossary{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}.glossary div{border-bottom:1px solid var(--line);padding:14px 0}.glossary dt{font-weight:700;color:var(--green);font-size:15px}.glossary dd{margin:5px 0 0;font-size:14px;line-height:1.85}.sources li{font-size:14px;line-height:1.9;margin:15px 0}.endnote{margin:40px 0 0;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.top-link{position:fixed;right:20px;bottom:20px;z-index:10;border:1px solid var(--line);border-radius:50%;width:44px;height:44px;text-align:center;line-height:42px;background:var(--paper);text-decoration:none;box-shadow:var(--shadow)}.nojs{background:var(--gold-soft);padding:10px;font-size:13px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}.two-col p{font-size:15px}.break-word{word-break:break-all}.print-only{display:none}
+body.dark{--bg:#142126;--paper:#1c2b30;--ink:#e7eee9;--muted:#b0c2c5;--line:#3c5155;--green:#a0d4bf;--green-soft:#263e38;--blue:#9ec7e8;--blue-soft:#283e50;--gold:#e4c48e;--gold-soft:#443b29;--red:#f2b1aa;--red-soft:#492e2d;--shadow:none}body.dark button.primary{background:#a0d4bf;color:#142126}.reading-mode .sidebar{display:none}.reading-mode .layout{grid-template-columns:minmax(0,960px);justify-content:center}
+@media(max-width:1100px){.layout{grid-template-columns:190px minmax(0,1fr);gap:25px;padding-left:20px;padding-right:20px}.hero{padding:44px 38px 32px}.article{padding-left:38px;padding-right:38px}.hero h1{font-size:35px}.sidebar{font-size:12px}}
+@media(max-width:800px){.topbar{padding:0 15px;height:60px}.brand{font-size:11px;letter-spacing:.02em}.tools{gap:5px}.tools button{font-size:12px;padding:6px 9px}.desktop-tool{display:none}.mobile-menu{display:inline-block}.progress{top:59px}.layout{display:block;padding:18px 12px 70px}.sidebar{display:none;position:fixed;left:12px;right:12px;top:72px;max-height:75vh;padding:15px;background:var(--paper);border:1px solid var(--line);z-index:19;box-shadow:var(--shadow);border-radius:12px}.sidebar.open{display:block}.sidebar .read-note{display:none}.hero{padding:32px 24px 26px}.hero h1{font-size:32px}.hero .subtitle{font-size:17px}.article{padding:0 24px 32px;font-size:calc(var(--body-size) - 1px)}h2{font-size:25px}h3{font-size:20px}section{padding-top:38px;margin-top:20px}.cards,.reading-path,.two-col{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr;gap:16px 12px}.lab{padding:19px 15px}.stat-grid{gap:7px}.stat{padding:10px}.stat b{font-size:21px}.cache-row{grid-template-columns:90px 1fr 80px;gap:7px;font-size:11px}.figure{padding:12px}.hero-map span{font-size:12px}.glossary{grid-template-columns:1fr}.lead{font-size:19px}.top-link{right:12px;bottom:12px}.formula{font-size:13px;padding:15px 10px}}
+@media(max-width:420px){.controls{grid-template-columns:1fr}.hero h1{font-size:28px}.article{padding-left:18px;padding-right:18px}.hero{padding-left:18px;padding-right:18px}.brand{max-width:140px;line-height:1.5}.stat b{font-size:19px}.stat span{font-size:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{@page{size:A4;margin:17mm 16mm 18mm}body,body.dark{--bg:#fff;--paper:#fff;--ink:#192a2d;--muted:#4d6266;--line:#ccd7d3;--green:#145d53;--green-soft:#edf4ef;--blue:#275d8d;--blue-soft:#edf3f8;--gold:#855518;--gold-soft:#fff5df;--body-size:11pt;background:#fff;color:#192a2d;line-height:1.8}.topbar,.progress,.sidebar,.top-link,.lab-actions,.interactive-control,.reading-path,.no-print{display:none!important}.layout{display:block;max-width:none;padding:0;margin:0}.paper{border:0;box-shadow:none}.hero{padding:20mm 0 14mm;background:#fff;border-bottom:2px solid var(--green)}.hero h1{font-size:29pt}.hero .subtitle{font-size:13pt}.article{padding:0;font-size:11pt}.hero-map span{font-size:9pt}.meta{font-size:9pt}section{padding-top:9mm;margin-top:9mm;page-break-before:auto}h2{font-size:18pt;break-after:avoid}h3{font-size:13pt;break-after:avoid}p{orphans:3;widows:3}.note,.analogy,.card,.stat,.figure,.formula,pre{break-inside:avoid}.cards{gap:10px}.card p{font-size:9.5pt}.lab{padding:6mm;break-inside:auto}table{font-size:8.5pt;min-width:0}th,td{padding:7px 8px}thead{display:table-header-group}tr{break-inside:avoid}.table-wrap{overflow:visible}pre{font-size:8pt;white-space:pre-wrap;overflow-wrap:anywhere;background:#edf2f0;color:#203338}.small,.caption{font-size:8.5pt}.glossary dt{font-size:10pt}.glossary dd{font-size:9pt}.sources li{font-size:9pt}.ref{font-size:8pt}a{color:inherit}.print-only{display:block}.token-message{min-height:0}.stat b{font-size:17pt}.section-no{font-size:8pt}.figure svg{max-height:160mm}.lead{font-size:13pt}.endnote{font-size:9pt}}
+</style></head><body>
+<a href="#article-body" class="skip">跳到正文</a><div class="topbar"><div class="brand">模型转换 · 从零读懂</div><div class="tools"><button type="button" id="menu-toggle" class="mobile-menu" aria-expanded="false" aria-controls="sidebar">目录</button><button type="button" id="font-down" class="desktop-tool" aria-label="缩小正文字号">A−</button><button type="button" id="font-up" aria-label="增大正文字号">A＋</button><button type="button" id="focus-toggle" class="desktop-tool" aria-pressed="false">专注阅读</button><button type="button" id="theme-toggle" aria-pressed="false">深色</button><button type="button" id="print-button">打印 / 保存 PDF</button></div></div><div id="reading-progress" class="progress" aria-hidden="true"></div>
+<div class="layout"><nav id="sidebar" class="sidebar" aria-label="文章目录"><div class="nav-label">阅读目录 / CONTENTS</div><ol id="toc-list"><li><a href="#start">01  先建立一张地图</a></li><li><a href="#files">02  模型文件里装着什么</a></li><li><a href="#generation">03  一句回答怎样生成</a></li><li><a href="#attention">04  注意力与 KV 缓存</a></li><li><a href="#context">05  三种长度，分别看待</a></li><li><a href="#pipeline">06  完整转换流水线</a></li><li><a href="#onnx">07  ONNX 与 ATC 在做什么</a></li><li><a href="#validation">08  怎样确认转换没有算偏</a></li><li><a href="#models">09  四类模型的具体区别</a></li><li><a href="#hybrid">10  Qwen3.5 的混合状态</a></li><li><a href="#vision">11  图片怎样变成视觉 token</a></li><li><a href="#positions">12  图文连接与三轴位置</a></li><li><a href="#precision">13  为什么视觉保留 FP32</a></li><li><a href="#budget">14  图片与上下文预算实验</a></li><li><a href="#memory">15  内存为什么这样增长</a></li><li><a href="#results">16  成功记录实际证明什么</a></li><li><a href="#faq">17  新手常见问题</a></li><li><a href="#glossary">18  随时可查的术语表</a></li><li><a href="#references">19  资料来源与核对路径</a></li></ol><div class="read-note">第一次读可以先跳过“进一步看”。<br>正文中的四个实验仅做原理演示和公式计算。<br>所有实验均在浏览器本地运行。</div></nav><main class="paper">
+<header class="hero" id="top">
+  <div class="eyebrow">一份来自真实转换项目的入门读本</div>
+  <h1>从模型权重到昇腾 OM<br>读懂语言模型与视觉模型的转换</h1>
+  <p class="subtitle">为什么 safetensors 不能直接交给 NPU？context 到底改变了什么？一张照片如何变成 400 个“视觉 token”？以 Qwen3、Gemma3、TinyLlama 和 Qwen3.5 为线索，从零把整个过程连起来。</p>
+  <div class="meta"><span>技术事实核对：2026 年 10 月 21 日</span><span id="reading-time">约 15,434 个汉字 · 建议预留 47～67 分钟</span><span>单文件 · 离线可读 · 支持打印</span></div>
+  <div class="hero-map" aria-label="本文的四条主线"><span><b>先看懂</b>模型、token 与缓存</span><i aria-hidden="true">→</i><span><b>再看转换</b>PyTorch → ONNX → OM</span><i aria-hidden="true">→</i><span><b>最后看图文</b>图片 → 特征 → 回答</span></div>
+</header>
+<div class="article" id="article-body">
+<noscript><p class="nojs">正文和图表可以直接阅读。启用浏览器 JavaScript 后，还可以使用上下文预算、缓存计算与图片网格演示。</p></noscript>
+
+<section id="start" data-title="先建立一张地图">
+<div class="section-no">01 / 阅读地图</div><h2>先知道我们在解决什么问题</h2>
+<p class="lead">一份已经训练好的 AI 模型，通常还需要经过接口适配、计算图导出、数值验证和目标芯片编译，才能成为开发板上可用的推理组件。</p>
+<p>这篇文章讲的是一个具体项目：将本地 Qwen3 0.6B、Gemma3 1B、TinyLlama 1.1B 和 Qwen3.5A 2B 检查点，适配为面向 <strong>Ascend310B4</strong> 的 OM 模型。其中，Qwen3.5 保留文字与单张图片输入，制作了 <strong>640×640 / context 1024</strong> 和 <strong>768×768 / context 2048</strong> 两组规格。</p>
+<p>你不需要先学会 Python，也不需要熟悉神经网络公式。每出现一个新术语，正文会先解释它的用途，再给出它在项目里的具体含义。折叠框放置更深入的细节，第一次阅读可以跳过。</p>
+<div class="reading-path"><a href="#files"><strong>第一次接触模型</strong>从文件与 token 开始，按顺序阅读。</a><a href="#pipeline"><strong>已经用过聊天模型</strong>先看转换流程，再回查缓存概念。</a><a href="#vision"><strong>最关心图片输入</strong>从视觉链路开始，结合后面的预算实验。</a></div>
+<div class="note"><div class="note-title">本文有三种不同性质的信息</div><p><strong>通用原理</strong>解释模型为什么这样工作；<strong>本项目实现</strong>描述实际导出器做了什么；<strong>验证结果</strong>只陈述构建记录已经证明的内容。比如“ATC 编译成功”证明工具链生成了 OM，但它本身并不包含开发板推理速度或真实照片识别质量的结论。</p></div>
+<p>你可以先记住四个动词：<strong>加载</strong>已有权重，<strong>表达</strong>推理运算，<strong>核对</strong>转换前后的结果，再<strong>编译</strong>到目标芯片。整篇文章都会围绕这条主线展开。</p>
+</section>
+
+<section id="files" data-title="模型文件里装着什么">
+<div class="section-no">02 / 模型与文件</div><h2>一个模型，不只是一个权重文件</h2>
+<h3>先理解“参数”与“训练权重”</h3>
+<p>神经网络内部有大量矩阵和向量。它们控制怎样把输入变成中间特征，又怎样把中间特征变成下一步输出。这些需要学习的数值叫<strong>参数</strong>。训练完成后，保存下来的参数通常叫<strong>权重</strong>。</p>
+<p>“1B”中的 B 是 billion，也就是十亿。1B 模型大致有十亿个参数，2B 大致有二十亿个参数。这个名称是规模标签，不表示每个模型恰好有一个整数数量的参数，也不能单独决定它在某项任务上的效果。</p>
+<div class="analogy"><div class="note-title">可以这样类比</div><p>把模型想成一座已经调好设备的工厂：<strong>权重</strong>像设备的设置值，<strong>网络结构</strong>像生产线的连接方式，<strong>tokenizer 和图像预处理</strong>像原料进入工厂前的分拣规则。只有设置值，没有生产线和原料规则，工厂仍然无法正确开工。</p></div>
+<h3>safetensors、config、tokenizer 分别负责什么</h3>
+<div class="table-wrap"><table><thead><tr><th>常见文件</th><th>主要内容</th><th>缺少它会怎样</th></tr></thead><tbody>
+<tr><td><code>*.safetensors</code></td><td>矩阵、向量等权重张量，也可能分成多个分片。</td><td>没有模型学习到的参数。</td></tr>
+<tr><td><code>config.json</code></td><td>层数、隐藏维度、注意力头、位置编码、架构类型等。</td><td>无法可靠地按正确结构组装权重。</td></tr>
+<tr><td>权重分片索引</td><td>记录每个张量保存在哪个分片里。</td><td>大模型可能无法完整加载。</td></tr>
+<tr><td><code>tokenizer.json</code> 等</td><td>文字与 token ID 之间的映射和切分规则。</td><td>文字会被错误编码，输出 ID 也无法正确还原。</td></tr>
+<tr><td>聊天模板</td><td>用户、助手、系统等角色如何排列，哪里开始生成。</td><td>即使模型计算正常，也可能因为输入格式不对而表现异常。</td></tr>
+<tr><td>processor / 图像预处理配置</td><td>图片怎样缩放、归一化、组织 patch 和图像占位符。</td><td>视觉输入的数值与顺序可能不符合模型要求。</td></tr>
+</tbody></table></div>
+<p>因此，这个项目使用的是<strong>完整本地模型目录</strong>。导出时要保留权重和对应的结构、分词、模板、预处理信息之间的关系。文件后缀相同，并不说明两个模型能够使用同一个导出器。</p>
+<h3>BF16、FP16、FP32：数字怎样存</h3>
+<p>计算机用有限的二进制位保存实数。FP32 使用 32 位，通常每个数占 4 字节；FP16 和 BF16 都使用 16 位，通常每个数占 2 字节。<strong>FP16 与 BF16 把位数分配给指数和尾数的方式不同</strong>：BF16 覆盖的数值范围更大，FP16 在它能表示的许多数值区间内有更细的刻度。二者并不是同一种编码。</p>
+<p>项目中的 Qwen3、Gemma3 和 TinyLlama 原始张量存储为 BF16，导出主要使用 FP16。Qwen3.5A 的原始张量为 FP16，成功的图文图又为部分计算选择了 FP32。每一次精度安排都要通过数值验证，不能只看“都是 16 位”就认为结果必然一样。</p>
+<div class="formula">最基本的权重存储估算 ≈ 参数个数 × 每个参数的字节数</div>
+<p>例如十亿个 FP16 数，原始数值本身约占 20 亿字节，即约 1.86 GiB。这是参数数据的估算，不是模型运行时的完整内存占用，也不是编译后 OM 大小的精确预测。</p>
+<div class="table-wrap"><table><thead><tr><th>操作</th><th>主要改变什么</th><th>本项目中的位置</th></tr></thead><tbody><tr><td>训练 / 微调</td><td>通过数据与优化过程更新权重。</td><td>本文使用已有训练权重，不执行这些步骤。</td></tr><tr><td>浮点精度转换</td><td>改变数值的存储或计算格式。</td><td>BF16、FP16、FP32 的安排与验证。</td></tr><tr><td>低位整数 / 权重量化</td><td>用 INT8、INT4 等表示参数，通常还要选择量化方案。</td><td>本文这些交付没有实施 INT8 / INT4 量化。</td></tr><tr><td>导出</td><td>把框架推理过程表达为另一种计算图。</td><td>PyTorch → ONNX。</td></tr><tr><td>编译</td><td>针对目标硬件生成可运行模型。</td><td>ONNX → Ascend OM。</td></tr></tbody></table></div>
+</section>
+
+<section id="generation" data-title="一句回答怎样生成">
+<div class="section-no">03 / 推理的基本过程</div><h2>模型怎样一个 token、一个 token 地回答</h2>
+<h3>token 是模型处理文字的单位</h3>
+<p>token 可以对应一个字、一段词、标点，或者其他切分片段。<strong>一个 token 不固定等于一个汉字，也不固定等于一个英文单词。</strong>不同 tokenizer 对同一句话的切分可能不同，因此同样的 context 数值，不意味着能装下完全相同数量的文字。</p>
+<p>tokenizer 把文本变成整数 ID；embedding 层再把每个 ID 映射成一组连续数值，称为<strong>嵌入向量</strong>。网络处理这些向量，最后给词表中的候选 token 打分。这些还没有经过概率归一化的分数叫 <strong>logits</strong>。</p>
+<p>根据 logits，可以选分数最高的 token，这叫<strong>贪心选择</strong>；也可以按一定规则随机采样。选出一个 token 后，再把它送回模型，生成下一个。最后 tokenizer 把这些 ID 还原成可读文字。</p>
+<pre><code>文字 → token ID → embedding 向量 → 多层网络 → logits
+                                               ↓
+                                     选择下一个 token
+                                               ↓
+                                     送回模型，继续生成</code></pre>
+<h3>Prefill 与 Decode 是两个阶段</h3>
+<p><strong>Prefill（预填充）</strong>是先读完用户输入和聊天模板，把相关状态建立起来。<strong>Decode（逐步生成）</strong>是在已有状态上，每次处理新 token 并预测下一个。</p>
+<p>许多通用推理框架会一次或分块处理提示词，再逐 token 生成。<strong>本项目的固定接口主要采用单 token 步进</strong>：提示词也按顺序一步一步送入。这样的接口便于导出和核对，但首个回答出现前，需要完成全部提示词步骤，不能把其他框架的速度直接套过来。</p>
+<div class="note blue"><div class="note-title">最容易写错的交接点</div><p>处理最后一个提示词 token 后，模型输出的 logits 就用于选择<strong>第一个回答 token</strong>。下一次送入的是刚选出的回答 token。如果把提示词最后一个 token 再送一次，就重复消费了输入，后续状态也会错位。</p></div>
+<div class="lab" id="token-lab"><div class="lab-title">动手理解 01 / 教学模拟</div><h3>按一下，完成一次模型调用</h3><p class="small">下面使用自造的小词表，演示 3 个提示 token 和 3 个回答 token 的状态变化。它不是任何真实模型的分词或推理结果，也没有调用模型。</p><div class="token-strip" id="token-slots" aria-label="八个示意缓存位置"></div><div class="token-message" id="token-message" aria-live="polite">缓存为空。点击“执行下一步”，先读入第一个提示 token。</div><div class="lab-actions"><button type="button" class="primary" id="token-next">执行下一步</button><button type="button" id="token-reset">重新开始</button></div></div>
+<h3>模型和运行程序各负责什么</h3>
+<p>OM 计算 embedding、网络层和 logits；宿主运行程序负责整理输入、维护状态、选择 token、检测结束标记，并把 token 还原为文字。<strong>一个 OM 文件需要与理解它接口的运行程序配套使用。</strong>后文中不同模型的输入输出数量差异，就是为什么旧运行程序常常不能直接用于新模型。</p>
+</section>
+
+<section id="attention" data-title="注意力与 KV 缓存">
+<div class="section-no">04 / 历史信息怎样保留</div><h2>注意力、KV 缓存和 context 的联系</h2>
+<h3>注意力：当前内容应该参考哪些历史内容</h3>
+<p>在标准自注意力中，输入会被投影成 Query、Key、Value，常写成 Q、K、V。你可以把 Q 看作“当前要寻找什么”，K 看作“各位置提供什么检索线索”，V 看作“检索后取出的内容”。这是帮助理解用途的类比；实际运行的仍是向量和矩阵运算。</p>
+<p>模型计算当前 Q 与各个历史 K 的匹配分数，经过缩放和 softmax，形成一组权重，再对相应 V 加权求和。不同注意力头可以使用不同的投影，学习不同的信息关系。</p>
+<details><summary>进一步看：标准注意力的常见公式</summary><div class="formula">Attention(Q, K, V) = softmax(QKᵀ / √d + M) V</div><p><code>d</code> 是每个头的相关维度，<code>M</code> 是遮罩带来的偏置。允许访问的位置通常加 0，不允许访问的位置加一个能使其 softmax 权重为 0 的极小值。不同架构还可能增加归一化、门控等操作，导出器需要遵守对应模型的实现。</p></details>
+<h3>KV 缓存：复用已经算过的历史信息</h3>
+<p>生成下一步时，历史 token 的 K 和 V 可以保留下来，避免再次执行它们的投影等计算。新 token 只增加自己的 K、V，并用自己的 Q 访问历史缓存。</p>
+<p>本项目常见的单个 K 或 V 张量形状是：</p><div class="formula">[batch 数, KV 头数, 缓存长度, 每个头的维度]</div>
+<p>例如 Qwen3 0.6B 的单层、单份 K 缓存，context 1024 时是 <code>[1, 8, 1024, 128]</code>。这里的数字要从配置中读取：Qwen3 这份配置的 <code>head_dim=128</code>，不能简单用隐藏维度 1024 除以 Query 头数 16，擅自推成 64。</p>
+<h3>GQA 为什么能节省缓存</h3>
+<p>GQA 是 Grouped-Query Attention，即分组查询注意力。它允许多个 Query 头共享一组 K/V 头。例如本地 TinyLlama 有 32 个 Query 头、4 个 KV 头；Qwen3 有 16 个 Query 头、8 个 KV 头。<strong>缓存通常按 KV 头数存储</strong>，因此不能只根据 Query 头数估算缓存大小。</p>
+<h3>固定缓存：把“不断变长”改为“在固定位置写入”</h3>
+<p>原生框架可以通过动态缓存对象追加历史。为了构造静态图，本项目提前分配长度为 L 的张量，每一步只更新其中一个位置：</p>
+<pre><code># 教学伪代码：位置 p 由输入张量给出
+updated_K = Where(slot_index == p, current_K, previous_K)
+updated_V = Where(slot_index == p, current_V, previous_V)
+
+# 读取时只能访问位置 0 到 p
+allowed = (slot_index &lt;= p)</code></pre>
+<p><code>Where</code> 在这里相当于对每个位置做一次选择。它把“更新哪一格”写成张量运算，便于 ONNX 记录。未写入的位置虽然已经占有张量空间，但会被注意力遮罩挡住，不应被当作真实历史读取。</p>
+<div class="checkpoint"><strong>读到这里，你应该能区分：</strong>权重保存模型学习到的参数；缓存保存这一次输入和生成过程中产生的状态。换一次独立对话，状态需要按运行协议重新初始化；训练权重仍然是同一份。</div>
+</section>
+
+<section id="context" data-title="三种长度，分别看待">
+<div class="section-no">05 / 容量与形状</div><h2>“模型支持多长”其实有三层含义</h2>
+<div class="table-wrap"><table><thead><tr><th>层次</th><th>它回答什么</th><th>为什么需要区分</th></tr></thead><tbody>
+<tr><td>原生模型的位置与长度设计</td><td>模型配置、训练方案和官方评测允许怎样的序列。</td><td>配置能索引某个位置，不自动证明该长度下的实际任务质量。</td></tr>
+<tr><td>本次导出 / 编译容量</td><td>这个 ONNX / OM 的缓存和接口能容纳多少序列槽位。</td><td>本项目的 context 728、1024、2048 等在这里确定。</td></tr>
+<tr><td>当前任务剩余预算</td><td>扣除模板、历史、文字和图片后，还能生成多少。</td><td>同一份 OM，输入不同，剩余容量也不同。</td></tr>
+</tbody></table></div>
+<p>本项目采用保守的总容量契约：<strong>输入与计划生成的 token 共同受 context 限制</strong>。它不是“输入能放 1024，再额外回答 1024”。后文会把图片也加入这个预算。</p>
+<h3>为什么改变 context 通常要重新导出</h3>
+<p>在这批固定图里，长度 L 直接进入 KV 张量形状、写入遮罩和读取遮罩。1024 版本的接口接收的是长度 1024 的缓存。要换成 2048，需要产生具有相应形状和常量的 ONNX，并重新经过数值验证、ATC 编译。</p>
+<p>这个过程主要改变<strong>推理容量和图的形状</strong>，沿用原始训练权重。它与“为了真正超出原生能力而扩展模型长文质量”是不同的问题。后者还涉及位置编码方案、训练或适配方法、长文任务评测与资源预算。</p>
+<p>例如本地 TinyLlama 的 <code>max_position_embeddings=2048</code>，这次制作 context 1280，处于原配置范围内。Gemma3 的局部窗口 512 则是某些注意力层的读取范围，并不等于整个模型只能容纳 512。</p>
+<details><summary>进一步看：静态形状是不是唯一方案</summary><p>不是。工具链可能支持某些动态形状或多个形状档位，推理框架也可以采用不同的缓存管理方式。但要逐算子、逐版本确认支持，并重新设计和验证接口。本项目选择固定 batch、固定缓存容量、单 token 步进，是这次实际验证的路线；不能把它描述成所有 NPU 部署的唯一方式。</p></details>
+<div class="note blue"><div class="note-title">长度变化，不等于权重按比例变大</div><p>同一模型从 context 1024 改成 2048，主要是长度相关的缓存、图常量和计算预算变化。模型的大部分训练权重仍相同。因此不能把 context 翻倍直接理解为模型参数量或 OM 文件大小翻倍。</p></div>
+</section>
+
+<section id="pipeline" data-title="完整转换流水线">
+<div class="section-no">06 / 从原模型到 OM</div><h2>实际转换流程，一步一步做什么</h2>
+<div class="figure"><svg viewBox="0 0 760 415" role="img" aria-labelledby="pipeline-title pipeline-desc"><title id="pipeline-title">模型转换的六个阶段</title><desc id="pipeline-desc">读取模型，固定接口，导出ONNX，对比原生参考，ATC编译，交付文件和记录。数值验证不通过时回到适配阶段。</desc><defs><marker id="arrow-pipe" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#39756a"/></marker></defs><g font-size="17" text-anchor="middle"><rect class="svg-box" x="12" y="20" width="222" height="85" rx="10"/><text class="svg-text" x="123" y="55">① 识别模型</text><text class="svg-muted" x="123" y="83" font-size="13">配置 / 权重 / tokenizer / 哈希</text><rect class="svg-box" x="269" y="20" width="222" height="85" rx="10"/><text class="svg-text" x="380" y="55">② 固定推理接口</text><text class="svg-muted" x="380" y="83" font-size="13">位置 / 状态 / dtype / shape</text><rect class="svg-box" x="526" y="20" width="222" height="85" rx="10"/><text class="svg-text" x="637" y="55">③ 导出 ONNX</text><text class="svg-muted" x="637" y="83" font-size="13">计算图 + 全部外部权重</text><rect class="svg-blue" x="526" y="194" width="222" height="85" rx="10"/><text class="svg-text" x="637" y="229">④ 数值验证</text><text class="svg-muted" x="637" y="257" font-size="13">对比独立原生 FP32 参考</text><rect class="svg-gold" x="269" y="194" width="222" height="85" rx="10"/><text class="svg-text" x="380" y="229">⑤ ATC 编译</text><text class="svg-muted" x="380" y="257" font-size="13">指定芯片 / 形状 / 精度</text><rect class="svg-box" x="12" y="194" width="222" height="85" rx="10"/><text class="svg-text" x="123" y="229">⑥ 完整交付</text><text class="svg-muted" x="123" y="257" font-size="13">OM / 接口 / 预处理 / 记录</text></g><g class="svg-line" marker-end="url(#arrow-pipe)"><path d="M234 62 H261"/><path d="M491 62 H518"/><path d="M637 105 V186"/><path d="M526 237 H499"/><path d="M269 237 H242"/></g><path d="M637 279 V336 H380 V113" class="svg-line" stroke-dasharray="7 6" marker-end="url(#arrow-pipe)"/><text class="svg-muted" x="515" y="371" text-anchor="middle" font-size="14">验证未通过：定位误差，修正适配后重验</text><text class="svg-muted" x="380" y="405" text-anchor="middle" font-size="12">每个阶段保留输入版本、命令、日志和退出状态</text></svg><p class="caption">图 1：先确认数值链路，再进行目标编译。每个箭头都表示一个需要明确输入输出的交接。</p></div>
+<h3>第一步：锁定输入模型和目标</h3>
+<p>先读取元数据，核对架构与张量形状，确认权重分片完整。再确定 batch、总上下文、是否保留图片、图片规格、目标 SoC 和精度方案。文件哈希用来识别同名文件是否实际相同；它证明内容身份，不评价模型质量。</p>
+<p>本地文件夹后缀 A、B 只是项目标签，不能自动当成官方产品分支。本次成功的 2B 图文包来自 <code>2b Qwen3.5A</code>。其上游 revision 未完全确定，因此构建记录以本地文件内容和 SHA256 固定输入版本。</p>
+<h3>第二步：建立可导出的适配层</h3>
+<p>原生模型可能依赖 Python 缓存对象、条件分支、原地更新、动态列表，以及特定 GPU 的融合内核。导出器需要把本次推理所需的路径，明确表达为可以被计算图记录的运算。</p>
+<p>这次 Qwen3 基于固定提交的现有导出器适配；Gemma3 和 TinyLlama 使用对应原生网络层加固定缓存封装；Qwen3.5 增加显式循环状态、固定 KV 与图文桥接。它们共享工作方法，但不是同一份代码换一个文件夹就通用。</p>
+<h3>第三步：用独立原生进程生成参考</h3>
+<p>参考程序加载原生模型，用 FP32 执行预定样例，保存 logits 和状态。导出适配器则在另一条路径运行。特别是存在 monkey-patch 时，进程隔离可以防止“参考实现也被同一段补丁改过”，避免两边犯相同错误而互相证明正确。</p>
+<h3>第四步：导出 ONNX 并检查完整性</h3>
+<p>ONNX 把推理过程表示成图：节点是运算，边是张量。<code>shape</code> 表示数组各个维度有多大，<code>dtype</code> 表示每个元素用什么类型保存。两者都是模型接口的一部分。</p>
+<p>导出器需要给输入输出命名，明确 token ID、位置、缓存、视觉特征等张量的含义。项目主要采用 opset 15：opset 可以理解为 ONNX 运算规范的版本集合。它要与导出器、ONNX Runtime 和 ATC 的实际支持范围共同匹配。</p>
+<h3>第五步：通过数值门槛，才进入编译</h3>
+<p>先做小规模结构自检，再检查全量图与原生参考是否足够接近。关键检查包括多步生成、缓存保留、边界位置以及多模态子图串联。下一章会具体解释这些指标。</p>
+<h3>第六步：编译与交付</h3>
+<p>CANN 是昇腾的软件工具链，ATC 是其中进行离线模型转换 / 编译的工具。它根据真实图的输入、目标芯片和精度策略生成 OM。成功需要同时看到命令正常退出、最终成功日志，以及本次新产生的非空 OM 文件。</p>
+<p>完整交付还包含 tokenizer、预处理、接口、验证报告、ATC 日志和哈希清单。只有 OM 文件而没有这些配套信息，后续开发运行程序时会缺少关键依据。</p>
+<div class="note"><div class="note-title">编译机与开发板的分工</div><p>宿主 CPU 负责加载模型、生成参考和运行 ONNX 验证；容器提供一致的 CANN 编译环境；目标开发板上的 NPU 负责最终执行 OM。离线编译可以在没有目标 NPU 的机器上进行，但最终的加载、精度、内存和速度仍应由目标设备验证。</p></div>
+</section>
+
+<section id="onnx" data-title="ONNX 与 ATC 在做什么">
+<div class="section-no">07 / 计算图与目标编译</div><h2>ONNX 是中间表达，OM 是目标运行模型</h2>
+<h3>为什么要经过中间计算图</h3>
+<p>PyTorch 表达模型的方式很灵活，硬件运行时需要更明确的运算关系。ONNX 就是一种交换用的图表示：例如“先矩阵乘，再加偏置，再做归一化”，可以从框架代码转成一个带类型和形状的图。</p>
+<p>OM 则由工具链按目标平台生成，包含用于目标运行时的模型信息、参数和执行安排。它与 NPU 型号、工具链版本、算子支持和输入接口有关，不能当作跨全部芯片和全部运行时的通用二进制文件。</p>
+<h3>大模型为什么会有外部权重文件</h3>
+<p>较大的张量直接装进一个 protobuf 消息，会遇到大小限制和内存开销。因此 Gemma3、TinyLlama 和 Qwen3.5 的部分导出流程先生成不带权重载荷的图，再把参数绑定为外部 initializer。图内记录外部文件名、偏移和长度。</p>
+<pre><code>onnx/
+  model.onnx           # 运算与外部数据位置
+  model.weights.data   # 参数数据
+  weight-bindings.json # 本项目记录的张量绑定清单</code></pre>
+<p>这个目录里的文件应作为一个整体理解。图文件能够打开，并不代表它引用的所有外部张量都可用。检查器、加载验证和实际执行共同帮助发现文件缺失、偏移不对或类型不符等问题。</p>
+<h3>ATC 主要关心哪些参数</h3>
+<div class="table-wrap"><table><thead><tr><th>项目中使用的参数</th><th>含义</th></tr></thead><tbody><tr><td><code>--framework=5</code></td><td>按 ONNX 模型入口处理。</td></tr><tr><td><code>--soc_version=Ascend310B4</code></td><td>为指定目标芯片生成模型。</td></tr><tr><td><code>--input_shape=...</code></td><td>声明图的实际输入形状，包括全部状态张量。</td></tr><tr><td><code>--input_format=ND</code></td><td>本项目张量图所使用的输入格式声明。</td></tr><tr><td><code>--precision_mode=...</code></td><td>指定允许怎样处理图内的数据精度。</td></tr></tbody></table></div>
+<p>经典文本构建使用了 <code>allow_fp32_to_fp16</code>；Qwen3.5 成功图文构建使用 <code>must_keep_origin_dtype</code>，以保留图内要求的混合精度。后一种设置并不表示“所有东西都变成 FP32”，而是要求按图中的 dtype 处理。</p>
+<p>编译器可能针对算子进行实现选择、融合和布局安排，实际效果依赖支持情况。某个算子没有命中优先实现库，可能影响性能；是否导致失败，要看真实退出码、完整日志和输出结果。单凭一条 warning，不能推断模型已经失败或速度已经测得。</p>
+<details><summary>进一步看：为什么固定依赖与工具链版本</summary><p>导出器会调用 Transformers、PyTorch、ONNX 的具体 API。升级依赖可能改变缓存类、函数签名、图的运算表达或默认精度。项目记录固定提交、锁文件与依赖版本，是为了让“这次到底用了哪一套实现”可追溯。Qwen3.5 成功记录中包括 PyTorch 2.11.0、Transformers 5.10.2、ONNX 1.21.0 和 ONNX Runtime 1.26.0；这些是当次记录，不是要求所有人都必须使用的通用版本组合。</p></details>
+</section>
+
+<section id="validation" data-title="怎样确认转换没有算偏">
+<div class="section-no">08 / 数值验证</div><h2>能导出、能编译，与算得正确是不同检查</h2>
+<p>转换中的很多错误不会让程序立刻崩溃。位置偏移一格、图像顺序错误、缓存更新覆盖旧位置，都可能产生正常形状的张量和看似通顺的回答。验证需要观察内部数值与状态，而不只是看模型有没有输出一句话。</p>
+<h3>第一层：结构和有限值</h3>
+<p>ONNX checker 检查图是否符合规范；接口核对检查名字、shape、dtype；有限值检查确认没有出现 NaN、无穷等异常。它们能排除一批基础问题，但不等于计算已经与原模型一致。</p>
+<h3>第二层：比较 logits 与中间状态</h3>
+<p><strong>最大绝对误差</strong>看差得最远的那个元素；<strong>RMSE</strong>看整体误差规模；<strong>余弦相似度</strong>看向量方向是否接近。三者观察角度不同，不能互相简单替代。</p>
+<details><summary>进一步看：RMSE 怎样计算</summary><div class="formula">RMSE = √[ ((a₁−b₁)² + … + (aₙ−bₙ)²) / n ]</div><p>它把每个元素的差平方，求平均，再开方。RMSE 与被比较数值使用相同的单位。它不是“准确率”，也不能直接乘 100 变成模型能力损失百分比。余弦相似度接近 1 也仍可能存在某些元素误差，所以项目同时检查不同指标。</p></details>
+<p>对缓存，还会使用绝对误差与相对误差结合的预算。例如按 <code>atol + rtol × |参考值|</code> 建立允许范围。循环状态和其他缓存可以使用不同门槛，因为它们的数据分布与数值敏感性不同。</p>
+<h3>第三层：连续生成，而不只测试第一步</h3>
+<p>如果每步都产生一点误差，后续状态可能继续受影响。项目不仅比较单步输出，还从空状态连续处理短文本或图文提示，检查各步状态，并验证 8 个贪心生成 token 是否与参考一致。</p>
+<p>数值验证常使用相同输入来隔离计算差异；随机采样会把采样噪声混进对比。因此项目用贪心 token 一致性辅助判断，但仍保留 logits 与状态门槛。<strong>生成的文字相同，不代表内部状态误差一定合格。</strong></p>
+<h3>第四层：真实前缀与高位置边界</h3>
+<p>只用全零缓存测第 2047 个位置，不能代表模型实际读过前面 2047 个 token。项目用原生模型处理真实前缀，取得当时的合法状态，再在选定高位置比较 ONNX 步进。</p>
+<p>长前缀参考可以按 64 个 token 分块执行，减少某些参考计算的峰值开销。这是<strong>参考程序的处理方式</strong>，不表示本次 OM 已有一个 64-token 并行 prefill 接口。</p>
+<div class="note amber"><div class="note-title">Qwen3.5 的循环状态尤其需要真实前缀</div><p>KV 历史里还保留了不同位置的数组；循环记忆 S 是逐步更新后的压缩状态。你不能把一个较晚时刻的 S “截短”来当成较早状态。不同边界必须有与那个前缀对应的状态种子。</p></div>
+<h3>第五层：多模态的子图与串联</h3>
+<p>视觉特征本身要对比，decoder 自身要对比，两者连接后还要对比。项目使用原生完整图文 forward 与原生拆分执行检查交接，再使用<strong>实际 ONNX 视觉输出</strong>驱动 ONNX decoder，核对整条链路。</p>
+<p>诊断时可以临时给 decoder 喂原生视觉特征，以判断误差更可能来自哪里；这类隔离诊断只证明被隔离的部分，不足以代替完整图文链路的通过结果。</p>
+<h3>数值一致性与识别质量要分别评测</h3>
+<p>一张合成图可以用来比较两个实现是否计算接近，但不能代表相机噪声、复杂场景、屏幕小字和整页文档的识别质量。转换验证主要回答“是否保留了原模型在这些输入上的计算行为”；任务评测回答“对真实用户任务是否足够好”。</p>
+</section>
+
+<section id="models" data-title="四类模型的具体区别">
+<div class="section-no">09 / 模型对照</div><h2>相似的聊天界面，背后是不同的网络</h2>
+<p>下表按本地配置与权重头部整理。Q / KV 表示 Query 头数 / Key-Value 头数。参数数量为检查点中存储的张量元素数量，不能单独作为能力排名。<a class="ref" href="#ref-local">[项目]</a></p>
+<div class="table-wrap"><table><thead><tr><th>模型</th><th>存储参数约数</th><th>语言层与头配置</th><th>输入与结构特点</th></tr></thead><tbody><tr><td>Qwen3 0.6B</td><td>5.96 亿</td><td>28 层；Q/KV=16/8；head_dim=128</td><td>纯文本，全注意力，固定 KV。</td></tr><tr><td>Gemma3 1B</td><td>10.00 亿</td><td>26 层；Q/KV=4/1；head_dim=256</td><td>本地 1B 为纯文本；22 局部层＋4 全局层。</td></tr><tr><td>TinyLlama 1.1B</td><td>11.00 亿</td><td>22 层；Q/KV=32/4；head_dim=64</td><td>Llama 全注意力，较小的 32,000 词表。</td></tr><tr><td>Qwen3.5A 2B</td><td>22.13 亿，包含视觉张量</td><td>24 语言层；全注意力 Q/KV=8/2；head_dim=256</td><td>18 DeltaNet＋6 全注意力；另有 24 层视觉编码器。</td></tr></tbody></table></div>
+<div class="cards"><div class="card"><div class="kicker">QWEN3 / 0.6B</div><h3>以全注意力与固定 KV 为主线</h3><p>适配保留 Q/K 归一化、RoPE、GQA 和原有注意力缩放。使用现有 Qwen3 导出器的本次修改版本，固定每层缓存和因果遮罩。</p><p>已制作 context：256、728、1024、2048、8192。不同长度并不对应重新训练的五套知识。</p></div><div class="card"><div class="kicker">TINYLLAMA / 1.1B</div><h3>相似接口，保留 Llama 本身的运算</h3><p>通过 Llama 原生层封装固定 KV，保持位置编码、RMSNorm、MLP 和残差关系。不能用 Qwen 的类名和注意力补丁直接替换。</p><p>本次 context 1280；本地原始位置配置为 2048。</p></div><div class="card"><div class="kicker">GEMMA3 / 1B</div><h3>局部与全局分别构造遮罩</h3><p>局部层只能访问最近 512 的窗口；全局层访问整个已写入前缀。原生 embedding 缩放、各处归一化和两类位置编码要保留。</p><p>已制作 context 512、1024。当前导出器对各层都分配完整长度的静态 KV，局部语义由遮罩保证。</p></div><div class="card"><div class="kicker">QWEN3.5A / 2B</div><h3>混合状态，再加一条视觉链路</h3><p>语言侧既要显式返回 DeltaNet 状态，也要返回全注意力 KV。视觉侧独立导出，特征按顺序接入 decoder。</p><p>已制作 768/2048 与 640/1024 两组单图规格，接下来四章详细展开。</p></div></div>
+<h3>为什么词表也会影响体积和 token 预算</h3>
+<p>本地 TinyLlama 的词表为 32,000，Qwen3 为 151,936，Gemma3 为 262,144，Qwen3.5 为 248,320。embedding 和输出词表相关矩阵都受这些尺寸影响；某些模型还共享输入与输出的权重。</p>
+<p>词表更大，不自动表示任务能力更强，也不保证任何语言都切得更省。同一段中文在不同 tokenizer 中可能占用不同数量的 token，因此跨模型比较“可用字数”需要实际分词。</p>
+<h3>Gemma3 1B 为什么没有图片路径</h3>
+<p>Gemma3 家族包含图文模型，但本项目这份 1B 是 <code>gemma3_text</code> / <code>Gemma3ForCausalLM</code> 配置。官方实现也明确将 1B 文本检查点与图文接口区分。因此它在这次转换里只有文本 decoder，没有另外一份可以直接拿来调用的 vision OM。<a class="ref" href="#ref-gemma">[G]</a></p>
+<h3>A/B 与 0.8B 检查点怎样理解</h3>
+<p>本地 Qwen3.5A 与 B 的配置结构、存储元素数量相同，A 张量为 FP16，B 为 BF16；但这不足以证明两者权重只做过一次 dtype 转换。要判断来源和数值关系，还需核对具体版本与张量。本文的成功图文构建来自 A。</p>
+<p>另一个 0.8B Qwen3.5 目录也包含视觉配置，它的视觉输出维度是 1024，而这次 2B 的输出是 2048。目录中的 Llama3.2A 1B 则是另一份 Llama 文本结构。<strong>目录名相似不能替代架构检查，视觉输出也必须匹配对应语言主干。</strong></p>
+</section>
+
+<section id="hybrid" data-title="Qwen3.5 的混合状态">
+<div class="section-no">10 / Qwen3.5 语言部分</div><h2>它为什么不能只用旧的 KV 运行程序</h2>
+<p>Qwen3.5A 2B 的语言骨干重复 6 组结构：每组先有 3 层 Gated DeltaNet，再有 1 层全注意力，合计 18 层与 6 层。这份 2B 的前馈网络是稠密路径，不能把家族介绍中的所有 MoE 特性都套用到它身上。<a class="ref" href="#ref-qwen35">[Q]</a></p>
+<h3>DeltaNet 的直观含义：持续更新一张记忆表</h3>
+<p>全注意力保留各历史位置的 K/V。DeltaNet 在逐步推理中维护固定大小的<strong>循环记忆矩阵 S</strong>，用新的输入更新它，再从更新后的记忆中读取结果。它还使用<strong>短卷积状态 C</strong>，参与近期投影信息的处理。</p>
+<div class="analogy"><div class="note-title">理解状态的类比</div><p>KV 像按顺序保存的历史索引与内容；S 更像随着阅读不断改写的一张摘要表。摘要表尺寸可以固定，但它的数值取决于前面实际读过什么。这个类比用于理解存储方式，不表示 S 是人工语言摘要，也不表示模型可以恢复全部原始细节。</p></div>
+<p>导出器的单 token 步进要明确完成：Q/K/V 投影、短卷积更新、Q/K 归一化、门控与衰减、循环记忆更新、读取、输出投影。原模型的训练参数仍然保留，适配层改变的是怎样把这一步表达成图。</p>
+<h3>这次显式维护的状态</h3>
+<div class="table-wrap"><table><thead><tr><th>状态</th><th>数量</th><th>每组形状</th><th>精度与用途</th></tr></thead><tbody><tr><td>S 循环记忆</td><td>18</td><td><code>[1,16,128,128]</code></td><td>FP32，DeltaNet 的持续记忆。</td></tr><tr><td>C 短卷积</td><td>18</td><td><code>[1,6144,4]</code></td><td>FP16，短卷积所需的投影历史。</td></tr><tr><td>K</td><td>6</td><td><code>[1,2,L,256]</code></td><td>FP16，全注意力的 Key。</td></tr><tr><td>V</td><td>6</td><td><code>[1,2,L,256]</code></td><td>FP16，全注意力的 Value。</td></tr></tbody></table></div>
+<p>L 是本次 decoder 的 context。S 与 C 的张量尺寸在这两个规格中不随 L 增长，K/V 的长度维度会随 L 增长。这是它与 28 层全注意力的 Qwen3 在缓存比例上的重要差异。</p>
+<h3>为什么 decoder 有 53 个输入、49 个输出</h3>
+<p>输入包含 5 个当前步参数：<code>input_ids</code>、<code>position</code>、<code>rope_position</code>、<code>image_embed</code>、<code>is_image</code>。再加上 18 S、18 C、6 K、6 V，共 48 组状态，总共 53 个输入。输出为 logits 加更新后的 48 组状态，总共 49 个输出。</p>
+<p>旧 Qwen3 运行程序通常只认识 token、position 和 K/V。把这份 Qwen3.5 OM 交给旧程序，即使文件能够找到，仍会缺少模态标记、三轴位置与循环状态管理。调用协议需要按实际接口重写或适配。</p>
+<details><summary>进一步看：循环状态为什么保留 FP32</summary><p>循环记忆参与连续的乘法、衰减和增量更新。持续把结果存回较低精度，可能让舍入影响后续步骤。项目按本次验证结果把 S 保持为 FP32，同时让语言权重和其他部分状态使用 FP16。这是具体精度方案，不是声称所有模型或所有循环网络都必须采用完全相同设置。</p></details>
+</section>
+
+<section id="vision" data-title="图片怎样变成视觉 token">
+<div class="section-no">11 / Qwen3.5 视觉详解</div><h2>一张照片，怎样进入语言模型</h2>
+<p class="lead">Qwen3.5 的视觉编码器先把图片变成有顺序的特征向量。语言 decoder 再把这些向量与文字一起处理，生成文字回答。视觉输出与语言输入之间的对齐关系已经包含在原有训练权重中。</p>
+<div class="figure"><svg viewBox="0 0 740 690" role="img" aria-labelledby="vision-title vision-desc"><title id="vision-title">Qwen3.5单图推理的两条输入路径</title><desc id="vision-desc">照片经过预处理、视觉编码器和merger，形成图像向量；文字经过模板和tokenizer形成文字及图像占位。两者按位置接入decoder，输出回答并回传状态。</desc><defs><marker id="arrow-vision" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#39756a"/></marker></defs><g text-anchor="middle"><rect class="svg-blue" x="15" y="12" width="330" height="70" rx="10"/><text class="svg-text" x="180" y="43" font-size="19">照片 / 截图</text><text class="svg-muted" x="180" y="67" font-size="13">JPEG / PNG 等先解码为像素</text><rect class="svg-box" x="395" y="12" width="330" height="70" rx="10"/><text class="svg-text" x="560" y="43" font-size="19">你的问题</text><text class="svg-muted" x="560" y="67" font-size="13">例如：描述图片中的颜色和形状</text><rect class="svg-blue" x="15" y="121" width="330" height="82" rx="10"/><text class="svg-text" x="180" y="153" font-size="18">预处理 + patch 排列</text><text class="svg-muted" x="180" y="181" font-size="13">缩放补边 / FP32 归一化 / 固定网格</text><rect class="svg-box" x="395" y="121" width="330" height="82" rx="10"/><text class="svg-text" x="560" y="153" font-size="18">聊天模板 + tokenizer</text><text class="svg-muted" x="560" y="181" font-size="13">文字 ID + 400 / 576 个图像占位</text><rect class="svg-blue" x="15" y="242" width="330" height="92" rx="10"/><text class="svg-text" x="180" y="274" font-size="18">vision_640.om / vision_768.om</text><text class="svg-muted" x="180" y="302" font-size="13">视觉网络 + 2×2 特征合并与投影</text><rect class="svg-gold" x="395" y="242" width="330" height="92" rx="10"/><text class="svg-text" x="560" y="274" font-size="18">两套位置</text><text class="svg-muted" x="560" y="302" font-size="13">序列缓存槽位 + 三轴 MRoPE 坐标</text><rect class="svg-blue" x="15" y="375" width="330" height="70" rx="10"/><text class="svg-text" x="180" y="405" font-size="18">400 / 576 个 FP16 向量</text><text class="svg-muted" x="180" y="431" font-size="13">每个向量都是 2048 维</text><rect class="svg-box" x="205" y="490" width="330" height="90" rx="10"/><text class="svg-text" x="370" y="524" font-size="19">decoder_ctx1024 / 2048.om</text><text class="svg-muted" x="370" y="552" font-size="13">每步选择文字 embedding 或图像向量</text><rect class="svg-gold" x="205" y="620" width="330" height="58" rx="10"/><text class="svg-text" x="370" y="655" font-size="17">logits → 选择下一个文字 token</text></g><g class="svg-line" marker-end="url(#arrow-vision)"><path d="M180 82 V113"/><path d="M560 82 V113"/><path d="M180 203 V234"/><path d="M560 203 V234"/><path d="M180 334 V367"/><path d="M180 445 V535 H197"/><path d="M560 334 V535 H543"/><path d="M370 580 V612"/><path d="M535 649 H675 V565 H543"/></g><text class="svg-muted" x="667" y="605" text-anchor="end" font-size="12">下一步 token</text><path d="M205 560 H80 V595 H205" class="svg-line" stroke-dasharray="6 5" marker-end="url(#arrow-vision)"/><text class="svg-muted" x="80" y="619" font-size="12">S / C / KV 回传</text></svg><p class="caption">图 2：视觉 OM 处理一次图片，decoder 按序处理图像特征和文字。运行程序负责把状态与下一步输入接起来。</p></div>
+<h3>第一步：把原图变成固定规格</h3>
+<p>本项目的预处理先根据 EXIF 修正方向，转为 RGB，然后保持宽高比缩放，使用 BICUBIC 重采样，居中放到灰色画布上，补齐为 640×640 或 768×768。</p>
+<p>例如 4000×3000 的照片缩到 768 规格时，内容约为 768×576，上下各补 96 像素；缩到 640 规格时，内容约为 640×480，上下各补 80 像素。这样保留原始长宽比例，避免把人物或物体横向拉伸。</p>
+<p>接着把 0～255 的像素值转成 FP32，按 <code>(像素 / 255 − 0.5) / 0.5</code> 归一化，大致落到 −1～1。数值范围、颜色通道和排列顺序都是输入契约的一部分。</p>
+<div class="note amber"><div class="note-title">这套固定预处理的来源与边界</div><p>本地 A 检查点缺少原始图像 processor 配置。项目参照官方配置和实现，提供了固定尺寸的缩放补边与 patch 排列，并验证了同一输入下的原生与 ONNX 计算。它不是对官方所有动态分辨率策略、原图裁剪策略或真实照片效果的完整复现声明。</p></div>
+<h3>第二步：切成 16×16 的 patch</h3>
+<p>模型的 patch_size 是 16，意味着每个空间 patch 起源于 16×16 的像素区域。颜色有 3 个通道，时间 patch_size 为 2。对于静态图片，程序复制同一帧，使它满足这个时空输入布局。</p>
+<div class="formula">每个展平 patch 的数值个数 = 16 × 16 × 3 × 2 = 1536</div>
+<p>两个重复帧组成一个时间 patch，因此本次 <code>image_grid_thw</code> 的时间网格为 1。它不会因为重复一帧就让最终的视觉 token 数再翻一倍。当前输入协议只实现单张静态图片，不能据此当作视频推理接口。</p>
+<div class="table-wrap"><table><thead><tr><th>固定规格</th><th>时空网格 T/H/W</th><th>patch 个数</th><th>输入张量</th></tr></thead><tbody><tr><td>640×640</td><td><code>[1,40,40]</code></td><td>1600</td><td>FP32 <code>[1600,1536]</code></td></tr><tr><td>768×768</td><td><code>[1,48,48]</code></td><td>2304</td><td>FP32 <code>[2304,1536]</code></td></tr></tbody></table></div>
+<h3>第三步：视觉网络把 patch 变成特征</h3>
+<p>本地 2B 模型的视觉编码器有 24 层，内部隐藏维度为 1024。它用原有训练权重，把像素 patch 投影成特征，并通过注意力等计算融合图像信息。网络中的位置编码帮助区分不同空间位置。</p>
+<p>配置里的 <code>num_position_embeddings=2304</code> 属于视觉位置表，不能把它理解成 decoder 的 context，也不能简单说成所有输入图像的统一容量上限。导出器针对本次固定网格，调用已有位置插值和旋转位置计算，提前保存相应常量。</p>
+<details><summary>进一步看：为什么把 patch Conv3D 写成线性投影</summary><p>原生 patch embedding 的卷积核覆盖一个时空 patch，步长也是对应的 patch 大小，patch 之间不重叠。把每个 patch 按同样的顺序展平，再把卷积核按对应顺序展成矩阵，可以用一次线性投影表达同样的加权求和。项目保留原有卷积核与偏置，改变图中的表达方式；正确的展平顺序和张量形状是等价的前提。</p></details>
+<h3>第四步：2×2 合并，投影到语言维度</h3>
+<p>模型的 <code>spatial_merge_size=2</code>。原模型已经训练好的 merger 把相邻 2×2 空间 patch 特征分组，并经过它的归一化、线性层和激活等运算，输出语言主干需要的 2048 维向量。<strong>它不是简单地把四个像素块取平均。</strong></p>
+<div class="formula">640：40×40 个 patch → 20×20 = 400 个视觉 token<br>768：48×48 个 patch → 24×24 = 576 个视觉 token</div>
+<p>每个位置最初对应目标画布上一块 32×32 的区域，但经过视觉注意力后，向量已经能融合其他位置的信息。不要把它理解为只保存那个小方块的原始像素。</p>
+<div class="lab" id="image-lab"><div class="lab-title">动手理解 02 / 画布与网格</div><h3>看看图片怎样占据固定视觉网格</h3><p class="small">示意画面使用几何图形代替照片，展示保持比例与灰色补边。网格表示最终 2×2 合并后的视觉位置；补边区域也占据固定网格。</p><div class="controls interactive-control"><div class="field"><label for="image-size">已构建的视觉规格</label><select id="image-size"><option value="640">640×640 → 400 个视觉 token</option><option value="768">768×768 → 576 个视觉 token</option></select></div><div class="field"><label for="image-ratio">原图长宽比示例</label><select id="image-ratio"><option value="4:3">横图 4000×3000</option><option value="16:9">屏幕 1920×1080</option><option value="3:4">竖图 3000×4000</option><option value="1:1">正方形 1024×1024</option></select></div></div><svg id="image-preview" viewBox="0 0 520 520" role="img" aria-label="图片保持比例放入正方形画布后的合并网格" style="max-width:420px;margin:auto;display:block"></svg><p class="caption" id="image-description" aria-live="polite">640 规格：内容 640×480；上下各补 80 像素；40×40 个 patch 合并为 20×20＝400 个视觉 token。</p></div>
+<h3>第五步：输出 FP16 图像向量</h3>
+<p>成功版本视觉图输出 <code>[400,2048]</code> 或 <code>[576,2048]</code> 的 FP16 特征。2048 与这份语言主干的 hidden_size 一致，所以它们可以在图像位置替代普通文字 embedding。</p>
+<p>merger 与投影已经包含在 vision OM 内，当前交付是<strong>视觉 OM + 语言 OM</strong>两部分，不需要再找一份独立训练的投影器。更换为完全不同模型的视觉塔时，不能只凭向量长度相同就认定语义对齐。</p>
+<div class="note"><div class="note-title">为什么分成两个文件仍然是一套图文模型</div><p>文件拆分是部署与计算图组织方式。视觉编码器、merger、语言主干之间的语义对齐关系来自原有训练。只要沿用配套权重与正确接口，就可以分别导出和编译；把文件拆开不需要额外训练 decoder。</p></div>
+</section>
+
+<section id="positions" data-title="图文连接与三轴位置">
+<div class="section-no">12 / 从图像向量到文字回答</div><h2>图像占位符、缓存槽位与 MRoPE</h2>
+<h3>模板先安排好图片应该放在哪里</h3>
+<p>聊天模板组织用户文本和图像标记。本项目把模板中的一个图像占位展开为 400 或 576 个连续占位 token。它们在序列中表示“这里应该使用图像特征”。视觉起止标记、角色标记和生成提示等仍由模板处理。</p>
+<p>decoder 每次接收当前 token ID、当前缓存位置、三轴位置、一个图像向量和模态标记。当 <code>is_image=0</code>，使用当前文字 token 的 embedding；当 <code>is_image=1</code>，使用对应图像向量。后面都继续经过同一语言网络。</p>
+<pre><code>hidden = Where(is_image == 1,
+               当前图像向量,
+               embed_tokens(当前 token ID))</code></pre>
+<h3>为什么一张图需要两套位置</h3>
+<p><strong>position</strong> 是缓存中的槽位序号，它随实际序列一步步增加。图片占 400 个 token，就要占据 400 个槽位。<strong>rope_position</strong> 是三轴 MRoPE 坐标，描述时间、行、列之间的位置关系；同一张静态图内，时间坐标相同，行列坐标随着网格移动。</p>
+<p>假设 640 图片的第一个占位 token 位于整个序列的槽位 10。下面仅用于解释坐标规则，具体模板决定真实起始偏移：</p>
+<div class="table-wrap"><table><thead><tr><th>图像内序号</th><th>缓存槽位</th><th>合并后行 / 列</th><th>MRoPE：时间 / 高度 / 宽度</th></tr></thead><tbody><tr><td>0</td><td>10</td><td>0 / 0</td><td>10 / 10 / 10</td></tr><tr><td>1</td><td>11</td><td>0 / 1</td><td>10 / 10 / 11</td></tr><tr><td>19</td><td>29</td><td>0 / 19</td><td>10 / 10 / 29</td></tr><tr><td>20</td><td>30</td><td>1 / 0</td><td>10 / 11 / 10</td></tr><tr><td>399</td><td>409</td><td>19 / 19</td><td>10 / 29 / 29</td></tr><tr><td>紧接图像的下一位置</td><td>410</td><td>恢复文本位置规则</td><td>30 / 30 / 30</td></tr></tbody></table></div>
+<p>你会看到：缓存从 10 一直使用到 409，但 MRoPE 并没有沿三个轴一起从 10 递增到 409。它保留了二维图像的组织。若把两套位置都写成同一个递增数，shape 仍可能正确，计算含义却已经改变。</p>
+<p>项目的输入契约会生成这些坐标，并与原生模型的 <code>get_rope_index</code> 结果核对。回答阶段的三轴文本坐标从提示词 MRoPE 最大坐标加 1 继续；缓存槽位按实际提示词总长度继续。</p>
+<h3>一次完整图文调用，宿主程序的顺序</h3>
+<ol><li>准备文字 token、400/576 个图像占位、三轴位置，以及固定形状的像素 patch。</li><li>调用一次视觉 OM，得到全部图像向量。</li><li>初始化 decoder 的 S、C、K、V 状态，按提示词顺序逐步调用 decoder。</li><li>文字位置传 token；图像位置传对应特征与图像标记；每一步回传更新后的全部状态。</li><li>用最后一个提示词位置的 logits 选择第一个回答 token。</li><li>把新回答 token 逐步送入 decoder，并更新两套位置，直到结束标记或总容量边界。</li></ol>
+<p>当前接口没有专门的多 token 并行图像 prefill 图，因此 400/576 个视觉位置也逐步处理。图片内容被纳入提示词状态后，同一段连续生成不需要每生成一个字就重新运行视觉编码器。</p>
+<details><summary>进一步看：不发图片时如何使用</summary><p>可以走纯文本输入路径：不运行视觉图，不插入图像占位，decoder 使用文字 embedding 和相应位置。运行程序仍要符合这个 decoder 的混合状态接口，不能因此退回旧 Qwen3 的 KV 协议。已经生成的静态图仍然按照编译容量分配其要求的状态。</p></details>
+</section>
+
+<section id="precision" data-title="为什么视觉保留 FP32">
+<div class="section-no">13 / 一次实际的数值问题</div><h2>视觉部分为什么没有一路使用 FP16</h2>
+<p>精度方案不是根据文件大小猜出来的。早期全图文验证中，短文本与一些高位置测试可以通过，图片路径的部分 logits 和卷积状态却超过了原定门槛。更值得注意的是：<strong>当时生成的 8 个贪心 token 可以一致，但内部状态检查仍然不合格。</strong></p>
+<div class="timeline"><div><b>先隔离 decoder 与视觉来源</b>诊断时使用独立原生视觉特征喂入 decoder，帮助区分是语言状态逻辑有问题，还是视觉特征误差进入后续计算。</div><div><b>提高视觉内部计算精度</b>把视觉权重与内部运算保持为 FP32，输出继续采用 FP16 图像向量。某些图文状态检查仍受输入舍入影响。</div><div><b>同时保留 FP32 像素输入</b>避免像素在进入 FP32 视觉运算之前先转成 FP16。然后用实际 ONNX 视觉输出，重新执行完整图文门槛。</div><div><b>保留混合精度进行编译</b>完整数值验证通过后，使用 must_keep_origin_dtype 编译视觉与 decoder，保持图内各部分 dtype。</div></div>
+<h3>成功方案具体是怎样的</h3>
+<div class="table-wrap"><table><thead><tr><th>部分</th><th>成功构建中的精度</th><th>这样安排的目的</th></tr></thead><tbody><tr><td>视觉像素输入</td><td>FP32</td><td>避免视觉计算前先发生一次 FP16 舍入。</td></tr><tr><td>视觉权重与内部运算</td><td>FP32</td><td>控制视觉路径中的计算误差。</td></tr><tr><td>视觉输出</td><td>FP16</td><td>保持与语言侧的特征桥接接口一致。</td></tr><tr><td>语言主干权重</td><td>FP16</td><td>沿用本次语言图的主要权重安排。</td></tr><tr><td>S 循环记忆</td><td>FP32</td><td>保留循环更新所需的数值精度。</td></tr><tr><td>C、K、V 状态</td><td>FP16</td><td>采用已通过验证的状态格式。</td></tr></tbody></table></div>
+<p>FP16 权重转成 FP32 后，不会恢复权重最初没有保存的细节。这里得到的收益是<strong>后续计算采用更高精度</strong>，减少运算中的舍入和累积影响。它不是重新训练，也不意味着模型因此学到了新知识。</p>
+<p>修正之后继续使用既定门槛重新验证。图文链路的最终通过结果来自真正的 ONNX 视觉图加 ONNX decoder，而不是只用原生视觉特征完成的隔离诊断。</p>
+<div class="note amber"><div class="note-title">更高精度也有资源代价</div><p>本地视觉模块共有 331,416,576 个存储参数元素。纯参数数据由每个 2 字节改成 4 字节，增加约 0.617 GiB；视觉中间张量也可能增大。真实 NPU 的峰值内存与速度还受编译布局、缓冲与算子实现影响，不能只用这一个数字推断。</p></div>
+</section>
+
+<section id="budget" data-title="图片与上下文预算实验">
+<div class="section-no">14 / 图像、文字与回答共用容量</div><h2>一张图片会占多少 context</h2>
+<p>在这份固定尺寸方案中，视觉 token 数由空间网格决定。16×16 patch 再按 2×2 合并，因此对于这里的方形、合法尺寸：</p>
+<div class="formula">视觉 token 数 = (图片边长 / 16 / 2)² = (图片边长 / 32)²</div>
+<p>这个公式解释的是<strong>本项目的固定单图链路</strong>。不能把它当作全部图文模型、所有原始照片尺寸或所有动态预处理策略的通用公式。运行时先把原图处理到本次固定画布，再按该网格计算。</p>
+<div class="table-wrap"><table><thead><tr><th>已交付组合</th><th>视觉位置</th><th>模板、文字、回答合计的剩余上限</th><th>视觉输入 / 输出</th></tr></thead><tbody><tr><td>640×640 + context 1024</td><td>400</td><td>624 token</td><td><code>[1600,1536]</code> → <code>[400,2048]</code></td></tr><tr><td>768×768 + context 2048</td><td>576</td><td>1472 token</td><td><code>[2304,1536]</code> → <code>[576,2048]</code></td></tr></tbody></table></div>
+<p>视觉起止标记、角色模板、系统提示、历史消息等，都还需要计入剩余部分。把“剩余 624”理解为“还能输入 624，再另外生成一段”会超出预算。</p>
+<div class="formula">视觉位置 + 模板与标记 + 输入文字 / 历史 + 计划生成 ≤ 总 context</div>
+<div class="lab" id="budget-lab"><div class="lab-title">动手理解 03 / 上下文预算</div><h3>给一段图文对话分配容量</h3><p class="small">这里只计算已交付组合的预算，不执行推理、不改变 OM。文字与模板数量需由实际 tokenizer 测量；下面的滑块数值是你输入的教学假设。</p><div class="controls interactive-control"><div class="field"><label for="budget-profile">模型组合</label><select id="budget-profile"><option value="1024,640">640×640 / context 1024</option><option value="2048,768">768×768 / context 2048</option></select></div><div class="field"><label for="budget-template">模板与标记 token 数</label><input id="budget-template" type="number" value="32" min="0" max="2048" step="1"></div><div class="field"><label for="budget-text">输入文字与历史：<output id="budget-text-label" for="budget-text">128</output> token</label><input id="budget-text" type="range" min="0" max="2048" step="1" value="128"></div><div class="field"><label for="budget-answer">计划生成：<output id="budget-answer-label" for="budget-answer">128</output> token</label><input id="budget-answer" type="range" min="1" max="2048" step="1" value="128"></div></div><label class="field-inline interactive-control"><input type="checkbox" id="budget-image" checked>这次输入包含一张图片</label><div class="stat-grid"><div class="stat"><b id="budget-total">1024</b><span>编译的总容量</span></div><div class="stat"><b id="budget-visual">400</b><span>这次的图像位置</span></div><div class="stat"><b id="budget-remaining">336</b><span>计划完成后余量</span></div></div><div class="budget-bar" role="img" id="budget-bar" aria-label="默认预算共使用688个token，剩余336"><span id="bar-image" class="seg-image"></span><span id="bar-template" class="seg-template"></span><span id="bar-text" class="seg-text"></span><span id="bar-answer" class="seg-answer"></span><span id="bar-free" class="seg-free"></span></div><div class="legend"><span style="--swatch:#326b68">图像</span><span style="--swatch:#92794d">模板</span><span style="--swatch:#588abd">文字 / 历史</span><span style="--swatch:#a774a9">回答</span><span style="--swatch:#dfe7dc">余量</span></div><div id="budget-status" class="status-box" aria-live="polite">预算内：共使用 688 / 1024，剩余 336 token。</div></div>
+<h3>图片尺寸与 decoder context 是两根独立的轴</h3>
+<p>vision 决定图片处理形状与输出向量个数；decoder context 决定序列状态容量。对本项目的单向量步进 decoder 而言，图片特征数量由宿主输入序列体现，而不是“decoder 一次必须接收 400 个向量”的固定大输入。</p>
+<p>因此，在相同检查点、2048 维桥接、dtype、token 标记与位置协议都匹配的前提下，更改视觉尺寸不要求重新训练 decoder。但要有完整的预处理、容量检查、位置生成与串联验证。本文已经证明的组合只有表中的两组，其他交叉组合属于待验证组合。</p>
+<h3>768 一定比 640 好吗</h3>
+<p>768 保留更多目标画布像素，有机会保留更多细节；效果是否提升，需要用真实任务评测。它的 patch 数是 640 的 1.44 倍，视觉输出 token 也为 1.44 倍；在使用完整 patch 注意力的计算里，部分矩阵规模随数量平方增长，约为 2.07 倍。</p>
+<p>这不表示总耗时精确变成 2.07 倍，因为其他算子、编译实现、内存带宽与 decoder 开销并不按同一个比例变化。对于很长的截图或整页小字，单次缩到一个方形画布可能仍损失细节；分块、裁剪、多图或 OCR 等方案需要另外设计，当前单图接口没有自动提供这些能力。</p>
+</section>
+
+<section id="memory" data-title="内存为什么这样增长">
+<div class="section-no">15 / 资源预算</div><h2>权重、缓存、激活与运行时要分开算</h2>
+<p>硬盘上的文件大小、宿主导出时使用的 RAM、NPU 推理时的内存，是三个不同量。编译中还可能同时存在原生模型、参考数组、图与外部权重，因此宿主峰值也不能用最终 OM 文件大小直接代替。</p>
+<h3>全注意力 KV 的基础公式</h3>
+<div class="formula">KV 字节数 = 2 × 层数 × batch × KV 头数 × context × head_dim × 每元素字节数</div>
+<p>最前面的 2 表示 K 和 V 各有一份。按 batch=1、FP16、context 1024，当前导出接口的逻辑状态为：</p>
+<div class="table-wrap"><table><thead><tr><th>模型</th><th>长度相关 K/V</th><th>固定 S/C</th><th>单份状态合计</th></tr></thead><tbody><tr><td>Qwen3 0.6B</td><td>112 MiB</td><td>—</td><td>112 MiB</td></tr><tr><td>Gemma3 1B</td><td>26 MiB</td><td>—</td><td>26 MiB</td></tr><tr><td>TinyLlama 1.1B</td><td>22 MiB</td><td>—</td><td>22 MiB</td></tr><tr><td>Qwen3.5A 2B</td><td>12 MiB</td><td>18.84375 MiB</td><td>30.84375 MiB</td></tr></tbody></table></div>
+<p>Gemma 这里按当前各层分配完整静态 KV 的实现计算，没有代入另一种环形 / 混合缓存优化。TinyLlama 实际交付 context 1280，单份 KV 是 27.5 MiB。Qwen3.5 context 2048 时，K/V 为 24 MiB，加 S/C 后约 42.84 MiB。</p>
+<h3>把 Qwen3.5 的固定状态拆开算</h3>
+<pre><code>S：18 × 1 × 16 × 128 × 128 × 4 字节 = 18 MiB
+C：18 × 1 × 6144 × 4 × 2 字节       = 0.84375 MiB
+K/V：每增加 1 个 context 槽位       = 12 KiB
+
+context 1024：18 + 0.84375 + 12 = 30.84375 MiB
+context 2048：18 + 0.84375 + 24 = 42.84375 MiB</code></pre>
+<div class="lab" id="cache-lab"><div class="lab-title">动手理解 04 / 逻辑状态计算</div><h3>同一个 context，为什么缓存差这么多</h3><p class="small">按本文固定导出器、batch=1 的形状计算。滑块展示公式变化，不代表每个长度都已经构建，也不承诺该长度的原生能力或板端可运行性。</p><div class="controls interactive-control"><div class="field"><label for="cache-length">计算长度</label><input type="number" id="cache-length" min="1" max="8192" step="1" value="1024"></div><div class="field"><label for="cache-slider">拖动调整（1～8192）</label><input type="range" id="cache-slider" min="1" max="8192" step="1" value="1024"></div></div><div id="cache-chart" aria-label="四个模型单份状态大小对比"></div><div class="legend"><span style="--swatch:#4077a4">随 context 增长的 K/V</span><span style="--swatch:#bf9148">固定 S/C</span></div><p class="caption" id="cache-description" aria-live="polite">context 1024 时，Qwen3.5A 的单份状态约 30.84 MiB。</p></div>
+<h3>单份缓存远不是完整 NPU 内存</h3>
+<ul><li><strong>权重：</strong>模型参数及编译布局后的常量。</li><li><strong>状态与输入输出：</strong>运行程序可能同时持有输入、输出或双缓冲。</li><li><strong>激活：</strong>网络层执行时产生的中间结果，视觉注意力的部分张量可能较大。</li><li><strong>工作空间：</strong>算子与运行时需要的临时区域。</li><li><strong>系统和其他进程：</strong>开发板的可用内存还受操作系统与其他程序影响。</li></ul>
+<p>按本地参数头部，Qwen3.5A 存储约 22.13 亿个参数元素，其中视觉约 3.31 亿。若语言参数按 FP16、视觉参数按 FP32，纯参数数值约为 4.74 GiB。这个估算没有包含编译后的额外布局、输入输出和激活，不能据此断言某块板子一定能装下。</p>
+<div class="note blue"><div class="note-title">8T 与 8GB 不是同一个量</div><p>开发板标识中的 8T / 8 TOPS 描述特定条件下的运算吞吐量，GB 描述存储容量。二者不能互相换算。宣传算力还受到精度与算子条件限制，也不能直接换成这个语言模型每秒生成多少 token。</p></div>
+<h3>为什么参数更少，缓存反而可能更大</h3>
+<p>权重规模与状态结构由不同因素决定。Qwen3 0.6B 有 28 层全注意力、8 个 KV 头；Qwen3.5A 2B 只有 6 层全注意力并使用 2 个 KV 头，其余层保存固定 S/C。因此后者在某些长度下的逻辑状态更小，却仍拥有更大的权重和额外视觉计算。</p>
+<p>同样，更少的逻辑状态也不自动保证更快。循环更新的算子实现、内存传输、KV 整体输入输出的开销、融合程度，都要结合目标设备实际测量。</p>
+</section>
+
+<section id="results" data-title="成功记录实际证明什么">
+<div class="section-no">16 / 项目实录与证据</div><h2>两组 Qwen3.5 图文构建，实际通过了哪些检查</h2>
+<p>下面数据从本地成功包的 <code>validation.json</code>、<code>build-manifest.json</code> 和 <code>package-manifest.json</code> 提取。它们描述当次构建，不是新执行的板端基准。<a class="ref" href="#ref-local">[项目]</a></p>
+<div class="table-wrap"><table><thead><tr><th>图片 / context</th><th>验证用例</th><th>图文连续调用</th><th>所有检查点中最大 logits RMSE</th><th>高位置覆盖</th><th>板端运行</th></tr></thead><tbody><tr><td>640 / 1024</td><td>6 组，全部通过</td><td>431 次</td><td>0.00740976</td><td>255、511、1022、1023</td><td>未验证</td></tr><tr><td>768 / 2048</td><td>6 组，全部通过</td><td>607 次</td><td>0.00906125</td><td>511、1023、2046、2047</td><td>未验证</td></tr></tbody></table></div><p class="caption">两组的 logits RMSE 门槛均为 0.03；同时还检查最大绝对误差、余弦相似度、生成 token 与状态。只列 RMSE 是为了帮助读者快速比较，完整门槛见证据索引。</p>
+<p>“连续调用次数”是该图文样例从空状态运行的 decoder 步数，其中包括提示词与为检查生成而回送的 token。报告另外核对了 8 个贪心生成 token。第一个回答来自最后提示位置的 logits，所以“预测了多少个 token”与“把多少个回答 token 再送回模型”不完全相同。</p>
+<p>两个视觉样例是几何图形与棋盘格，用于特征对比；图文串联使用其中的 shapes 样例，并加上两个短文本对话。高位置检查使用真实前缀种子。它们提供了较有针对性的转换证据，但不等于每个长度、每类图片都已经穷尽测试。</p>
+<h3>交付文件的用途</h3>
+<div class="table-wrap"><table><thead><tr><th>文件 / 目录</th><th>你应该怎样理解</th></tr></thead><tbody><tr><td><code>vision_640.om</code> / <code>vision_768.om</code></td><td>预处理后图像 patch → 2048 维特征；包含视觉编码和 merger。</td></tr><tr><td><code>decoder_ctx1024.om</code> / <code>decoder_ctx2048.om</code></td><td>每步图文输入与状态 → logits 与新状态。</td></tr><tr><td><code>vision-interface.json</code></td><td>视觉图输入输出名称、dtype、shape。</td></tr><tr><td><code>decoder-interface.json</code></td><td>语言图全部输入、状态和输出的接口依据。</td></tr><tr><td><code>contract.py</code> / <code>prepare_input.py</code></td><td>本次固定预处理、图像占位、位置生成与容量检查。</td></tr><tr><td><code>tokenizer/</code></td><td>配套分词、模型配置与模板。</td></tr><tr><td><code>validation.json</code></td><td>数值测试范围、阈值、观测值与通过情况。</td></tr><tr><td><code>build-manifest.json</code></td><td>版本、来源、命令、阶段状态、编译参数与构建身份。</td></tr><tr><td><code>package-manifest.json</code></td><td>交付文件名、字节大小与 SHA256。</td></tr></tbody></table></div>
+<h3>编译成功后的下一层验证</h3>
+<p>本地记录中，两组均为 <code>compiled</code>，同时 <code>board_runtime_verified=false</code>。在真实设备上还需核对目标芯片和运行时，加载 OM、按接口分配内存、运行参考样例，再测精度、峰值内存、首 token 延迟和生成速度。</p>
+<p>这个区别直接影响如何理解问题：ONNX 数值通过，说明导出图在指定验证环境下接近参考；ATC 通过，说明目标模型成功生成；板端执行还要证明这个模型在那套驱动、运行时、程序和资源条件下能正确工作。</p>
+<details><summary>查看交付 OM 的大小与内容身份</summary><div class="table-wrap"><table><thead><tr><th>文件</th><th>报告记录大小</th><th>换算容量</th></tr></thead><tbody><tr><td>decoder_ctx1024.om</td><td>4,799,423,987 字节</td><td>4.470 GiB</td></tr><tr><td>vision_640.om</td><td>1,326,251,452 字节</td><td>1.235 GiB</td></tr><tr><td>decoder_ctx2048.om</td><td>4,799,435,648 字节</td><td>4.470 GiB</td></tr><tr><td>vision_768.om</td><td>1,329,483,923 字节</td><td>1.238 GiB</td></tr></tbody></table></div><p class="small">这些是文件大小，不是 NPU 峰值内存。SHA256 的完整值与验证报告哈希保存在随文的“证据索引.json”中。</p></details>
+</section>
+
+<section id="faq" data-title="新手常见问题">
+<div class="section-no">17 / 读者问答</div><h2>把常见困惑一次讲清楚</h2>
+<details><summary>转成 OM 后，模型会更聪明吗？</summary><p>转换目标是保留已有模型在指定条件下的推理行为，并使它能在目标硬件运行。知识和能力主要来自原有训练。编译优化可以影响执行效率，数值精度安排可能带来差异，因此需要验证；它本身不提供新的训练知识。</p></details>
+<details><summary>有了 safetensors，为什么还不能直接生成一个通用 OM？</summary><p>权重需要对应架构才能解释。不同模型有不同的层、位置编码、状态和预处理；ATC 还需要支持导出图里的算子。通用工作流可以统一检查与记录，但支持程度必须逐模型验证。</p></details>
+<details><summary>把 config 里的 max_position_embeddings 改大就能扩容吗？</summary><p>那只是修改了一项配置声明。还需核对位置编码、导出缓存、编译图和长文质量。超出模型原先的设计或评测长度，可能需要额外适配或训练与专项验证。本项目 TinyLlama 1280 仍在其本地 2048 配置范围内。</p></details>
+<details><summary>改变 context，是改 ONNX 还是只改 OM？</summary><p>在这批静态图中，context 进入 ONNX 的张量形状和常量，因此通常重新导出对应 ONNX、验证后再编译 OM。只有图本来就设计并验证了合适的动态形状 / 多档形状，才可能采用其他路线。</p></details>
+<details><summary>640 与 768 会改变原模型的 hidden_size 吗？</summary><p>不会。视觉内部 hidden_size 仍为 1024，桥接输出仍为 2048。变化的是图片网格、位置相关常量和输出 token 个数。decoder context 也不会把 hidden_size 改成 1024 或 2048；两者只是这里恰好出现了相同数字。</p></details>
+<details><summary>图片大小 4MB，是不是比 2MB 多占一倍 context？</summary><p>不是按压缩文件字节计算。在这套固定规格里，两张图只要都处理到 640×640，就都产生 400 个视觉 token。原图分辨率、压缩质量和缩放损失仍影响图像内容质量，但不按 MB 直接换算 token。</p></details>
+<details><summary>图片会变成一段文字，然后交给语言模型吗？</summary><p>这条路径直接使用视觉向量，并在对应位置替代文字 embedding。图像识别与回答依赖整个图文模型的训练关系。若另外加入 OCR，把识别出的文字送入语言模型，那是另一条可以设计的应用路径。</p></details>
+<details><summary>同一图片问第二个问题，必须重新运行 vision 吗？</summary><p>如果程序保留了适合复用的视觉特征，且预处理规格和模型保持一致，可以设计特征复用。但对话状态还必须正确组织：保留完整对话时按协议继续；重新建立提示词时重新喂入相应图像位置。当前交付的接口说明并不自动提供一个多轮缓存服务。</p></details>
+<details><summary>能把 vision_640 与 decoder_ctx2048 搭配吗？</summary><p>从这份 decoder 的单向量接口看，尺寸和容量是两个轴；在同一检查点、特征维度与 dtype 相同、位置与模板规则正确、总容量足够时，可以设计这种组合。但它不属于本文已经通过完整串联验证的两组组合，需要补做预处理、数值与运行验证。</p></details>
+<details><summary>视觉独立了，换任何模型的 vision 都可以吗？</summary><p>不可以只看向量维度。特征的语义空间、投影权重、标记、顺序与位置规则都要匹配。即使两个向量都长 2048，也不代表它们具有相同含义。来自同一套配套权重的拆分部署，与更换视觉编码器是不同工作。</p></details>
+<details><summary>为什么图片向量都已经送进去了，回答还会慢？</summary><p>首个回答前要完成视觉计算、图文预填充，以及宿主与设备之间的调用和状态管理。当前图文 OM 每步处理一个位置，400/576 个图像位置本身就需要多次调用；生成时还有模型权重、算子与内存带宽开销。</p></details>
+<details><summary>FP32 视觉是否意味着整个模型都是 FP32？</summary><p>不是。成功图内视觉输入与内部计算为 FP32，视觉输出为 FP16，语言主干主要使用 FP16，S 循环状态为 FP32，其他指定状态为 FP16。实际接口记录定义每个张量的类型。</p></details>
+<details><summary>把 FP16 权重变成 FP32，为何仍然可能更准？</summary><p>原有权重数值不会凭空获得更多来源精度，但计算时的中间结果可以用 FP32 表达，从而减少运算舍入。它改变计算误差路径，不恢复已经丢失的权重细节，也不自动增加模型能力。</p></details>
+<details><summary>缓存小的模型，是否一定更省内存、更快？</summary><p>缓存只是总开销的一部分。权重、视觉激活、输入输出副本、工作空间和运行时也要计算；不同结构的算子支持和融合情况会影响速度。最终需要在目标设备用相同条件测量。</p></details>
+<details><summary>同样的回答，为什么状态检查仍可能失败？</summary><p>只要最高分 token 没变，贪心输出就可能相同，但其他分数与状态已经发生超限偏差。继续更长输入时影响可能扩大。因此项目同时核对 token、logits 与状态，不用短期输出一致替代内部验证。</p></details>
+<details><summary>为什么本地数值通过，还要再测开发板？</summary><p>ONNX Runtime CPU 执行的是导出图；NPU 执行的是 ATC 编译后的模型和目标算子。它们还涉及目标精度实现、运行时接口、缓冲、内存和驱动兼容性。板端验证补上的是这一层证据。</p></details>
+<details><summary>词表更大、参数更多，是否可以直接排能力名次？</summary><p>不能。训练数据、训练方法、任务类型、指令适配、tokenizer、上下文和推理设置都会影响结果。本文比较的是结构与转换处理，项目没有用同一套任务评测给这些本地检查点建立能力排行榜。</p></details>
+</section>
+
+<section id="glossary" data-title="随时可查的术语表">
+<div class="section-no">18 / 术语速查</div><h2>读到陌生词时，从这里找回含义</h2>
+<dl class="glossary">
+<div><dt>参数 / 权重</dt><dd>训练学习并保存的矩阵、向量等数值。</dd></div><div><dt>检查点 Checkpoint</dt><dd>某个具体模型版本保存下来的权重与配套信息。</dd></div>
+<div><dt>张量 Tensor</dt><dd>有维度、形状和元素类型的数组；向量和矩阵都是例子。</dd></div><div><dt>shape</dt><dd>数组每个维度的大小，例如 [1,2,1024,256]。</dd></div>
+<div><dt>dtype</dt><dd>数组元素的编码类型，如 FP16、FP32、INT64。</dd></div><div><dt>batch</dt><dd>一次同时处理多少组样本；这批图主要固定为 1。</dd></div>
+<div><dt>token / token ID</dt><dd>模型处理序列的单位，以及它在词表中的整数编号。</dd></div><div><dt>tokenizer</dt><dd>按模型规则把文字与 token ID 互相转换的组件。</dd></div>
+<div><dt>聊天模板</dt><dd>把角色、消息和生成提示组织为模型期望格式的规则。</dd></div><div><dt>embedding</dt><dd>把离散 token ID 映射到连续数值向量的表示。</dd></div>
+<div><dt>hidden_size</dt><dd>网络某类隐藏表示的向量长度，与 context 是不同维度。</dd></div><div><dt>logits</dt><dd>下一步词表候选的原始分数，不是最终文字。</dd></div>
+<div><dt>自回归生成</dt><dd>根据已有序列预测下一步，再把新结果接回去继续预测。</dd></div><div><dt>贪心选择 Greedy</dt><dd>每步取分数最高的候选 token。</dd></div>
+<div><dt>Prefill</dt><dd>处理输入提示词并建立状态的阶段。</dd></div><div><dt>Decode</dt><dd>在已有状态上逐步生成新 token 的阶段。</dd></div>
+<div><dt>Q / K / V</dt><dd>注意力中的 Query、Key、Value 三类投影。</dd></div><div><dt>KV Cache</dt><dd>为了复用历史注意力计算而保存的 K、V 状态。</dd></div>
+<div><dt>GQA</dt><dd>多个 Query 头共享较少 K/V 头的注意力组织方式。</dd></div><div><dt>因果遮罩 Mask</dt><dd>限制当前位置只能读取允许的历史位置。</dd></div>
+<div><dt>滑动窗口</dt><dd>让某些层只关注一定范围内的近期位置。</dd></div><div><dt>RoPE</dt><dd>通过旋转方式把位置信息引入注意力表示。</dd></div>
+<div><dt>MRoPE</dt><dd>把图像等内容的多轴位置组织进旋转位置编码。</dd></div><div><dt>Gated DeltaNet</dt><dd>本项目 Qwen3.5 中使用循环记忆与门控更新的一类网络层。</dd></div>
+<div><dt>S / C 状态</dt><dd>本项目的循环记忆矩阵 / 短卷积历史状态。</dd></div><div><dt>patch</dt><dd>图片按规则划分并排列出的像素块输入。</dd></div>
+<div><dt>merger</dt><dd>原模型训练好的视觉特征分组、合并与投影模块。</dd></div><div><dt>视觉 token</dt><dd>进入图文序列的图像特征位置，不是 tokenizer 识别出的普通文字。</dd></div>
+<div><dt>ONNX / opset</dt><dd>计算图交换格式 / 对应运算规范的版本集合。</dd></div><div><dt>外部数据 External Data</dt><dd>计算图引用的独立张量数据文件。</dd></div>
+<div><dt>CANN / ATC</dt><dd>昇腾软件工具链 / 其中的离线模型转换与编译工具。</dd></div><div><dt>OM / AscendCL</dt><dd>昇腾运行模型文件 / 用于开发模型加载、内存与执行等应用的接口体系。</dd></div>
+<div><dt>RMSE</dt><dd>均方根误差，衡量一组数值的整体差异规模。</dd></div><div><dt>SHA256</dt><dd>内容摘要，用来识别与核对文件内容身份。</dd></div>
+<div><dt>MiB / GiB</dt><dd>二进制容量单位：1 MiB=2²⁰ 字节，1 GiB=2³⁰ 字节。</dd></div><div><dt>TOPS</dt><dd>每秒万亿次运算的吞吐量单位，需结合精度和计算条件理解。</dd></div>
+</dl>
+</section>
+
+<section id="references" data-title="资料来源与核对路径">
+<div class="section-no">19 / 参考资料与项目证据</div><h2>想继续深入，沿着这些入口阅读</h2>
+<p>本文依据项目实际导出器、本地配置、权重头部和成功构建记录编写。官方资料用于解释架构与接口来源；本地未知上游 revision 的权重，不因为引用官方说明就自动取得官方版本身份或全部能力结论。</p>
+<ol class="sources">
+<li id="ref-local"><strong>[项目] 本地事实与证据索引。</strong><a href="%E8%AF%81%E6%8D%AE%E7%B4%A2%E5%BC%95.json">查看随文“证据索引.json”</a>。包含配置摘要、存储 dtype、模型张量统计、两组图文验证摘要、OM 哈希和报告哈希。正文已嵌入关键数据，单独保存 HTML 也可阅读。</li>
+<li id="ref-qwen35"><strong>[Q] Qwen3.5-2B 官方模型卡。</strong><a href="https://huggingface.co/Qwen/Qwen3.5-2B" target="_blank" rel="noopener noreferrer">Qwen / Qwen3.5-2B</a>。用于查阅 2B 架构、语言维度与混合层布局；本项目具体形状仍以本地配置为准。</li>
+<li id="ref-native"><strong>[实现] 固定版本的 Qwen3.5 原生实现。</strong><a href="https://github.com/huggingface/transformers/blob/v5.10.2/src/transformers/models/qwen3_5/modeling_qwen3_5.py" target="_blank" rel="noopener noreferrer">Transformers v5.10.2 / modeling_qwen3_5.py</a>。项目核对循环状态、视觉路径与 MRoPE 的参考实现。</li>
+<li id="ref-qwen3"><strong>[Q3] Qwen3-0.6B 官方模型卡。</strong><a href="https://huggingface.co/Qwen/Qwen3-0.6B" target="_blank" rel="noopener noreferrer">Qwen / Qwen3-0.6B</a>。用于查阅全注意力模型与 GQA 结构说明。</li>
+<li id="ref-gemma"><strong>[G] Gemma3 官方实现说明与模型卡。</strong><a href="https://huggingface.co/docs/transformers/model_doc/gemma3#notes" target="_blank" rel="noopener noreferrer">Transformers / Gemma3</a>；<a href="https://ai.google.dev/gemma/docs/core/model_card_3" target="_blank" rel="noopener noreferrer">Google / Gemma 3 model card</a>。尤其注意 1B 文本检查点与其他图文规格的区别。</li>
+<li id="ref-tiny"><strong>[T] TinyLlama 官方模型配置。</strong><a href="https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0/blob/26d45f26ea2159eee86ccb80db170f755c1b3d95/config.json" target="_blank" rel="noopener noreferrer">TinyLlama 1.1B Chat 配置</a>。本地检查点的实际权重身份由本项目记录固定。</li>
+<li><strong>本项目的实现入口（与本文同一目录树时可打开）。</strong><a href="../workspace/conversion-tools/qwen35a-mm1024-img640/adapter.py">Qwen3.5 适配器</a>、<a href="../workspace/conversion-tools/qwen35a-mm1024-img640/contract.py">图文输入契约</a>、<a href="../workspace/conversion-tools/qwen35a-mm1024-img640/prepare_input.py">输入准备</a>、<a href="../workspace/conversion-tools/export_gemma3_fixed.py">Gemma3 导出器</a>、<a href="../workspace/conversion-tools/tinyllama-ctx1280/export_tinyllama_fixed.py">TinyLlama 导出器</a>。</li>
+<li><strong>成功构建的完整数值记录。</strong><a href="evidence/Qwen3.5A-2B-Ascend310B4-ctx1024-img640/validation.json">640 / 1024 validation.json</a>；<a href="evidence/Qwen3.5A-2B-Ascend310B4-ctx2048-img768/validation.json">768 / 2048 validation.json</a>。这些链接用于项目内追溯，不影响单文件正文和实验离线运行。</li>
+</ol>
+<div class="endnote"><p>阅读完成后，你可以回到任意一个模型目录，先识别它的结构与配套文件，再沿“推理接口 → ONNX → 数值门槛 → 目标编译 → 板端验证”逐层理解问题。每一层回答的问题不同，把层次分开，才容易找到真正需要修改的位置。</p><p>本文与教学实验只解释模型转换和推理原理，不在浏览器内执行模型转换。页面不依赖外部字体、脚本、图片或网络服务。需要纸质版时，可用顶部“打印 / 保存 PDF”。</p></div>
+</section>
+</div>
+</main></div><a class="top-link" href="#top" aria-label="回到文章顶部">↑</a><script>
+'use strict';
+const $ = id => document.getElementById(id);
+const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
+const intValue = (el, fallback, lo, hi) => clamp(Number.isFinite(Number(el.value)) ? Math.round(Number(el.value)) : fallback, lo, hi);
+
+const navItems = [...document.querySelectorAll('section[data-title]')];
+const nav = $('toc-list'); nav.replaceChildren();
+for (let i = 0; i < navItems.length; i++) {
+  const item = navItems[i]; const li = document.createElement('li'); const link = document.createElement('a');
+  link.href = '#' + item.id; link.textContent = String(i+1).padStart(2,'0') + '  ' + item.dataset.title;
+  link.addEventListener('click', () => { $('sidebar').classList.remove('open'); $('menu-toggle').setAttribute('aria-expanded','false'); });
+  li.append(link); nav.append(li);
+}
+function updateReading() {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  $('reading-progress').style.width = (total > 0 ? clamp(window.scrollY / total * 100, 0, 100) : 0) + '%';
+  let active = navItems[0].id;
+  for (const item of navItems) { if (item.getBoundingClientRect().top <= 150) active = item.id; }
+  for (const link of nav.querySelectorAll('a')) {
+    const on = link.hash === '#' + active; link.classList.toggle('active', on);
+    if (on) link.setAttribute('aria-current','location'); else link.removeAttribute('aria-current');
+  }
+}
+let frame = false;
+window.addEventListener('scroll', () => { if (!frame) { frame = true; requestAnimationFrame(() => { updateReading(); frame = false; }); } }, {passive:true});
+window.addEventListener('resize', updateReading);
+$('menu-toggle').addEventListener('click', () => { const on = $('sidebar').classList.toggle('open'); $('menu-toggle').setAttribute('aria-expanded',String(on)); });
+$('focus-toggle').addEventListener('click', () => { const on = document.body.classList.toggle('reading-mode'); $('focus-toggle').setAttribute('aria-pressed',String(on)); });
+$('theme-toggle').addEventListener('click', () => { const on = document.body.classList.toggle('dark'); $('theme-toggle').textContent = on ? '浅色' : '深色'; $('theme-toggle').setAttribute('aria-pressed',String(on)); });
+let bodySize = 18;
+for (const [id, delta] of [['font-down',-1],['font-up',1]]) $(id).addEventListener('click', () => { bodySize = clamp(bodySize+delta,16,23); document.documentElement.style.setProperty('--body-size', bodySize+'px'); updateReading(); });
+$('print-button').addEventListener('click', () => window.print());
+let beforePrintStates = [];
+window.addEventListener('beforeprint', () => { beforePrintStates = [...document.querySelectorAll('details')].map(el => [el,el.open]); beforePrintStates.forEach(([el]) => el.open=true); });
+window.addEventListener('afterprint', () => { beforePrintStates.forEach(([el,open]) => el.open=open); beforePrintStates=[]; });
+
+let tokenStep = 0;
+const inputTokens = ['请','打','招呼'];
+const answerTokens = ['你','好','！'];
+function renderTokens() {
+  const strip = $('token-slots'); strip.replaceChildren();
+  const consumed = inputTokens.concat(answerTokens.slice(0,2));
+  for (let i=0;i<8;i++) {
+    const cell=document.createElement('span'); cell.className='token';
+    const label=document.createElement('small'); label.textContent='槽位 '+i;
+    const value=document.createElement('span'); value.textContent=i<tokenStep ? consumed[i] : '·';
+    if(i<tokenStep)cell.classList.add('filled'); if(i===tokenStep-1)cell.classList.add('current');
+    cell.append(label,value);strip.append(cell);
+  }
+  const text = [
+    '缓存为空。点击“执行下一步”，先读入第一个提示 token。',
+    '调用 1：读入提示 token「请」，把它的状态写入槽位 0。提示还没有读完。',
+    '调用 2：读入提示 token「打」，写入槽位 1，并保留槽位 0 的历史。',
+    '调用 3：读入最后一个提示 token「招呼」，写入槽位 2。用本次 logits 选出第一个回答 token「你」；此时「你」还没有作为输入送回。',
+    '调用 4：把刚选出的「你」送回模型，写入槽位 3，再用本次 logits 选出「好」。没有重复输入最后一个提示 token。',
+    '调用 5：把「好」送回模型，写入槽位 4，再选出「！」。按本演示的长度条件停止。回答是「你好！」；最后选出的「！」尚未送回。'
+  ];
+  $('token-message').textContent=text[tokenStep]; $('token-next').disabled=tokenStep===5;
+}
+$('token-next').addEventListener('click',()=>{tokenStep=Math.min(5,tokenStep+1);renderTokens();});
+$('token-reset').addEventListener('click',()=>{tokenStep=0;renderTokens();});
+renderTokens();
+
+const svgNS='http://www.w3.org/2000/svg';
+function svgNode(tag, attrs={}) { const el=document.createElementNS(svgNS,tag);for(const [k,v]of Object.entries(attrs))el.setAttribute(k,String(v));return el; }
+function renderImage() {
+  const size=Number($('image-size').value);const [rw,rh]=$('image-ratio').value.split(':').map(Number);
+  const w=Math.round(size*Math.min(1,rw/rh)),h=Math.round(size*Math.min(1,rh/rw));
+  const px=(size-w)/2,py=(size-h)/2;const scale=480/size;const svg=$('image-preview');svg.replaceChildren();
+  const title=svgNode('title');title.textContent=`${size}正方形画布，内容${w}乘${h}，合并后${size/32}乘${size/32}个视觉位置`;svg.append(title);
+  svg.append(svgNode('rect',{x:20,y:20,width:480,height:480,fill:'#c5cbc5',rx:3}));
+  const x=20+px*scale,y=20+py*scale,sw=w*scale,sh=h*scale;
+  svg.append(svgNode('rect',{x,y,width:sw,height:sh,fill:'#dce9dc'}));
+  svg.append(svgNode('circle',{cx:x+sw*.32,cy:y+sh*.36,r:Math.min(sw,sh)*.18,fill:'#bf704b'}));
+  svg.append(svgNode('path',{d:`M ${x+sw*.43},${y+sh*.78} L ${x+sw*.69},${y+sh*.24} L ${x+sw*.92},${y+sh*.78} Z`,fill:'#3d7772'}));
+  const n=size/32;
+  for(let k=0;k<=n;k++){const p=20+k*480/n;svg.append(svgNode('path',{d:`M${p} 20 V500 M20 ${p} H500`,stroke:'#315f54','stroke-opacity':.52,'stroke-width':.75,fill:'none'}));}
+  svg.append(svgNode('rect',{x:20,y:20,width:480,height:480,fill:'none',stroke:'#315f54','stroke-width':2}));
+  const pad=py ? `上下各补 ${py} 像素` : px ? `左右各补 ${px} 像素` : '无需补边';
+  $('image-description').textContent=`${size} 规格：内容 ${w}×${h}；${pad}；${size/16}×${size/16} 个 patch 合并为 ${n}×${n}＝${n*n} 个视觉 token。灰色补边仍属于固定网格。`;
+}
+$('image-size').addEventListener('change',renderImage);$('image-ratio').addEventListener('change',renderImage);renderImage();
+
+function renderBudget(){
+  const [context,size]=$('budget-profile').value.split(',').map(Number);
+  const image=$('budget-image').checked ? (size/32)**2 : 0;
+  const template=intValue($('budget-template'),32,0,2048);
+  const text=Number($('budget-text').value),answer=Number($('budget-answer').value);
+  const total=image+template+text+answer,remaining=context-total,maxAnswer=Math.max(0,context-image-template-text);
+  $('budget-text-label').value=text;$('budget-answer-label').value=answer;
+  $('budget-total').textContent=context;$('budget-visual').textContent=image;$('budget-remaining').textContent=remaining;
+  const values=[image,template,text,answer,Math.max(0,remaining)];
+  const denominator=Math.max(context,total);
+  ['image','template','text','answer','free'].forEach((name,i)=>{$('bar-'+name).style.width=(values[i]/denominator*100)+'%';});
+  const over=remaining<0;const status=$('budget-status');status.classList.toggle('over',over);
+  status.textContent=over ? `超出容量 ${-remaining} token：计划共使用 ${total} / ${context}。在当前图片、模板和输入假设下，回答最多可分配 ${maxAnswer} token。超出时条形按总需求归一化显示。` : `预算内：计划共使用 ${total} / ${context}，剩余 ${remaining} token。当前图片、模板和输入下，回答的容量上限为 ${maxAnswer} token。`;
+  $('budget-bar').setAttribute('aria-label',`图像${image}，模板${template}，文字${text}，回答${answer}；总容量${context}，${over?'超出'+(-remaining):'余量'+remaining}。`);
+}
+for(const id of ['budget-profile','budget-image','budget-template','budget-text','budget-answer'])$(id).addEventListener('input',renderBudget);
+renderBudget();
+
+function cacheNumbers(length){return [
+ {name:'Qwen3 0.6B',kv:2*28*8*length*128*2/2**20,fixed:0},
+ {name:'Gemma3 1B',kv:2*26*1*length*256*2/2**20,fixed:0},
+ {name:'TinyLlama 1.1B',kv:2*22*4*length*64*2/2**20,fixed:0},
+ {name:'Qwen3.5A 2B',kv:2*6*2*length*256*2/2**20,fixed:18+18*6144*4*2/2**20}
+];}
+function renderCache(source){
+  const length=intValue(source||$('cache-length'),1024,1,8192);$('cache-length').value=length;$('cache-slider').value=length;
+  const data=cacheNumbers(length);const maximum=Math.max(...data.map(d=>d.kv+d.fixed));const chart=$('cache-chart');chart.replaceChildren();
+  for(const d of data){const row=document.createElement('div');row.className='cache-row';const name=document.createElement('span');name.textContent=d.name;
+    const track=document.createElement('span');track.className='cache-track';track.setAttribute('role','img');track.setAttribute('aria-label',`${d.name} K/V ${d.kv.toFixed(2)} MiB，固定状态${d.fixed.toFixed(2)} MiB`);
+    for(const [value,cls]of [[d.kv,'cache-kv'],[d.fixed,'cache-fixed']]){const bar=document.createElement('span');bar.className=cls;bar.style.width=(value/maximum*100)+'%';track.append(bar);}
+    const number=document.createElement('span');number.className='cache-value';number.textContent=(d.kv+d.fixed).toFixed(2)+' MiB';row.append(name,track,number);chart.append(row);
+  }
+  const mm=data[3];$('cache-description').textContent=`context ${length}：Qwen3.5A 的 K/V 为 ${mm.kv.toFixed(2)} MiB，固定 S/C 为 ${mm.fixed.toFixed(5)} MiB，单份合计 ${(mm.kv+mm.fixed).toFixed(5)} MiB。这里只是状态张量，未包含权重、激活、输入输出副本和运行时空间。`;
+}
+$('cache-length').addEventListener('input',()=>renderCache($('cache-length')));$('cache-slider').addEventListener('input',()=>renderCache($('cache-slider')));renderCache();
+updateReading();
+</script></body></html>

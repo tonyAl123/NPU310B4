@@ -1,0 +1,653 @@
+{
+  "status": "passed",
+  "scope": "Two short text chats; a synthetic-image full prefill and greedy decode; two encoder fixtures; real-prefix seeded late positions. No NPU accuracy or real-photo quality claim.",
+  "policy": {
+    "policy_version": "qwen35a-mm1024-img640-fp32-v1",
+    "reference": "unpatched native Qwen3_5ForConditionalGeneration in isolated process",
+    "logits_max_abs": 0.25,
+    "logits_rmse": 0.03,
+    "logits_cosine_min": 0.999,
+    "vision_max_abs": 0.25,
+    "vision_rmse": 0.03,
+    "vision_cosine_min": 0.999,
+    "cache_atol": 0.15,
+    "cache_rtol": 0.001953125,
+    "cache_rmse": 0.03,
+    "recurrent_atol": 0.05,
+    "recurrent_rtol": 0.01,
+    "recurrent_rmse": 0.02,
+    "generated_greedy_tokens_must_match": true,
+    "new_tokens": 8,
+    "high_positions": [
+      255,
+      511,
+      1022,
+      1023
+    ],
+    "scope": "Two short text chats; a synthetic-image full prefill and greedy decode; two encoder fixtures; real-prefix seeded late positions. No NPU accuracy or real-photo quality claim."
+  },
+  "vision": [
+    {
+      "fixture": "shapes",
+      "passed": true,
+      "max_abs": 0.0010061264038085938,
+      "rmse": 2.6138333793036742e-05,
+      "cosine": 0.9999999781452048
+    },
+    {
+      "fixture": "checker",
+      "passed": true,
+      "max_abs": 0.0009911060333251953,
+      "rmse": 3.6996714605599713e-05,
+      "cosine": 0.9999999773568531
+    }
+  ],
+  "cases": [
+    {
+      "name": "text-zh",
+      "steps": 26,
+      "passed": true,
+      "generated_tokens": [
+        109266,
+        3709,
+        103724,
+        1167,
+        16451,
+        18,
+        13,
+        20
+      ],
+      "checkpoints": [
+        {
+          "position": 0,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.008060455322265625,
+            "rmse": 0.0013870741891633647,
+            "cosine": 0.9999997798533818
+          },
+          "state": {
+            "max_scaled_error": 0.06674611760388036,
+            "max_rmse": 0.0014532732862516057
+          }
+        },
+        {
+          "position": 3,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.0073299407958984375,
+            "rmse": 0.0012638737901409412,
+            "cosine": 0.9999999345023303
+          },
+          "state": {
+            "max_scaled_error": 0.06674611760388036,
+            "max_rmse": 0.0008669046249897179
+          }
+        },
+        {
+          "position": 18,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.008585035800933838,
+            "rmse": 0.0015437782772175278,
+            "cosine": 0.9999998669121526
+          },
+          "state": {
+            "max_scaled_error": 0.06321465033033358,
+            "max_rmse": 0.0014776015944285416
+          }
+        },
+        {
+          "position": 19,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.009763717651367188,
+            "rmse": 0.0017540806409204947,
+            "cosine": 0.9999997431627666
+          },
+          "state": {
+            "max_scaled_error": 0.06321465033033358,
+            "max_rmse": 0.0012751222740351694
+          }
+        },
+        {
+          "position": 20,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.0074024200439453125,
+            "rmse": 0.001456856756687573,
+            "cosine": 0.9999998812136848
+          },
+          "state": {
+            "max_scaled_error": 0.053633017441513144,
+            "max_rmse": 0.0012951578475233585
+          }
+        },
+        {
+          "position": 21,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.008249282836914062,
+            "rmse": 0.0017749652727689776,
+            "cosine": 0.9999999117239966
+          },
+          "state": {
+            "max_scaled_error": 0.05353435733897772,
+            "max_rmse": 0.0010394479347262291
+          }
+        },
+        {
+          "position": 22,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.008568763732910156,
+            "rmse": 0.0012622122835146035,
+            "cosine": 0.9999999037619675
+          },
+          "state": {
+            "max_scaled_error": 0.05576888577101644,
+            "max_rmse": 0.0009480683701099157
+          }
+        },
+        {
+          "position": 23,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.01053619384765625,
+            "rmse": 0.002143466605327585,
+            "cosine": 0.9999998951028355
+          },
+          "state": {
+            "max_scaled_error": 0.05576888577101644,
+            "max_rmse": 0.0010639118367374385
+          }
+        },
+        {
+          "position": 24,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.013985633850097656,
+            "rmse": 0.002522574660172268,
+            "cosine": 0.9999998182539637
+          },
+          "state": {
+            "max_scaled_error": 0.060233097913623454,
+            "max_rmse": 0.002225173375846582
+          }
+        },
+        {
+          "position": 25,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.013807296752929688,
+            "rmse": 0.002954462749946264,
+            "cosine": 0.9999997103277826
+          },
+          "state": {
+            "max_scaled_error": 0.08650236677598397,
+            "max_rmse": 0.0019760079179007265
+          }
+        }
+      ],
+      "prior_and_future_kv_preserved": true
+    },
+    {
+      "name": "text-en",
+      "steps": 24,
+      "passed": true,
+      "generated_tokens": [
+        14773,
+        6353,
+        0,
+        353,
+        3769,
+        678,
+        1834,
+        369
+      ],
+      "checkpoints": [
+        {
+          "position": 0,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.008060455322265625,
+            "rmse": 0.0013870741891633647,
+            "cosine": 0.9999997798533818
+          },
+          "state": {
+            "max_scaled_error": 0.06674611760388036,
+            "max_rmse": 0.0014532732862516057
+          }
+        },
+        {
+          "position": 3,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.0063877105712890625,
+            "rmse": 0.0007583869835945146,
+            "cosine": 0.9999999413351707
+          },
+          "state": {
+            "max_scaled_error": 0.06674611760388036,
+            "max_rmse": 0.0008713897295573521
+          }
+        },
+        {
+          "position": 16,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.010974884033203125,
+            "rmse": 0.001309196515588743,
+            "cosine": 0.9999998297744989
+          },
+          "state": {
+            "max_scaled_error": 0.07840142240608784,
+            "max_rmse": 0.0011689983310710454
+          }
+        },
+        {
+          "position": 17,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.00988006591796875,
+            "rmse": 0.001468191819653804,
+            "cosine": 0.9999998876587897
+          },
+          "state": {
+            "max_scaled_error": 0.07840142240608784,
+            "max_rmse": 0.0011276115591897892
+          }
+        },
+        {
+          "position": 18,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.00997161865234375,
+            "rmse": 0.001316775144143185,
+            "cosine": 0.9999998720678436
+          },
+          "state": {
+            "max_scaled_error": 0.05681319729049752,
+            "max_rmse": 0.0012748241352006466
+          }
+        },
+        {
+          "position": 19,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.006438255310058594,
+            "rmse": 0.001261083107274593,
+            "cosine": 0.9999999058050774
+          },
+          "state": {
+            "max_scaled_error": 0.04875378262333843,
+            "max_rmse": 0.001260421788940948
+          }
+        },
+        {
+          "position": 20,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.0066127777099609375,
+            "rmse": 0.0012315323254379145,
+            "cosine": 0.9999999024309325
+          },
+          "state": {
+            "max_scaled_error": 0.05467554924656401,
+            "max_rmse": 0.0009768773760239302
+          }
+        },
+        {
+          "position": 21,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.010758399963378906,
+            "rmse": 0.0015911095727050863,
+            "cosine": 0.9999998367926246
+          },
+          "state": {
+            "max_scaled_error": 0.0599623324625966,
+            "max_rmse": 0.0011121809550368811
+          }
+        },
+        {
+          "position": 22,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.00725555419921875,
+            "rmse": 0.00135501540345347,
+            "cosine": 0.9999999109600713
+          },
+          "state": {
+            "max_scaled_error": 0.0599623324625966,
+            "max_rmse": 0.0010440102313085725
+          }
+        },
+        {
+          "position": 23,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.008714675903320312,
+            "rmse": 0.0012453919112466391,
+            "cosine": 0.9999999392944332
+          },
+          "state": {
+            "max_scaled_error": 0.0599623324625966,
+            "max_rmse": 0.0008612689473564842
+          }
+        }
+      ],
+      "prior_and_future_kv_preserved": true
+    },
+    {
+      "name": "image-shapes",
+      "steps": 431,
+      "passed": true,
+      "generated_tokens": [
+        1919,
+        2099,
+        4275,
+        264,
+        4145,
+        11,
+        9766,
+        2790
+      ],
+      "checkpoints": [
+        {
+          "position": 0,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.008060455322265625,
+            "rmse": 0.0013870741891633647,
+            "cosine": 0.9999997798533818
+          },
+          "state": {
+            "max_scaled_error": 0.06674611760388036,
+            "max_rmse": 0.0014532732862516057
+          }
+        },
+        {
+          "position": 3,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.015900373458862305,
+            "rmse": 0.0033782175151644725,
+            "cosine": 0.9999996196763083
+          },
+          "state": {
+            "max_scaled_error": 0.06674611760388036,
+            "max_rmse": 0.0013525104718962154
+          }
+        },
+        {
+          "position": 63,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.012197494506835938,
+            "rmse": 0.002078919642341965,
+            "cosine": 0.9999997123619776
+          },
+          "state": {
+            "max_scaled_error": 0.0602732876977663,
+            "max_rmse": 0.0011381560090038385
+          }
+        },
+        {
+          "position": 127,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.008237838745117188,
+            "rmse": 0.0011363875459733694,
+            "cosine": 0.9999998926558126
+          },
+          "state": {
+            "max_scaled_error": 0.0625714650469834,
+            "max_rmse": 0.0009518088314927731
+          }
+        },
+        {
+          "position": 191,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.021924972534179688,
+            "rmse": 0.003117416602572905,
+            "cosine": 0.9999992856942352
+          },
+          "state": {
+            "max_scaled_error": 0.18501458477445515,
+            "max_rmse": 0.003190112194670971
+          }
+        },
+        {
+          "position": 255,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.009755134582519531,
+            "rmse": 0.00188217549466778,
+            "cosine": 0.9999998280911498
+          },
+          "state": {
+            "max_scaled_error": 0.054244064516856115,
+            "max_rmse": 0.0010392001493156348
+          }
+        },
+        {
+          "position": 319,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.055633544921875,
+            "rmse": 0.0074097596687488975,
+            "cosine": 0.9999965954065355
+          },
+          "state": {
+            "max_scaled_error": 0.14255706911161956,
+            "max_rmse": 0.003028102504777812
+          }
+        },
+        {
+          "position": 383,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.01868915557861328,
+            "rmse": 0.0027013770406808103,
+            "cosine": 0.9999992688960496
+          },
+          "state": {
+            "max_scaled_error": 0.07952387562310952,
+            "max_rmse": 0.0011983853676949842
+          }
+        },
+        {
+          "position": 423,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.01996612548828125,
+            "rmse": 0.0027864535230281233,
+            "cosine": 0.999999287394728
+          },
+          "state": {
+            "max_scaled_error": 0.12480791588693488,
+            "max_rmse": 0.0017396890337918022
+          }
+        },
+        {
+          "position": 424,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.009891510009765625,
+            "rmse": 0.0017062458154796375,
+            "cosine": 0.9999998837642511
+          },
+          "state": {
+            "max_scaled_error": 0.12480791588693488,
+            "max_rmse": 0.0016637043031692853
+          }
+        },
+        {
+          "position": 425,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.010277748107910156,
+            "rmse": 0.0018931294524999489,
+            "cosine": 0.9999998841468974
+          },
+          "state": {
+            "max_scaled_error": 0.06821958352500081,
+            "max_rmse": 0.0012591978472787368
+          }
+        },
+        {
+          "position": 426,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.01029205322265625,
+            "rmse": 0.0014753541680474019,
+            "cosine": 0.9999998558840542
+          },
+          "state": {
+            "max_scaled_error": 0.06574509317631483,
+            "max_rmse": 0.000989907479402297
+          }
+        },
+        {
+          "position": 427,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.011410713195800781,
+            "rmse": 0.0015982291142767112,
+            "cosine": 0.999999830891733
+          },
+          "state": {
+            "max_scaled_error": 0.06577492792892838,
+            "max_rmse": 0.0009111598147869851
+          }
+        },
+        {
+          "position": 428,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.0092010498046875,
+            "rmse": 0.001458651809011254,
+            "cosine": 0.9999999238176519
+          },
+          "state": {
+            "max_scaled_error": 0.06577850968290831,
+            "max_rmse": 0.0009342975000542162
+          }
+        },
+        {
+          "position": 429,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.009565353393554688,
+            "rmse": 0.0011671390355193101,
+            "cosine": 0.9999999308769082
+          },
+          "state": {
+            "max_scaled_error": 0.06484616742971423,
+            "max_rmse": 0.0008394753713010044
+          }
+        },
+        {
+          "position": 430,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.00749969482421875,
+            "rmse": 0.0012889326591149393,
+            "cosine": 0.9999999358827671
+          },
+          "state": {
+            "max_scaled_error": 0.06450953407997459,
+            "max_rmse": 0.0008841884456799583
+          }
+        }
+      ],
+      "prior_and_future_kv_preserved": true
+    },
+    {
+      "name": "boundary-255",
+      "steps": 1,
+      "passed": true,
+      "generated_tokens": [],
+      "checkpoints": [
+        {
+          "position": 255,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.008327484130859375,
+            "rmse": 0.0010055735270544416,
+            "cosine": 0.9999999596227095
+          },
+          "state": {
+            "max_scaled_error": 0.06255300633976081,
+            "max_rmse": 0.0011967348096871603
+          }
+        }
+      ],
+      "prior_and_future_kv_preserved": true
+    },
+    {
+      "name": "boundary-511",
+      "steps": 1,
+      "passed": true,
+      "generated_tokens": [],
+      "checkpoints": [
+        {
+          "position": 511,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.0059528350830078125,
+            "rmse": 0.0007384876856882011,
+            "cosine": 0.9999999291879614
+          },
+          "state": {
+            "max_scaled_error": 0.042843205876764746,
+            "max_rmse": 0.0009221625114409515
+          }
+        }
+      ],
+      "prior_and_future_kv_preserved": true
+    },
+    {
+      "name": "boundary-1022",
+      "steps": 2,
+      "passed": true,
+      "generated_tokens": [],
+      "checkpoints": [
+        {
+          "position": 1022,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.0070133209228515625,
+            "rmse": 0.001368370000468163,
+            "cosine": 0.9999999558503246
+          },
+          "state": {
+            "max_scaled_error": 0.06912033785341773,
+            "max_rmse": 0.001828470409733857
+          }
+        },
+        {
+          "position": 1023,
+          "passed": true,
+          "logits": {
+            "max_abs": 0.007537841796875,
+            "rmse": 0.0011355533343536495,
+            "cosine": 0.9999998218978075
+          },
+          "state": {
+            "max_scaled_error": 0.06912033785341773,
+            "max_rmse": 0.0019010141639518726
+          }
+        }
+      ],
+      "prior_and_future_kv_preserved": true
+    }
+  ],
+  "failures": [],
+  "board_runtime_verified": false,
+  "purpose": "full_pipeline_gate",
+  "eligible_for_atc": true,
+  "vision_input_dtype": "float32"
+}

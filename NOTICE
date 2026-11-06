@@ -1,0 +1,15 @@
+Ascend OM conversion workflows and beginner guide
+
+This publication contains adaptations of qwen-atlas-slm by CX_Li.
+Upstream: https://github.com/MST19711/qwen-atlas-slm
+Pinned commit: 15209f299fa372cccbd2226114f61a2f69f39a5f
+Original MIT terms and copyright are preserved in LICENSES/upstream-MIT.txt.
+
+The adapters reference/import and adapt computations from Hugging Face Transformers / Qwen implementations under Apache-2.0.
+The original notices in vendored reference source are retained where present.
+https://github.com/huggingface/transformers
+
+Publication changes: machine paths parameterized; requests/checksums can be regenerated; private host metadata normalized; publication tools and documentation added.
+Historical numerical results refer to their recorded original builds. The parameterized publication version has not been recompiled on a fresh Linux environment.
+
+This code license does not license model weights, tokenizers, CANN installers, container images, or proprietary runtimes.

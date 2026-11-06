@@ -1,0 +1,721 @@
+{
+  "prepared_on": "2026-11-03",
+  "github_directory": "github/ascend-om-conversion-lab",
+  "github_repository_created": false,
+  "huggingface_repositories_created": false,
+  "model_binary_copies_created": 0,
+  "family_count": 4,
+  "variant_count": 10,
+  "om_file_count": 12,
+  "payload_bytes": 51546968472,
+  "families": {
+    "qwen3": {
+      "variants": [
+        {
+          "variant": "ctx256",
+          "context": 256,
+          "image_size": null,
+          "visual_tokens": 0,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": null,
+          "original_build_manifest_sha256": "d5f22b449090de70f585bcb06de3a05358aec841b14a94cf19ec05bf8b239e20",
+          "original_validation_sha256": "f90b85dc379732f76d4ae16f935d29616f430dbb8702422e17a34e23e231b6c0",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "qwen3_06b_ctx256.om",
+              "bytes": 1508976649,
+              "sha256": "0adee5e7405c0b0130b249be4449c895f96a0abf1150830823cad0965250cc3f"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/qwen3_06b_ctx256.onnx",
+              "bytes": 1504002420,
+              "sha256": "076894dae3591efc336cd1b0d5f4ced40f9488ddfedac55b5456d8b8791f85a5",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": []
+              },
+              "external_files": []
+            }
+          ],
+          "onnx_complete": true
+        },
+        {
+          "variant": "ctx728",
+          "context": 728,
+          "image_size": null,
+          "visual_tokens": 0,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": "qwen3-06b-ctx728-fd8ab7f5/20261020T103554Z-8b5193",
+          "original_build_manifest_sha256": "2dc61407f7eacf242a3e2bd7d4608df6a9c04b9a8cec84674922d53669cef6be",
+          "original_validation_sha256": "95bd85debb3549f9ba106ddfa315adf977266de7f19652ff48809fee9abcc7c0",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "qwen3_06b_ctx728.om",
+              "bytes": 1509011783,
+              "sha256": "fdeaeb72673cfdd11e0cdeac3ae4861c960849d0c545d2c3d71c394fb44623a8"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/qwen3_06b_ctx728.onnx",
+              "bytes": 1504218596,
+              "sha256": "cb7208266fd142cb88f0d9a03b75578a411368b95678628fbe6412f90e5334cd",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": []
+              },
+              "external_files": []
+            }
+          ],
+          "onnx_complete": true
+        },
+        {
+          "variant": "ctx1024",
+          "context": 1024,
+          "image_size": null,
+          "visual_tokens": 0,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": "qwen3-06b-ctx1024-b75ea12b/20261020T093024Z-c54623",
+          "original_build_manifest_sha256": "3fdb084ceb5ba8fe98a529530ee1002666baa3eaef3294d3e09d780585dc76ec",
+          "original_validation_sha256": "560190f651758a8e5e7c9c3daa32717dfda4b94edff829fe6c9ee8bdef4f4f91",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "qwen3_06b_ctx1024.om",
+              "bytes": 1509011262,
+              "sha256": "eb9920c63d25f5b731865abf04244ed03264f41346f45a1a10f263c389c1bcd5"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/qwen3_06b_ctx1024.onnx",
+              "bytes": 1504354164,
+              "sha256": "ee3b64845eb8b16a9df86e4fbb90576252e286267f745d0162508a32b8cf5f5e",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": []
+              },
+              "external_files": []
+            }
+          ],
+          "onnx_complete": true
+        },
+        {
+          "variant": "ctx2048",
+          "context": 2048,
+          "image_size": null,
+          "visual_tokens": 0,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": "qwen3-06b-ctx2048-4ab1b48f/20261020T091309Z-a5ca50",
+          "original_build_manifest_sha256": "b06f9bf2f8a479990ac7c9941ee54091ecebcdaee7159ffd938f2157582f9cf6",
+          "original_validation_sha256": "89896f81adf722077c06bf6e15c1592f2364cd79ebaf16836eb026be41606d80",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "qwen3_06b_ctx2048.om",
+              "bytes": 1509013270,
+              "sha256": "207f1ba7931873377ad3b3758a713a0c7c7eba62e118e8c848f07519fab6b7e9"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/qwen3_06b_ctx2048.onnx",
+              "bytes": 1504823384,
+              "sha256": "d23c66e6cbbb3803c5b98d7e5f2e6323184d04d6942d0bcca05274ae24b7e258",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": []
+              },
+              "external_files": []
+            }
+          ],
+          "onnx_complete": true
+        },
+        {
+          "variant": "ctx8192",
+          "context": 8192,
+          "image_size": null,
+          "visual_tokens": 0,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": "qwen3-06b-ctx8192-a2bdfa25/20261020T081436Z-da361b",
+          "original_build_manifest_sha256": "9e4c14e10d3adac17b07ca0c24710821bfaed9192e5c5d595c7a7e040dda48eb",
+          "original_validation_sha256": "462fe317d1387d094df0191fdae3328fd6090d8bec7aa066b97578d5dafa2655",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "qwen3_06b_ctx8192.om",
+              "bytes": 1509079048,
+              "sha256": "091c9f8a3ec854b8c8bc496be0fa8a39109659573ad30e287e1ffef11e76708e"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/qwen3_06b_ctx8192.onnx",
+              "bytes": 1507637340,
+              "sha256": "3b95c1743063df02813290a1b93361a02ed6004f347fad9d1cdfc57c92f0809d",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": []
+              },
+              "external_files": []
+            }
+          ],
+          "onnx_complete": true
+        }
+      ],
+      "payload_bytes": 15149485456,
+      "source_license_review": "pending",
+      "onnx_file_count": 5,
+      "onnx_external_data_file_count": 0,
+      "suggested_repositories": {
+        "om": "Local-Qwen3-0.6B-Ascend310B4-OM",
+        "onnx": "Local-Qwen3-0.6B-ONNX"
+      }
+    },
+    "gemma3": {
+      "variants": [
+        {
+          "variant": "ctx512",
+          "context": 512,
+          "image_size": null,
+          "visual_tokens": 0,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": "gemma3-1b-ctx512-befa3c1d/20261020T102203Z-c30b14",
+          "original_build_manifest_sha256": "f6d94d821a1c8ae700a747840c2dd9385e0d670be1e62a2271c047d3168a29b9",
+          "original_validation_sha256": "01da736db1aa9b5c5631f2d18bafe58efc7177f585205b227417401da43bc4ee",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "gemma3_1b_ctx512.om",
+              "bytes": 2610046676,
+              "sha256": "8be736088b90ed6923c1463b013e66a6166918be4af002c6c89a6317f584f72f"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/gemma3_1b_ctx512.onnx",
+              "bytes": 1251339,
+              "sha256": "86546759f306f9e186feb1ef74ddd204b1cce322ab806c7bc2dce4bd75509ded",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": [
+                  {
+                    "location": "gemma3_1b_ctx512.weights.data",
+                    "bytes": 1999771904,
+                    "tensor_count": 340,
+                    "max_end": 1999771904
+                  }
+                ]
+              },
+              "external_files": [
+                {
+                  "location": "gemma3_1b_ctx512.weights.data",
+                  "path": "onnx/gemma3_1b_ctx512.weights.data",
+                  "bytes": 1999771904,
+                  "sha256": "1f35c69cb2a7eadbe2e235ad928957007b952ccfc65144d9cbbca0c566e441fa",
+                  "successful_build_digest_matched": true
+                }
+              ]
+            }
+          ],
+          "onnx_complete": true
+        },
+        {
+          "variant": "ctx1024",
+          "context": 1024,
+          "image_size": null,
+          "visual_tokens": 0,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": "gemma3-1b-ctx1024-7dc4575d/20261020T094602Z-8979f7",
+          "original_build_manifest_sha256": "6b4ab521a5baaea88be16e64513bf05eb0066475111c73a4aab2fb0d572f20ed",
+          "original_validation_sha256": "cddd0770c5d251d67d4b502cc510508166de65fc2657dd25c65155999f047b83",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "gemma3_1b_ctx1024.om",
+              "bytes": 2610070980,
+              "sha256": "2685fb1e940102f8b9bb71debe9707ba00bc58c8f277226b07c8d8271942b3dc"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/gemma3_1b_ctx1024.onnx",
+              "bytes": 1268063,
+              "sha256": "45bd3ffdc38ebb4d0d6a56eecb9ab688b5176ea5a8cd0855b7f14b9a4f3bd30f",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": [
+                  {
+                    "location": "gemma3_1b_ctx1024.weights.data",
+                    "bytes": 1999771904,
+                    "tensor_count": 340,
+                    "max_end": 1999771904
+                  }
+                ]
+              },
+              "external_files": [
+                {
+                  "location": "gemma3_1b_ctx1024.weights.data",
+                  "path": "onnx/gemma3_1b_ctx1024.weights.data",
+                  "bytes": 1999771904,
+                  "sha256": "1f35c69cb2a7eadbe2e235ad928957007b952ccfc65144d9cbbca0c566e441fa",
+                  "successful_build_digest_matched": true
+                }
+              ]
+            }
+          ],
+          "onnx_complete": true
+        }
+      ],
+      "payload_bytes": 9300742138,
+      "source_license_review": "pending",
+      "onnx_file_count": 2,
+      "onnx_external_data_file_count": 2,
+      "suggested_repositories": {
+        "om": "Local-Gemma3-1B-Ascend310B4-OM",
+        "onnx": "Local-Gemma3-1B-ONNX"
+      }
+    },
+    "tinyllama": {
+      "variants": [
+        {
+          "variant": "ctx1280",
+          "context": 1280,
+          "image_size": null,
+          "visual_tokens": 0,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": "tinyllama-11b-ctx1280-caa4568a/20261020T201120Z-d5c150",
+          "original_build_manifest_sha256": "22f139fa01e52c5c4ade07aa7cc1a4dfdff203ee9b0b5491c5da42976f4f0e4c",
+          "original_validation_sha256": "645d2559464508ea214b391a86938f5abd8bddd25a6c67d2e0c4a92a2c76de17",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "tinyllama_11b_ctx1280.om",
+              "bytes": 2203955933,
+              "sha256": "b315e26d6e1fdb0f56ef7782113ecaab4659a2ce6c61aaff749d418317ebe7e7"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/tinyllama_11b_ctx1280.onnx",
+              "bytes": 781401,
+              "sha256": "7ca82b2aee7200ef9d8838069e399382e3523d5245e8ff833bb8af28e05cd120",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": [
+                  {
+                    "location": "tinyllama_11b_ctx1280.weights.data",
+                    "bytes": 2200096768,
+                    "tensor_count": 201,
+                    "max_end": 2200096768
+                  }
+                ]
+              },
+              "external_files": [
+                {
+                  "location": "tinyllama_11b_ctx1280.weights.data",
+                  "path": "onnx/tinyllama_11b_ctx1280.weights.data",
+                  "bytes": 2200096768,
+                  "sha256": "3afa6f573ddf77c8f1efe30d5b8675e2ec85d3da5b9e974c5de485d9fa2a8a14",
+                  "successful_build_digest_matched": true
+                }
+              ]
+            }
+          ],
+          "onnx_complete": true
+        }
+      ],
+      "payload_bytes": 4408453125,
+      "source_license_review": "pending",
+      "onnx_file_count": 1,
+      "onnx_external_data_file_count": 1,
+      "suggested_repositories": {
+        "om": "Local-TinyLlama-1.1B-Ascend310B4-OM",
+        "onnx": "Local-TinyLlama-1.1B-ONNX"
+      }
+    },
+    "qwen35": {
+      "variants": [
+        {
+          "variant": "ctx1024-img640",
+          "context": 1024,
+          "image_size": 640,
+          "visual_tokens": 400,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": "qwen35a-2b-mm-ctx1024-img640-346f4408/20261021T012059Z-bd299d",
+          "original_build_manifest_sha256": "57b9569007343145fd13c24bf8211806f1c49f23729767167946b5471d756935",
+          "original_validation_sha256": "7ce196af2f7b271977a8b7cdf324255b286685fdc8c96e2e5c9690c32f1f696c",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "decoder_ctx1024.om",
+              "bytes": 4799423987,
+              "sha256": "6900647158f03f9501b66ad4f3f7c1f7cfdc484a81a2a3150900130a3e2226bc"
+            },
+            {
+              "path": "vision_640.om",
+              "bytes": 1326251452,
+              "sha256": "307aa0193ae5fe2647082c70d04845835d834657dbed196382f045723667f503"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/decoder/model.onnx",
+              "bytes": 644488,
+              "sha256": "0f788d2ea86c94f6219abca77d35f9270a9ae86c7db8ae992b0734819171b5a8",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": [
+                  {
+                    "location": "model.weights.data",
+                    "bytes": 3763650304,
+                    "tensor_count": 321,
+                    "max_end": 3763650304
+                  }
+                ]
+              },
+              "external_files": [
+                {
+                  "location": "model.weights.data",
+                  "path": "onnx/decoder/model.weights.data",
+                  "bytes": 3763650304,
+                  "sha256": "63cf4580543e663ab8a3e0bb86c76773e574085f7fc003028dc65c4ef710a38b",
+                  "successful_build_digest_matched": true
+                }
+              ]
+            },
+            {
+              "path": "onnx/vision/model.onnx",
+              "bytes": 481608,
+              "sha256": "964362d45ed4bf820d5177f9345156ad52e7c41cf1ba04ba3e4d5a2b06de14c5",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": [
+                  {
+                    "location": "model.weights.data",
+                    "bytes": 1323601920,
+                    "tensor_count": 299,
+                    "max_end": 1323601920
+                  }
+                ]
+              },
+              "external_files": [
+                {
+                  "location": "model.weights.data",
+                  "path": "onnx/vision/model.weights.data",
+                  "bytes": 1323601920,
+                  "sha256": "4d208c1f4050cbfac3842aec6dcda828b119a185538184c1413a43d8fd5ee414",
+                  "successful_build_digest_matched": true
+                }
+              ]
+            }
+          ],
+          "onnx_complete": true
+        },
+        {
+          "variant": "ctx2048-img768",
+          "context": 2048,
+          "image_size": 768,
+          "visual_tokens": 576,
+          "target_soc": "Ascend310B4",
+          "status": "compiled",
+          "numerical_validation": "passed",
+          "board_runtime_verified": false,
+          "source_build_id": "qwen35a-2b-mm-ctx2048-img768-346f4408/20261021T004700Z-e1da9c",
+          "original_build_manifest_sha256": "e14e286b3d2ce8785dc97e6c4b36ce912dfa3f428a4baef513a5d6f94469ecee",
+          "original_validation_sha256": "427ecc1b25626ab10963f527aa4093d84e8bbfe3781aa8ba6cab19da26c07884",
+          "public_report_note": "Absolute machine paths were normalized in publication copies; numerical arrays and OM payloads are unchanged.",
+          "om_files": [
+            {
+              "path": "decoder_ctx2048.om",
+              "bytes": 4799435648,
+              "sha256": "c05037837e7d2385006f8f96bd235c52d71b471ee1201830969b27d6895d443b"
+            },
+            {
+              "path": "vision_768.om",
+              "bytes": 1329483923,
+              "sha256": "773a6cd37a16678148ea2cfcad262604b71fca70f102141f11cef1404d89587a"
+            }
+          ],
+          "onnx_files": [
+            {
+              "path": "onnx/decoder/model.onnx",
+              "bytes": 705956,
+              "sha256": "f118768b81e0a4a6c0f5f17bd36aff470c7fe41ad9acc74615388ebd768ace72",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": [
+                  {
+                    "location": "model.weights.data",
+                    "bytes": 3763650304,
+                    "tensor_count": 321,
+                    "max_end": 3763650304
+                  }
+                ]
+              },
+              "external_files": [
+                {
+                  "location": "model.weights.data",
+                  "path": "onnx/decoder/model.weights.data",
+                  "bytes": 3763650304,
+                  "sha256": "63cf4580543e663ab8a3e0bb86c76773e574085f7fc003028dc65c4ef710a38b",
+                  "successful_build_digest_matched": true
+                }
+              ]
+            },
+            {
+              "path": "onnx/vision/model.onnx",
+              "bytes": 481612,
+              "sha256": "25b095e6fbbe4cead34f0e1ee2118623dd2e1c835e106c363e8f44eca82a403a",
+              "successful_build_digest_matched": true,
+              "inspection": {
+                "ir_version": 8,
+                "opsets": [
+                  {
+                    "domain": "",
+                    "version": 15
+                  }
+                ],
+                "external_data": [
+                  {
+                    "location": "model.weights.data",
+                    "bytes": 1326845952,
+                    "tensor_count": 299,
+                    "max_end": 1326845952
+                  }
+                ]
+              },
+              "external_files": [
+                {
+                  "location": "model.weights.data",
+                  "path": "onnx/vision/model.weights.data",
+                  "bytes": 1326845952,
+                  "sha256": "de9da99f214fc14cc024b50cc6f31191dee213c57017725cd65aca7c6c6d9d0b",
+                  "successful_build_digest_matched": true
+                }
+              ]
+            }
+          ],
+          "onnx_complete": true
+        }
+      ],
+      "payload_bytes": 22480703536,
+      "source_license_review": "pending",
+      "onnx_file_count": 4,
+      "onnx_external_data_file_count": 4,
+      "suggested_repositories": {
+        "om": "Local-Qwen3.5-2B-Ascend310B4-OM",
+        "onnx": "Local-Qwen3.5-2B-ONNX"
+      }
+    }
+  },
+  "onnx_file_count": 12,
+  "onnx_external_data_file_count": 7,
+  "onnx_complete": true,
+  "formats": [
+    "ONNX",
+    "Ascend OM"
+  ],
+  "schema_version": 2,
+  "repository_count": 8,
+  "repository_layout": "separate OM and ONNX repositories per family",
+  "repositories": [
+    {
+      "family": "qwen3",
+      "artifact_format": "om",
+      "suggested_repository_name": "Local-Qwen3-0.6B-Ascend310B4-OM",
+      "directory": "huggingface/om/qwen3",
+      "variant_count": 5,
+      "payload_bytes": 7624449552,
+      "om_file_count": 5,
+      "onnx_file_count": 0,
+      "onnx_external_data_file_count": 0
+    },
+    {
+      "family": "qwen3",
+      "artifact_format": "onnx",
+      "suggested_repository_name": "Local-Qwen3-0.6B-ONNX",
+      "directory": "huggingface/onnx/qwen3",
+      "variant_count": 5,
+      "payload_bytes": 7604393444,
+      "om_file_count": 0,
+      "onnx_file_count": 5,
+      "onnx_external_data_file_count": 0
+    },
+    {
+      "family": "gemma3",
+      "artifact_format": "om",
+      "suggested_repository_name": "Local-Gemma3-1B-Ascend310B4-OM",
+      "directory": "huggingface/om/gemma3",
+      "variant_count": 2,
+      "payload_bytes": 5298678928,
+      "om_file_count": 2,
+      "onnx_file_count": 0,
+      "onnx_external_data_file_count": 0
+    },
+    {
+      "family": "gemma3",
+      "artifact_format": "onnx",
+      "suggested_repository_name": "Local-Gemma3-1B-ONNX",
+      "directory": "huggingface/onnx/gemma3",
+      "variant_count": 2,
+      "payload_bytes": 4080624482,
+      "om_file_count": 0,
+      "onnx_file_count": 2,
+      "onnx_external_data_file_count": 2
+    },
+    {
+      "family": "tinyllama",
+      "artifact_format": "om",
+      "suggested_repository_name": "Local-TinyLlama-1.1B-Ascend310B4-OM",
+      "directory": "huggingface/om/tinyllama",
+      "variant_count": 1,
+      "payload_bytes": 2207574956,
+      "om_file_count": 1,
+      "onnx_file_count": 0,
+      "onnx_external_data_file_count": 0
+    },
+    {
+      "family": "tinyllama",
+      "artifact_format": "onnx",
+      "suggested_repository_name": "Local-TinyLlama-1.1B-ONNX",
+      "directory": "huggingface/onnx/tinyllama",
+      "variant_count": 1,
+      "payload_bytes": 2204497192,
+      "om_file_count": 0,
+      "onnx_file_count": 1,
+      "onnx_external_data_file_count": 1
+    },
+    {
+      "family": "qwen35",
+      "artifact_format": "om",
+      "suggested_repository_name": "Local-Qwen3.5-2B-Ascend310B4-OM",
+      "directory": "huggingface/om/qwen35",
+      "variant_count": 2,
+      "payload_bytes": 12300641392,
+      "om_file_count": 4,
+      "onnx_file_count": 0,
+      "onnx_external_data_file_count": 0
+    },
+    {
+      "family": "qwen35",
+      "artifact_format": "onnx",
+      "suggested_repository_name": "Local-Qwen3.5-2B-ONNX",
+      "directory": "huggingface/onnx/qwen35",
+      "variant_count": 2,
+      "payload_bytes": 10226108526,
+      "om_file_count": 0,
+      "onnx_file_count": 4,
+      "onnx_external_data_file_count": 4
+    }
+  ],
+  "payload_size_note": "Upload totals count shared tokenizer/companion files in each separate format repository; original large files are not duplicated locally."
+}

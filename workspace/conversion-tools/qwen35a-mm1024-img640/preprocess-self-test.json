@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "scope": "Windows NumPy/Pillow only; no model execution",
+  "patch_coordinate_samples": 400,
+  "patch_shape": [
+    1600,
+    1536
+  ],
+  "dtype": "float32",
+  "letterbox_source_sizes": [
+    [
+      4000,
+      3000
+    ],
+    [
+      100,
+      1000
+    ],
+    [
+      640,
+      480
+    ]
+  ],
+  "output_size": [
+    640,
+    640
+  ],
+  "grid": [
+    1,
+    40,
+    40
+  ],
+  "visual_tokens": 400,
+  "MRoPE_geometry": "passed",
+  "single_state_bytes": 32342016
+}

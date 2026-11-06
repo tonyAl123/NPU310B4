@@ -1,0 +1,42 @@
+FROM rockylinux:9
+
+# Proxy support: use --build-arg http_proxy=... if needed
+ARG http_proxy
+ARG https_proxy
+
+# Base deps: python3 (3.9+), pip3, which (required by toolkit installer), numpy (required by ATC)
+RUN dnf install -y python3 python3-pip which gcc-c++ && \
+    pip3 install 'numpy<2' decorator sympy scipy attrs cloudpickle psutil synr tornado && \
+    dnf clean all
+
+# Copy CANN 7.0.0 installers
+COPY Ascend-cann-toolkit_7.0.0_linux-x86_64.run /tmp/cann-toolkit.run
+COPY Ascend-cann-kernels-310b-7.0.0-linux.noarch.rpm /tmp/cann-kernels.rpm
+
+# 1) Install CANN 7.0.0 toolkit (.run installer)
+# 2) Install kernel RPM (places the kernel .run at /usr/local/Ascend/)
+# 3) Run the kernel .run to install actual kernel files
+RUN touch /root/.bashrc \
+ && chmod +x /tmp/cann-toolkit.run \
+ && echo "y" | /tmp/cann-toolkit.run --quiet --nox11 --install \
+       --install-path=/usr/local/Ascend/cann \
+ && rpm -ivh /tmp/cann-kernels.rpm \
+ && chmod +x /usr/local/Ascend/Ascend-cann-kernels-310b_7.0.0_linux.run \
+ && echo "y" | /usr/local/Ascend/Ascend-cann-kernels-310b_7.0.0_linux.run --quiet --nox11 --install \
+       --install-path=/usr/local/Ascend/cann
+
+# TBE ccec symlink (hardcoded path in tbe)
+RUN mkdir -p /usr/local/Ascend \
+ && ln -sfn /usr/local/Ascend/cann/ascend-toolkit/latest /usr/local/Ascend/CANN-1.84
+
+# Environment (use 'latest' symlink for CANN base)
+ENV CANN_BASE=/usr/local/Ascend/cann/ascend-toolkit/latest
+ENV ASCEND_TOOLKIT_HOME=${CANN_BASE}
+ENV ASCEND_HOME_PATH=${CANN_BASE}
+ENV ASCEND_OPP_PATH=${CANN_BASE}/opp
+ENV TOOLCHAIN_HOME=${CANN_BASE}/toolkit
+ENV PATH=${CANN_BASE}/x86_64-linux/bin:${CANN_BASE}/compiler/bin:${PATH}
+ENV LD_LIBRARY_PATH=${CANN_BASE}/x86_64-linux/lib64:${CANN_BASE}/compiler/lib64:${CANN_BASE}/x86_64-linux/devlib:${LD_LIBRARY_PATH}
+ENV PYTHONPATH=${CANN_BASE}/python/site-packages:${CANN_BASE}/compiler/python/site-packages
+
+RUN rm -f /tmp/cann-toolkit.run /tmp/cann-kernels.rpm

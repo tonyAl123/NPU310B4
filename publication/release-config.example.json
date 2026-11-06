@@ -1,0 +1,87 @@
+{
+  "github": {
+    "namespace": "",
+    "repo_name": "ascend-om-conversion-lab",
+    "private": true,
+    "code_license_reviewed": false,
+    "public_files_reviewed": false
+  },
+  "huggingface": {
+    "namespace": ""
+  },
+  "models": {
+    "qwen3": {
+      "checkpoint_source": "",
+      "upstream_revision": null,
+      "base_model": "",
+      "license_id": "",
+      "source_and_rights_reviewed": false,
+      "license_reviewed": false,
+      "repositories": {
+        "om": {
+          "repo_name": "Local-Qwen3-0.6B-Ascend310B4-OM",
+          "private": true
+        },
+        "onnx": {
+          "repo_name": "Local-Qwen3-0.6B-ONNX",
+          "private": true
+        }
+      }
+    },
+    "gemma3": {
+      "checkpoint_source": "",
+      "upstream_revision": null,
+      "base_model": "",
+      "license_id": "",
+      "source_and_rights_reviewed": false,
+      "license_reviewed": false,
+      "repositories": {
+        "om": {
+          "repo_name": "Local-Gemma3-1B-Ascend310B4-OM",
+          "private": true
+        },
+        "onnx": {
+          "repo_name": "Local-Gemma3-1B-ONNX",
+          "private": true
+        }
+      }
+    },
+    "tinyllama": {
+      "checkpoint_source": "",
+      "upstream_revision": null,
+      "base_model": "",
+      "license_id": "",
+      "source_and_rights_reviewed": false,
+      "license_reviewed": false,
+      "repositories": {
+        "om": {
+          "repo_name": "Local-TinyLlama-1.1B-Ascend310B4-OM",
+          "private": true
+        },
+        "onnx": {
+          "repo_name": "Local-TinyLlama-1.1B-ONNX",
+          "private": true
+        }
+      }
+    },
+    "qwen35": {
+      "checkpoint_source": "",
+      "upstream_revision": null,
+      "base_model": "",
+      "license_id": "",
+      "source_and_rights_reviewed": false,
+      "license_reviewed": false,
+      "repositories": {
+        "om": {
+          "repo_name": "Local-Qwen3.5-2B-Ascend310B4-OM",
+          "private": true
+        },
+        "onnx": {
+          "repo_name": "Local-Qwen3.5-2B-ONNX",
+          "private": true
+        }
+      }
+    }
+  },
+  "schema_version": 2
+}

@@ -1,0 +1,141 @@
+{
+  "job_id": "tinyllama-11b-ctx1280-caa4568a",
+  "model_relative_path": "models/1.1b tinyllama",
+  "model_source": "user local TinyLlama derivative; README identifies ElementMerc/tinyllama-1.1b-uncensored",
+  "upstream_revision": null,
+  "target_soc": "Ascend310B4",
+  "context": 1280,
+  "dtype": "float16",
+  "opset": 15,
+  "project_commit": "15209f299fa372cccbd2226114f61a2f69f39a5f",
+  "container_image": "localhost/cann-atc-rocky:v7",
+  "container_image_id": "0c2be9f5d908d04a5da455c1b2d5a53af38d5f373b752ceaaf2790eb95e40e8c",
+  "files": [
+    {
+      "name": "abliteration.json",
+      "bytes": 613,
+      "sha256": "8063e9d3e732a5cb2ea9286ba8fa75b3d3c0097e51429d887268b7e5e2202150"
+    },
+    {
+      "name": "chat_template.jinja",
+      "bytes": 410,
+      "sha256": "66291cf0045c2425a3a667cf3cbb7af2b11f09e025c02f97245323ab79119362"
+    },
+    {
+      "name": "config.json",
+      "bytes": 726,
+      "sha256": "e28d2f393e9b95d09abafc4d2c2d7f16ee5a529b8599b703babee86c6bdcc006"
+    },
+    {
+      "name": "generation_config.json",
+      "bytes": 124,
+      "sha256": "d88f702fd684ccceae3e8ead0cb24f77cda8e50dedcf72dd5c75398f4fe3c38e"
+    },
+    {
+      "name": "gitattributes",
+      "bytes": 1519,
+      "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 2200119864,
+      "sha256": "caa4568ad6d1cc9f0a29291cb50d2ef8686e980ab9abb8450f5108c15ca9046f"
+    },
+    {
+      "name": "README.md",
+      "bytes": 6121,
+      "sha256": "f91f8a9a3f6be302a9e7ef85a6653322a610c199faf85f30739d9c21080c69c8"
+    },
+    {
+      "name": "tokenizer.json",
+      "bytes": 3619023,
+      "sha256": "48eb1042eab5849451320a150bdcc933c44ab4f712110832aaaaaaa53de7c4cc"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "bytes": 397,
+      "sha256": "e6cee305e9366578511d14035f8171470f71e5f5f6cbf6dd4240245008e1172d"
+    }
+  ],
+  "config": {
+    "architectures": [
+      "LlamaForCausalLM"
+    ],
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "bos_token_id": 1,
+    "dtype": "bfloat16",
+    "eos_token_id": 2,
+    "head_dim": 64,
+    "hidden_act": "silu",
+    "hidden_size": 2048,
+    "initializer_range": 0.02,
+    "intermediate_size": 5632,
+    "max_position_embeddings": 2048,
+    "mlp_bias": false,
+    "model_type": "llama",
+    "num_attention_heads": 32,
+    "num_hidden_layers": 22,
+    "num_key_value_heads": 4,
+    "pad_token_id": null,
+    "pretraining_tp": 1,
+    "rms_norm_eps": 1e-05,
+    "rope_parameters": {
+      "rope_theta": 10000.0,
+      "rope_type": "default"
+    },
+    "tie_word_embeddings": false,
+    "transformers_version": "5.14.1",
+    "use_cache": true,
+    "vocab_size": 32000
+  },
+  "safetensors_header": {
+    "tensor_count": 201,
+    "parameter_count": 1100048384,
+    "dtype": "BF16",
+    "offsets_and_sizes_valid": true
+  },
+  "validation": {
+    "policy_version": "tinyllama-fp32-1280-v1",
+    "reference": "unpatched native FP32 in an isolated process",
+    "new_tokens": 8,
+    "logits_max_abs": 0.25,
+    "logits_rmse": 0.03,
+    "logits_cosine_min": 0.999,
+    "cache_atol": 0.15,
+    "cache_rtol": 0.001953125,
+    "cache_global_rmse": 0.03,
+    "cache_layer_rmse": 0.03,
+    "require_generated_greedy_tokens_match": true,
+    "prompts": [
+      "你好，请用一句话介绍你自己。",
+      "Write a short greeting."
+    ],
+    "prefix_chunk_tokens": 64,
+    "real_prefix_length": 1278,
+    "high_positions": [
+      255,
+      639,
+      1278,
+      1279
+    ],
+    "long_probe_seed": "causal FP32 prefix cast to FP16, same seed for ONNX and FP32 decode",
+    "long_probe_limit": "seeded native FP32 prefix; not full 1280-step ONNX generation"
+  },
+  "memory_estimate": {
+    "model_parameters": 1100048384,
+    "fp16_weight_bytes": 2200096768,
+    "fp16_single_kv_cache_bytes": 28835840,
+    "fp16_input_plus_output_kv_bytes": 57671680,
+    "host_available_ram_gate_bytes": 17179869184,
+    "caveat": "Weights and KV only; runtime workspace, activation, copies and OS additional; board memory unverified"
+  },
+  "source_verification": {
+    "date": "2026-10-20",
+    "transformers_version": "5.10.2",
+    "native_llama": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/models/llama/modeling_llama.py",
+    "configuration": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/models/llama/configuration_llama.py",
+    "status": "Native Llama API reviewed; adapter awaits runtime self-test, numerical validation and ATC"
+  },
+  "adapter_sha256": "47204889cd815514d319195ee497d08959bfa6f6f1e4aebc1f4a4c2d6b1366df"
+}

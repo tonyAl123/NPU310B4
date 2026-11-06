@@ -1,0 +1,299 @@
+{
+  "job_id": "qwen35a-2b-mm-ctx2048-img768-346f4408",
+  "model_relative_path": "models/2b Qwen3.5A",
+  "upstream_revision": null,
+  "model_source": "User local Qwen3.5A checkpoint; fingerprinted, no claim of official unchanged weights",
+  "target_soc": "Ascend310B4",
+  "context": 2048,
+  "image_size": 768,
+  "images_per_request": 1,
+  "image_grid_thw": [
+    1,
+    48,
+    48
+  ],
+  "visual_tokens": 576,
+  "scope": "text and single-image input; no video",
+  "config": {
+    "architectures": [
+      "Qwen3_5ForConditionalGeneration"
+    ],
+    "dtype": "float16",
+    "image_token_id": 248056,
+    "model_type": "qwen3_5",
+    "text_config": {
+      "attention_bias": false,
+      "attention_dropout": 0.0,
+      "attn_output_gate": true,
+      "bos_token_id": null,
+      "dtype": "float16",
+      "eos_token_id": 248044,
+      "full_attention_interval": 4,
+      "head_dim": 256,
+      "hidden_act": "silu",
+      "hidden_size": 2048,
+      "initializer_range": 0.02,
+      "intermediate_size": 6144,
+      "layer_types": [
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention"
+      ],
+      "linear_conv_kernel_dim": 4,
+      "linear_key_head_dim": 128,
+      "linear_num_key_heads": 16,
+      "linear_num_value_heads": 16,
+      "linear_value_head_dim": 128,
+      "mamba_ssm_dtype": "float32",
+      "max_position_embeddings": 262144,
+      "mlp_only_layers": [],
+      "model_type": "qwen3_5_text",
+      "mtp_num_hidden_layers": 0,
+      "mtp_use_dedicated_embeddings": false,
+      "num_attention_heads": 8,
+      "num_hidden_layers": 24,
+      "num_key_value_heads": 2,
+      "pad_token_id": null,
+      "partial_rotary_factor": 0.25,
+      "rms_norm_eps": 1e-06,
+      "rope_parameters": {
+        "mrope_interleaved": true,
+        "mrope_section": [
+          11,
+          11,
+          10
+        ],
+        "partial_rotary_factor": 0.25,
+        "rope_theta": 10000000,
+        "rope_type": "default"
+      },
+      "tie_word_embeddings": true,
+      "use_cache": true,
+      "vocab_size": 248320
+    },
+    "tie_word_embeddings": true,
+    "transformers_version": "5.18.0",
+    "video_token_id": 248057,
+    "vision_config": {
+      "deepstack_visual_indexes": [],
+      "depth": 24,
+      "dtype": "float16",
+      "hidden_act": "gelu_pytorch_tanh",
+      "hidden_size": 1024,
+      "in_channels": 3,
+      "initializer_range": 0.02,
+      "intermediate_size": 4096,
+      "model_type": "qwen3_5_vision",
+      "num_heads": 16,
+      "num_position_embeddings": 2304,
+      "out_hidden_size": 2048,
+      "patch_size": 16,
+      "rope_parameters": {
+        "rope_theta": 10000.0,
+        "rope_type": "axial"
+      },
+      "spatial_merge_size": 2,
+      "temporal_patch_size": 2
+    },
+    "vision_end_token_id": 248054,
+    "vision_start_token_id": 248053
+  },
+  "files": [
+    {
+      "name": "config.json",
+      "bytes": 2709,
+      "sha256": "8d1b96165b32bc4f5dd9c33c4597dcbddcd85cd95bd23e37004385d3302e46cb"
+    },
+    {
+      "name": "generation_config.json",
+      "bytes": 116,
+      "sha256": "d0bb1d295ae3e46bb02d6d1a4dc59d689ec822d7479a32835f6945db85c3512a"
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 4426558248,
+      "sha256": "346f440896ecfa8ede88b27a03f04cad3fd029db8a4cf5c112d4892117a53536"
+    },
+    {
+      "name": "tokenizer.json",
+      "bytes": 19989506,
+      "sha256": "2f4dd754486e96054d0c841ddde816748be0116cbbc8ba8b5311ae4853432a21"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "bytes": 1466,
+      "sha256": "f6fdf337c2c5f4ed8190168a772c83f5c9364d225abae63223fde372e3cfb71f"
+    },
+    {
+      "name": "chat_template.jinja",
+      "bytes": 7755,
+      "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80"
+    }
+  ],
+  "project_commit": "15209f299fa372cccbd2226114f61a2f69f39a5f",
+  "container_image_id": "0c2be9f5d908d04a5da455c1b2d5a53af38d5f373b752ceaaf2790eb95e40e8c",
+  "versions": {
+    "torch": "2.11.0",
+    "transformers": "5.10.2",
+    "onnx": "1.21.0",
+    "onnxruntime": "1.26.0",
+    "numpy": "2.2.6",
+    "safetensors": "0.7.0",
+    "huggingface_hub": "1.18.0",
+    "accelerate": "1.13.0"
+  },
+  "opset": 15,
+  "validation": {
+    "policy_version": "qwen35a-mm2048-fp32-v1",
+    "reference": "unpatched native Qwen3_5ForConditionalGeneration in isolated process",
+    "logits_max_abs": 0.25,
+    "logits_rmse": 0.03,
+    "logits_cosine_min": 0.999,
+    "vision_max_abs": 0.25,
+    "vision_rmse": 0.03,
+    "vision_cosine_min": 0.999,
+    "cache_atol": 0.15,
+    "cache_rtol": 0.001953125,
+    "cache_rmse": 0.03,
+    "recurrent_atol": 0.05,
+    "recurrent_rtol": 0.01,
+    "recurrent_rmse": 0.02,
+    "generated_greedy_tokens_must_match": true,
+    "new_tokens": 8,
+    "high_positions": [
+      511,
+      1023,
+      2046,
+      2047
+    ],
+    "scope": "Two short text chats; a synthetic-image full prefill and greedy decode; two encoder fixtures; real-prefix seeded late positions. No NPU accuracy or real-photo quality claim."
+  },
+  "memory_estimate": {
+    "fp16_checkpoint_weight_bytes": 4426483328,
+    "fp16_kv_bytes": 25165824,
+    "fp32_recurrent_bytes": 18874368,
+    "fp16_conv_bytes": 884736,
+    "minimum_available_host_ram_bytes": 23622320128,
+    "minimum_free_linux_bytes": 37580963840,
+    "minimum_free_windows_bytes": 21474836480,
+    "caveat": "No board RAM or speed guarantee. Compiler weights/layout, double buffers and 2304-patch vision activations add memory."
+  },
+  "source_verification": {
+    "date": "2026-10-20",
+    "modeling": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/models/qwen3_5/modeling_qwen3_5.py",
+    "processor_reference": "https://huggingface.co/Qwen/Qwen3.5-2B/blob/999a2dd/preprocessor_config.json",
+    "processor_layout": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/models/qwen2_vl/image_processing_qwen2_vl.py",
+    "status": "API/source reviewed; adapter and compiler validation pending execution",
+    "precision_mode_reference": "https://www.hiascend.com/doc_center/source/en/canncommercial/601/modeldev/tfmigr1/tfmigr_tfadapi_0011.html"
+  },
+  "safetensors_header": {
+    "tensor_count": 617,
+    "parameter_count": 2213241664,
+    "dtype": "F16",
+    "offsets_and_sizes_valid": true
+  },
+  "precision_mode": "must_keep_origin_dtype",
+  "source_files": [
+    {
+      "name": "adapter.py",
+      "bytes": 10501,
+      "sha256": "47f548ad65d441294e902780b3b506c961e9ae3b972828ae91418c85582afbc7"
+    },
+    {
+      "name": "assets/checker.npy",
+      "bytes": 1769600,
+      "sha256": "6ac20f01944ee4218512f39da67993bcf51983014fe5a2a7fb99a81f67e06e3e"
+    },
+    {
+      "name": "assets/checker.png",
+      "bytes": 3714,
+      "sha256": "153c967775b6e1a0af8b8ca46e906cbb57022f4ea4be3db26fe7a9d0bcdd63e7"
+    },
+    {
+      "name": "assets/shapes.npy",
+      "bytes": 1769600,
+      "sha256": "e69a2c0eeb6282f5956359e47ec342d2d9e1fdb898e8a6a7c1ccfa56d473ef69"
+    },
+    {
+      "name": "assets/shapes.png",
+      "bytes": 11074,
+      "sha256": "40b34efb9a85f7120af410da4a6eafef48fb9bdb028729beaa875e78bd6ba398"
+    },
+    {
+      "name": "contract.py",
+      "bytes": 4137,
+      "sha256": "7427f08769984450771883aa7423f3648a5d1e8a917c6c9726f42c3139bd8a07"
+    },
+    {
+      "name": "environment.json",
+      "bytes": 2301,
+      "sha256": "826dbe9858cd1791a1b1311916a7581b583637d086e9883e7b77ecacc3dd9943"
+    },
+    {
+      "name": "external_weights.py",
+      "bytes": 2512,
+      "sha256": "8881932060865ea5ce66c5e0001e12d743f43b8e6a81987f2caf00413a648a31"
+    },
+    {
+      "name": "job.py",
+      "bytes": 20696,
+      "sha256": "37ad69044bb4ce2b508e92eed2bd98e5e4c93fd6de33244ae6ecd936f649ee4e"
+    },
+    {
+      "name": "native.py",
+      "bytes": 11331,
+      "sha256": "df34863d8a5686e206f77af3a7d0fb44ef026c589e4e600566333aa9c4b772a1"
+    },
+    {
+      "name": "prepare_input.py",
+      "bytes": 3148,
+      "sha256": "292f2e2102010428096f8ab793a492482f8a2fd10ed21709531e6a079758ca0a"
+    },
+    {
+      "name": "preprocess-self-test.json",
+      "bytes": 455,
+      "sha256": "3dabfdee4fb563089b95414d0d38624b91ad4a6165e5a93c05412392886c368d"
+    },
+    {
+      "name": "README.md",
+      "bytes": 419,
+      "sha256": "b72e0e37ddf3b08d2dca609b66d77dc1425efdb6d125eda6c3c4775581b43ec7"
+    },
+    {
+      "name": "reuse.py",
+      "bytes": 7013,
+      "sha256": "99cd5b10b2e376ffaae17556486e98ccaef087334f8c2aea5258ec31e8b80542"
+    },
+    {
+      "name": "selftest.py",
+      "bytes": 7705,
+      "sha256": "9ffdda73135263fdca7a6d2bb0ffc2afb46a62397cdb540ae68ca68f09acf475"
+    },
+    {
+      "name": "validate.py",
+      "bytes": 12672,
+      "sha256": "baeee20543e6598208bf7ad229f2b9ecd25f41fc8d43db16057d437b6a55c4e7"
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "job_id": "qwen3-06b-ctx2048-4ab1b48f",
+  "model_relative_path": "models/0.6B Qwen3",
+  "model_source": "user-provided local checkpoint",
+  "upstream_revision": null,
+  "target_soc": "Ascend310B4",
+  "context": 2048,
+  "dtype": "float16",
+  "opset": 15,
+  "project_commit": "15209f299fa372cccbd2226114f61a2f69f39a5f",
+  "container_image": "localhost/cann-atc-rocky:v7",
+  "container_image_id": "0c2be9f5d908d04a5da455c1b2d5a53af38d5f373b752ceaaf2790eb95e40e8c",
+  "files": [
+    {
+      "name": "added_tokens.json",
+      "bytes": 735,
+      "sha256": "79f6ec6fcc423d3a82bfac8b9033b1daac7b7bce06a5f5f441637b480cc605de"
+    },
+    {
+      "name": "chat_template.jinja",
+      "bytes": 4200,
+      "sha256": "bfbcd7bf3f08041bdcff4afb09f83677fe4f7e5b8b9c07e6be43651d88696aab"
+    },
+    {
+      "name": "config.json",
+      "bytes": 1485,
+      "sha256": "8ac34ca7aa454b4c006665de3ae8d9d42493fcf1adce4acd8825afe7351078ce"
+    },
+    {
+      "name": "generation_config.json",
+      "bytes": 231,
+      "sha256": "b885bd6091bb7d6a85aec0cd2baa037a0c26900ab72205781f5463dde2e3fe04"
+    },
+    {
+      "name": "merges.txt",
+      "bytes": 1671853,
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 1192135096,
+      "sha256": "fb12fb7b906dd85c1ecb1d0265b7d1518bbbc9fde22b957fb437540a7f97c04d"
+    },
+    {
+      "name": "special_tokens_map.json",
+      "bytes": 644,
+      "sha256": "57255613bbe23c9497211ca68561ff429a51e871dbaf5a59998fa4c8f7fe168a"
+    },
+    {
+      "name": "tokenizer.json",
+      "bytes": 11422822,
+      "sha256": "f54b55fa0c3aba0c91ce09ea79ae4e62da24e2a1a630f96c4bae34aba25e234a"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "bytes": 5643,
+      "sha256": "b2a0d89cf5c89d5d844c56d82e9c3731f862d720a6ce221c31955b628960cde7"
+    },
+    {
+      "name": "vocab.json",
+      "bytes": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  ],
+  "config": {
+    "architectures": [
+      "Qwen3ForCausalLM"
+    ],
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "bos_token_id": 151643,
+    "dtype": "bfloat16",
+    "eos_token_id": 151645,
+    "head_dim": 128,
+    "hidden_act": "silu",
+    "hidden_size": 1024,
+    "initializer_range": 0.02,
+    "intermediate_size": 3072,
+    "layer_types": [
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention"
+    ],
+    "max_position_embeddings": 40960,
+    "max_window_layers": 28,
+    "model_type": "qwen3",
+    "num_attention_heads": 16,
+    "num_hidden_layers": 28,
+    "num_key_value_heads": 8,
+    "rms_norm_eps": 1e-06,
+    "rope_parameters": {
+      "rope_theta": 1000000,
+      "rope_type": "default"
+    },
+    "rope_theta": 1000000,
+    "sliding_window": null,
+    "tie_word_embeddings": true,
+    "transformers_version": "5.0.0.dev0",
+    "use_cache": true,
+    "use_sliding_window": false,
+    "vocab_size": 151936
+  },
+  "safetensors_header": {
+    "tensor_count": 310,
+    "parameter_count": 596049920,
+    "dtypes": {
+      "BF16": 596049920
+    },
+    "offsets_and_sizes_valid": true
+  },
+  "validation": {
+    "policy_version": "fp32-scale-aware-2048-v1",
+    "reference": "unpatched native FP32 in an isolated process",
+    "inherited_from": "Successful 8192-context build; same FP32 budgets, fixed before 2048 export",
+    "new_tokens": 8,
+    "logits_max_abs": 0.25,
+    "logits_rmse": 0.03,
+    "logits_cosine_min": 0.999,
+    "cache_atol": 0.15,
+    "cache_rtol": 0.001953125,
+    "cache_global_rmse": 0.03,
+    "cache_layer_rmse": 0.03,
+    "require_generated_greedy_tokens_match": true,
+    "prompts": [
+      "你好，请用一句话介绍你自己。",
+      "Write a short greeting."
+    ],
+    "prefix_chunk_tokens": 64,
+    "real_prefix_length": 2046,
+    "high_positions": [
+      511,
+      1023,
+      2046,
+      2047
+    ],
+    "long_probe_seed": "causal FP32 prefix cast to FP16, same seed for ONNX and FP32 decode",
+    "long_probe_limit": "seeded-position validation; not end-to-end 2048-token ONNX generation"
+  },
+  "memory_estimate": {
+    "model_parameters": 596049920,
+    "fp16_weight_bytes": 1192099840,
+    "fp16_single_kv_cache_bytes": 234881024,
+    "fp16_input_plus_output_kv_bytes": 469762048,
+    "native_fp32_single_kv_cache_bytes": 469762048,
+    "host_available_ram_gate_bytes": 12884901888,
+    "caveat": "KV sizes only; runtime model allocation, workspace, copies, allocator and OS memory are additional. Board memory unverified."
+  },
+  "upstream_exporter_sha256": "41d2a4a9a46923e79a790d6e0dfcae201ce80e1ae5944a86b8fa82a5509d9828",
+  "source_verification": {
+    "date": "2026-10-20",
+    "transformers_qwen3": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/models/qwen3/modeling_qwen3.py",
+    "transformers_cache": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/cache_utils.py",
+    "supported_here": "Derived from locally successful 8192 build with unchanged pinned source and numerical gate. Actual 2048 export/validation/ATC pending."
+  },
+  "proven_parent_build": "builds/qwen3-06b-ctx8192-a2bdfa25/attempts/20261020T081436Z-da361b"
+}

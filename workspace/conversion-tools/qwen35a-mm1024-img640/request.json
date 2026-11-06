@@ -1,0 +1,311 @@
+{
+  "job_id": "qwen35a-2b-mm-ctx1024-img640-346f4408",
+  "model_relative_path": "models/2b Qwen3.5A",
+  "upstream_revision": null,
+  "model_source": "User local Qwen3.5A checkpoint; fingerprinted, no claim of official unchanged weights",
+  "target_soc": "Ascend310B4",
+  "context": 1024,
+  "image_size": 640,
+  "images_per_request": 1,
+  "image_grid_thw": [
+    1,
+    40,
+    40
+  ],
+  "visual_tokens": 400,
+  "scope": "text and single-image input; no video",
+  "config": {
+    "architectures": [
+      "Qwen3_5ForConditionalGeneration"
+    ],
+    "dtype": "float16",
+    "image_token_id": 248056,
+    "model_type": "qwen3_5",
+    "text_config": {
+      "attention_bias": false,
+      "attention_dropout": 0.0,
+      "attn_output_gate": true,
+      "bos_token_id": null,
+      "dtype": "float16",
+      "eos_token_id": 248044,
+      "full_attention_interval": 4,
+      "head_dim": 256,
+      "hidden_act": "silu",
+      "hidden_size": 2048,
+      "initializer_range": 0.02,
+      "intermediate_size": 6144,
+      "layer_types": [
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention",
+        "linear_attention",
+        "linear_attention",
+        "linear_attention",
+        "full_attention"
+      ],
+      "linear_conv_kernel_dim": 4,
+      "linear_key_head_dim": 128,
+      "linear_num_key_heads": 16,
+      "linear_num_value_heads": 16,
+      "linear_value_head_dim": 128,
+      "mamba_ssm_dtype": "float32",
+      "max_position_embeddings": 262144,
+      "mlp_only_layers": [],
+      "model_type": "qwen3_5_text",
+      "mtp_num_hidden_layers": 0,
+      "mtp_use_dedicated_embeddings": false,
+      "num_attention_heads": 8,
+      "num_hidden_layers": 24,
+      "num_key_value_heads": 2,
+      "pad_token_id": null,
+      "partial_rotary_factor": 0.25,
+      "rms_norm_eps": 1e-06,
+      "rope_parameters": {
+        "mrope_interleaved": true,
+        "mrope_section": [
+          11,
+          11,
+          10
+        ],
+        "partial_rotary_factor": 0.25,
+        "rope_theta": 10000000,
+        "rope_type": "default"
+      },
+      "tie_word_embeddings": true,
+      "use_cache": true,
+      "vocab_size": 248320
+    },
+    "tie_word_embeddings": true,
+    "transformers_version": "5.18.0",
+    "video_token_id": 248057,
+    "vision_config": {
+      "deepstack_visual_indexes": [],
+      "depth": 24,
+      "dtype": "float16",
+      "hidden_act": "gelu_pytorch_tanh",
+      "hidden_size": 1024,
+      "in_channels": 3,
+      "initializer_range": 0.02,
+      "intermediate_size": 4096,
+      "model_type": "qwen3_5_vision",
+      "num_heads": 16,
+      "num_position_embeddings": 2304,
+      "out_hidden_size": 2048,
+      "patch_size": 16,
+      "rope_parameters": {
+        "rope_theta": 10000.0,
+        "rope_type": "axial"
+      },
+      "spatial_merge_size": 2,
+      "temporal_patch_size": 2
+    },
+    "vision_end_token_id": 248054,
+    "vision_start_token_id": 248053
+  },
+  "files": [
+    {
+      "name": "config.json",
+      "bytes": 2709,
+      "sha256": "8d1b96165b32bc4f5dd9c33c4597dcbddcd85cd95bd23e37004385d3302e46cb"
+    },
+    {
+      "name": "generation_config.json",
+      "bytes": 116,
+      "sha256": "d0bb1d295ae3e46bb02d6d1a4dc59d689ec822d7479a32835f6945db85c3512a"
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 4426558248,
+      "sha256": "346f440896ecfa8ede88b27a03f04cad3fd029db8a4cf5c112d4892117a53536"
+    },
+    {
+      "name": "tokenizer.json",
+      "bytes": 19989506,
+      "sha256": "2f4dd754486e96054d0c841ddde816748be0116cbbc8ba8b5311ae4853432a21"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "bytes": 1466,
+      "sha256": "f6fdf337c2c5f4ed8190168a772c83f5c9364d225abae63223fde372e3cfb71f"
+    },
+    {
+      "name": "chat_template.jinja",
+      "bytes": 7755,
+      "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80"
+    }
+  ],
+  "project_commit": "15209f299fa372cccbd2226114f61a2f69f39a5f",
+  "container_image_id": "0c2be9f5d908d04a5da455c1b2d5a53af38d5f373b752ceaaf2790eb95e40e8c",
+  "versions": {
+    "torch": "2.11.0",
+    "transformers": "5.10.2",
+    "onnx": "1.21.0",
+    "onnxruntime": "1.26.0",
+    "numpy": "2.2.6",
+    "safetensors": "0.7.0",
+    "huggingface_hub": "1.18.0",
+    "accelerate": "1.13.0"
+  },
+  "opset": 15,
+  "validation": {
+    "policy_version": "qwen35a-mm1024-img640-fp32-v1",
+    "reference": "unpatched native Qwen3_5ForConditionalGeneration in isolated process",
+    "logits_max_abs": 0.25,
+    "logits_rmse": 0.03,
+    "logits_cosine_min": 0.999,
+    "vision_max_abs": 0.25,
+    "vision_rmse": 0.03,
+    "vision_cosine_min": 0.999,
+    "cache_atol": 0.15,
+    "cache_rtol": 0.001953125,
+    "cache_rmse": 0.03,
+    "recurrent_atol": 0.05,
+    "recurrent_rtol": 0.01,
+    "recurrent_rmse": 0.02,
+    "generated_greedy_tokens_must_match": true,
+    "new_tokens": 8,
+    "high_positions": [
+      255,
+      511,
+      1022,
+      1023
+    ],
+    "scope": "Two short text chats; a synthetic-image full prefill and greedy decode; two encoder fixtures; real-prefix seeded late positions. No NPU accuracy or real-photo quality claim."
+  },
+  "memory_estimate": {
+    "fp16_checkpoint_weight_bytes": 4426483328,
+    "fp16_kv_bytes": 12582912,
+    "fp32_recurrent_bytes": 18874368,
+    "fp16_conv_bytes": 884736,
+    "minimum_available_host_ram_bytes": 23622320128,
+    "minimum_free_linux_bytes": 37580963840,
+    "minimum_free_windows_bytes": 21474836480,
+    "caveat": "No board RAM or speed guarantee. FP32 vision weights/activations, compiler layouts, buffers and runtime add memory.",
+    "single_state_bytes": 32342016,
+    "fp32_pixel_input_bytes": 9830400
+  },
+  "source_verification": {
+    "date": "2026-10-20",
+    "modeling": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/models/qwen3_5/modeling_qwen3_5.py",
+    "processor_reference": "https://huggingface.co/Qwen/Qwen3.5-2B/blob/999a2dd/preprocessor_config.json",
+    "processor_layout": "https://raw.githubusercontent.com/huggingface/transformers/v5.10.2/src/transformers/models/qwen2_vl/image_processing_qwen2_vl.py",
+    "status": "Pinned implementation passed full image/text validation and two ATC jobs at 768/2048. New 640/1024 profile requires fresh reference, ONNX and ATC checks.",
+    "precision_mode_reference": "https://www.hiascend.com/doc_center/source/en/canncommercial/601/modeldev/tfmigr1/tfmigr_tfadapi_0011.html",
+    "baseline_build_id": "qwen35a-2b-mm-ctx2048-img768-346f4408/20261021T004700Z-e1da9c",
+    "baseline_manifest_sha256": "e14e286b3d2ce8785dc97e6c4b36ce912dfa3f428a4baef513a5d6f94469ecee",
+    "adapter_diff": {
+      "path": "source-changes.patch",
+      "sha256": "bfef8988c4214c6adf9ae6da8d5041220be8cd873ce28702da0b1600f54203de"
+    }
+  },
+  "safetensors_header": {
+    "tensor_count": 617,
+    "parameter_count": 2213241664,
+    "dtype": "F16",
+    "offsets_and_sizes_valid": true
+  },
+  "precision_mode": "must_keep_origin_dtype",
+  "source_files": [
+    {
+      "name": "adapter.py",
+      "bytes": 10580,
+      "sha256": "5095899c6ca497d56b2df7da4bf92263bea45ccf8dc27dc644e6eb5ad7c20338"
+    },
+    {
+      "name": "assets/checker.npy",
+      "bytes": 1228928,
+      "sha256": "0b3a2f0009f86ab2f8ef76804b439897c95e09839669e109e97b3b8d784f5341"
+    },
+    {
+      "name": "assets/checker.png",
+      "bytes": 6087,
+      "sha256": "189b81c84bfd518201e05b6630c2a445cab35115638481e8e7c030015b2a7368"
+    },
+    {
+      "name": "assets/shapes.npy",
+      "bytes": 1228928,
+      "sha256": "a381cb9a1c85fb61947845b43e18a7d5ad7af0abae08959434479b7ace578d04"
+    },
+    {
+      "name": "assets/shapes.png",
+      "bytes": 10023,
+      "sha256": "ab6daf5aef38c9dcf91237a0c02eb0eb13bad3f6b99c028c6436d6284a6067bc"
+    },
+    {
+      "name": "contract.py",
+      "bytes": 4287,
+      "sha256": "0ec1ea820a6eb20dda6344ac9140334c2063fa345e26b4d868a323d9409afeed"
+    },
+    {
+      "name": "environment.json",
+      "bytes": 2301,
+      "sha256": "826dbe9858cd1791a1b1311916a7581b583637d086e9883e7b77ecacc3dd9943"
+    },
+    {
+      "name": "external_weights.py",
+      "bytes": 2512,
+      "sha256": "8881932060865ea5ce66c5e0001e12d743f43b8e6a81987f2caf00413a648a31"
+    },
+    {
+      "name": "job.py",
+      "bytes": 18480,
+      "sha256": "fc5dae667a85d1f18d85e8b0a23284ae8b9aae6059efa8c4aebeb2f6751b216d"
+    },
+    {
+      "name": "model_profile.py",
+      "bytes": 541,
+      "sha256": "98541b54c19ebc8bbe30e2a2fca6c0b30b7f084d3f132c586e02688e626fa43d"
+    },
+    {
+      "name": "native.py",
+      "bytes": 11407,
+      "sha256": "843957471eb0c7c659ffbcc0ffc2ab2829c55276ca05ef852df48134152d5530"
+    },
+    {
+      "name": "prepare_input.py",
+      "bytes": 3258,
+      "sha256": "4583916935083fc867cf7aa1c710b5865e8cda008876d2ca10dfb8e188e752f6"
+    },
+    {
+      "name": "preprocess-self-test.json",
+      "bytes": 492,
+      "sha256": "07e472ce3f6a1ffeed76ec944136d79983bc1d25dd893f68f1473021073cd663"
+    },
+    {
+      "name": "README.md",
+      "bytes": 419,
+      "sha256": "b72e0e37ddf3b08d2dca609b66d77dc1425efdb6d125eda6c3c4775581b43ec7"
+    },
+    {
+      "name": "selftest.py",
+      "bytes": 7705,
+      "sha256": "9ffdda73135263fdca7a6d2bb0ffc2afb46a62397cdb540ae68ca68f09acf475"
+    },
+    {
+      "name": "validate.py",
+      "bytes": 12803,
+      "sha256": "33176f45db5f0759fdfaa5e50b229e0e336ac6fcf99ca7fe08cffbc494e41ed4"
+    }
+  ],
+  "vision_input_dtype": "float32",
+  "vision_output_dtype": "float16",
+  "vision_weight_dtype": "float32",
+  "export_name": "Qwen3.5A-2B-Ascend310B4-ctx1024-img640"
+}

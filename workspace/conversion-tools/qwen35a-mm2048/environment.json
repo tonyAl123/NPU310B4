@@ -1,0 +1,64 @@
+{
+  "updated_at": "2026-10-20T05:09:43.480648+00:00",
+  "environment_ready": true,
+  "status": "ready",
+  "target_soc": "Ascend310B4",
+  "linux_build_root": "${BUILD_ROOT}",
+  "models_linux_path": "${WORKSPACE}/models",
+  "project_commit": "15209f299fa372cccbd2226114f61a2f69f39a5f",
+  "container_image": "localhost/cann-atc-rocky:v7",
+  "container_image_id": "0c2be9f5d908d04a5da455c1b2d5a53af38d5f373b752ceaaf2790eb95e40e8c",
+  "container_global_options": [
+    "--cgroup-manager=cgroupfs",
+    "--events-backend=file"
+  ],
+  "container_run_options": [
+    "--cgroups=disabled"
+  ],
+  "versions": {
+    "torch": "2.11.0",
+    "transformers": "5.10.2",
+    "onnx": "1.21.0",
+    "onnxruntime": "1.26.0",
+    "numpy": "2.2.6",
+    "safetensors": "0.7.0",
+    "huggingface_hub": "1.18.0",
+    "accelerate": "1.13.0"
+  },
+  "cann_install_metadata_log": "logs/atc-toolchain-info.log",
+  "onnx_checker": "passed",
+  "onnx_cpu_reference": "passed",
+  "smoke_compile": "passed",
+  "artifacts": [
+    {
+      "path": "builds/environment-smoke/verify-20261020-010933-100066/add.onnx",
+      "bytes": 110,
+      "sha256": "e39d06f4279ff16be9bdac663c6ff07968262183a03405b647b40dabf2b170d4"
+    },
+    {
+      "path": "builds/environment-smoke/verify-20261020-010933-100066/add.om",
+      "bytes": 11832,
+      "sha256": "786284bb6cafc5e9463e7adde492bb2ce40438a66a737bb580b1d4b070f52376"
+    },
+    {
+      "path": "builds/environment-smoke/verify-20261020-010933-100066/atc.log",
+      "bytes": 594,
+      "sha256": "ced526c8991c23809eff17f7e3f31c374b6d356957b881a58dac65dd81c5bf6a"
+    }
+  ],
+  "model_export_tested": true,
+  "board_runtime_verified": false,
+  "setup_log": "${WORKSPACE}/logs/verify-20261020-010933-100066.log",
+  "last_model_build": {
+    "status": "compiled",
+    "model": "Qwen3-0.6B",
+    "target_soc": "Ascend310B4",
+    "context": 728,
+    "export_directory": "${WORKSPACE}\\exports\\Qwen3-0.6B-Ascend310B4-ctx728",
+    "om_file": "${WORKSPACE}\\exports\\Qwen3-0.6B-Ascend310B4-ctx728\\qwen3_06b_ctx728.om",
+    "om_sha256": "fdeaeb72673cfdd11e0cdeac3ae4861c960849d0c545d2c3d71c394fb44623a8",
+    "validation": "passed_fp32_scale_aware_728_v1",
+    "source": "${WORKSPACE}\\builds\\qwen3-06b-ctx728-fd8ab7f5\\attempts\\20261020T103554Z-8b5193",
+    "board_runtime_verified": false
+  }
+}

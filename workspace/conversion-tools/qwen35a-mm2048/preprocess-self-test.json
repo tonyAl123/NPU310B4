@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "sampled_patch_coordinates": 400,
+  "letterbox_input_shapes": [
+    [
+      4000,
+      3000
+    ],
+    [
+      100,
+      1000
+    ],
+    [
+      640,
+      480
+    ]
+  ],
+  "output_pixels": [
+    768,
+    768
+  ],
+  "grid_thw": [
+    1,
+    48,
+    48
+  ],
+  "visual_tokens": 576,
+  "scope": "Independent coordinate checks for normalization, spatial merge/patch order and temporal duplication; local Pillow letterbox tests."
+}

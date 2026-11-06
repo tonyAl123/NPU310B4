@@ -1,0 +1,15 @@
+name: Static repository checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - run: python tools/check_repository.py
+      - name: Bash syntax only
+        run: find workspace -name '*.sh' -type f -exec bash -n {} +

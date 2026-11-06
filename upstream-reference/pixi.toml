@@ -1,0 +1,21 @@
+[workspace]
+channels = ["conda-forge"]
+name = "qwen3-atlas-slm"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = "3.10.*"
+pytorch = ">=2.11.0,<3"
+transformers = ">=5.10.2,<6"
+onnx = ">=1.21.0,<2"
+onnxruntime = ">=1.26.0,<2"
+numpy = ">=2.2.6,<3"
+safetensors = ">=0.7.0,<0.8"
+huggingface_hub = ">=1.18.0,<2"
+accelerate = ">=1.13.0,<2"
+
+[pypi-dependencies]
+onnxsim = ">=0.6.4, <0.7"
