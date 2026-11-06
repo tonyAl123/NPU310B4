@@ -1,8 +1,8 @@
 {
   "prepared_on": "2026-11-03",
   "github_directory": "github/ascend-om-conversion-lab",
-  "github_repository_created": false,
-  "huggingface_repositories_created": false,
+  "github_repository_created": true,
+  "huggingface_repositories_created": true,
   "model_binary_copies_created": 0,
   "family_count": 4,
   "variant_count": 10,
@@ -218,12 +218,21 @@
         }
       ],
       "payload_bytes": 15149485456,
-      "source_license_review": "pending",
+      "source_license_review": "redistribution_permission_pending",
       "onnx_file_count": 5,
       "onnx_external_data_file_count": 0,
       "suggested_repositories": {
         "om": "Local-Qwen3-0.6B-Ascend310B4-OM",
         "onnx": "Local-Qwen3-0.6B-ONNX"
+      },
+      "verified_checkpoint": {
+        "repo_id": "DavidAU/Qwen3-0.6B-heretic-abliterated-uncensored",
+        "revision": "402402fe50aeaed19d8751bb1c19e10e99fce614",
+        "filename": "model.safetensors",
+        "sha256": "fb12fb7b906dd85c1ecb1d0265b7d1518bbbc9fde22b957fb437540a7f97c04d",
+        "bytes": 1192135096,
+        "declared_license": null,
+        "distribution_license": null
       }
     },
     "gemma3": {
@@ -342,12 +351,21 @@
         }
       ],
       "payload_bytes": 9300742138,
-      "source_license_review": "pending",
+      "source_license_review": "verified",
       "onnx_file_count": 2,
       "onnx_external_data_file_count": 2,
       "suggested_repositories": {
         "om": "Local-Gemma3-1B-Ascend310B4-OM",
         "onnx": "Local-Gemma3-1B-ONNX"
+      },
+      "verified_checkpoint": {
+        "repo_id": "DavidAU/Gemma-3-1B-it-GLM-4.7-Flash-Heretic-Uncensored-Thinking",
+        "revision": "83daa40d48be751bdf606a9c3dcde3dc0043c93d",
+        "filename": "model.safetensors",
+        "sha256": "4f853991d8c4bcb10fc7b302afb09c8368f56dcf2cbded188099ba41bff89cdb",
+        "bytes": 1999811208,
+        "declared_license": "apache-2.0",
+        "distribution_license": "gemma"
       }
     },
     "tinyllama": {
@@ -410,12 +428,21 @@
         }
       ],
       "payload_bytes": 4408453125,
-      "source_license_review": "pending",
+      "source_license_review": "verified",
       "onnx_file_count": 1,
       "onnx_external_data_file_count": 1,
       "suggested_repositories": {
         "om": "Local-TinyLlama-1.1B-Ascend310B4-OM",
         "onnx": "Local-TinyLlama-1.1B-ONNX"
+      },
+      "verified_checkpoint": {
+        "repo_id": "ElementMerc/tinyllama-1.1b-uncensored",
+        "revision": "45e20a6c42345e5af900c075bcda84ef5a942148",
+        "filename": "model.safetensors",
+        "sha256": "caa4568ad6d1cc9f0a29291cb50d2ef8686e980ab9abb8450f5108c15ca9046f",
+        "bytes": 2200119864,
+        "declared_license": "apache-2.0",
+        "distribution_license": "apache-2.0"
       }
     },
     "qwen35": {
@@ -608,12 +635,21 @@
         }
       ],
       "payload_bytes": 22480703536,
-      "source_license_review": "pending",
+      "source_license_review": "verified",
       "onnx_file_count": 4,
       "onnx_external_data_file_count": 4,
       "suggested_repositories": {
         "om": "Local-Qwen3.5-2B-Ascend310B4-OM",
         "onnx": "Local-Qwen3.5-2B-ONNX"
+      },
+      "verified_checkpoint": {
+        "repo_id": "AkaumiKaede/Qwen3.5-2B-Uncensored-Zero-Refusal-SOMA",
+        "revision": "05f9470b6e54dea6f89357426b271b4563e8621c",
+        "filename": "model.safetensors",
+        "sha256": "346f440896ecfa8ede88b27a03f04cad3fd029db8a4cf5c112d4892117a53536",
+        "bytes": 4426558248,
+        "declared_license": "apache-2.0",
+        "distribution_license": "apache-2.0"
       }
     }
   },
@@ -637,7 +673,10 @@
       "payload_bytes": 7624449552,
       "om_file_count": 5,
       "onnx_file_count": 0,
-      "onnx_external_data_file_count": 0
+      "onnx_external_data_file_count": 0,
+      "publication": {
+        "status": "pending_redistribution_permission"
+      }
     },
     {
       "family": "qwen3",
@@ -648,7 +687,10 @@
       "payload_bytes": 7604393444,
       "om_file_count": 0,
       "onnx_file_count": 5,
-      "onnx_external_data_file_count": 0
+      "onnx_external_data_file_count": 0,
+      "publication": {
+        "status": "pending_redistribution_permission"
+      }
     },
     {
       "family": "gemma3",
@@ -659,7 +701,14 @@
       "payload_bytes": 5298678928,
       "om_file_count": 2,
       "onnx_file_count": 0,
-      "onnx_external_data_file_count": 0
+      "onnx_external_data_file_count": 0,
+      "publication": {
+        "status": "uploaded",
+        "visibility": "private",
+        "repo_id": "TonyAlexie/Local-Gemma3-1B-Ascend310B4-OM",
+        "url": "https://huggingface.co/TonyAlexie/Local-Gemma3-1B-Ascend310B4-OM",
+        "commit_sha": "6b2609d5c09b98d1f876e30b3c7a08420b64e4a6"
+      }
     },
     {
       "family": "gemma3",
@@ -670,7 +719,14 @@
       "payload_bytes": 4080624482,
       "om_file_count": 0,
       "onnx_file_count": 2,
-      "onnx_external_data_file_count": 2
+      "onnx_external_data_file_count": 2,
+      "publication": {
+        "status": "uploaded",
+        "visibility": "private",
+        "repo_id": "TonyAlexie/Local-Gemma3-1B-ONNX",
+        "url": "https://huggingface.co/TonyAlexie/Local-Gemma3-1B-ONNX",
+        "commit_sha": "b0945c65971b121d1353fd3a6a6f09d9f9d77427"
+      }
     },
     {
       "family": "tinyllama",
@@ -681,7 +737,14 @@
       "payload_bytes": 2207574956,
       "om_file_count": 1,
       "onnx_file_count": 0,
-      "onnx_external_data_file_count": 0
+      "onnx_external_data_file_count": 0,
+      "publication": {
+        "status": "uploaded",
+        "visibility": "private",
+        "repo_id": "TonyAlexie/Local-TinyLlama-1.1B-Ascend310B4-OM",
+        "url": "https://huggingface.co/TonyAlexie/Local-TinyLlama-1.1B-Ascend310B4-OM",
+        "commit_sha": "b5497ec5e82d10fb6aba6fbd09497f5237bf5377"
+      }
     },
     {
       "family": "tinyllama",
@@ -692,7 +755,14 @@
       "payload_bytes": 2204497192,
       "om_file_count": 0,
       "onnx_file_count": 1,
-      "onnx_external_data_file_count": 1
+      "onnx_external_data_file_count": 1,
+      "publication": {
+        "status": "uploaded",
+        "visibility": "private",
+        "repo_id": "TonyAlexie/Local-TinyLlama-1.1B-ONNX",
+        "url": "https://huggingface.co/TonyAlexie/Local-TinyLlama-1.1B-ONNX",
+        "commit_sha": "9e2618725852edab635659f1b6ebae1b6dc65638"
+      }
     },
     {
       "family": "qwen35",
@@ -703,7 +773,14 @@
       "payload_bytes": 12300641392,
       "om_file_count": 4,
       "onnx_file_count": 0,
-      "onnx_external_data_file_count": 0
+      "onnx_external_data_file_count": 0,
+      "publication": {
+        "status": "uploaded",
+        "visibility": "private",
+        "repo_id": "TonyAlexie/Local-Qwen3.5-2B-Ascend310B4-OM",
+        "url": "https://huggingface.co/TonyAlexie/Local-Qwen3.5-2B-Ascend310B4-OM",
+        "commit_sha": "044eb95f94553040faf79bfc81bc585babd36ff0"
+      }
     },
     {
       "family": "qwen35",
@@ -714,8 +791,18 @@
       "payload_bytes": 10226108526,
       "om_file_count": 0,
       "onnx_file_count": 4,
-      "onnx_external_data_file_count": 4
+      "onnx_external_data_file_count": 4,
+      "publication": {
+        "status": "uploaded",
+        "visibility": "private",
+        "repo_id": "TonyAlexie/Local-Qwen3.5-2B-ONNX",
+        "url": "https://huggingface.co/TonyAlexie/Local-Qwen3.5-2B-ONNX",
+        "commit_sha": "5d472fa4562ed7bce0e3cdd3c1b6c55ae725a6f5"
+      }
     }
   ],
-  "payload_size_note": "Upload totals count shared tokenizer/companion files in each separate format repository; original large files are not duplicated locally."
+  "payload_size_note": "Upload totals count shared tokenizer/companion files in each separate format repository; original large files are not duplicated locally.",
+  "github_repository_url": "https://github.com/tonyAl123/NPU310B4",
+  "huggingface_uploaded_repository_count": 6,
+  "publication_status_checked_on": "2026-11-06"
 }
